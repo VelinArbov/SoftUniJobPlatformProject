@@ -26,7 +26,11 @@ namespace SoftUniJobPlatform.Web.Controllers
 
         public IActionResult Index()
         {
-            //var viewModel = this.categories.All().To<IndexViewModel>();
+            return this.View();
+        }
+
+        public IActionResult HomeRegister()
+        {
             return this.View();
         }
 
