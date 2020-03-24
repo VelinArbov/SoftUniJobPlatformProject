@@ -1,4 +1,7 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
+
+using SoftUniJobPlatform.Data.Models.Enum;
+
 namespace SoftUniJobPlatform.Data.Models
 {
     using System;
@@ -16,19 +19,28 @@ namespace SoftUniJobPlatform.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Jobs = new HashSet<Job>();
+            this.Courses = new HashSet<StudentCourse>();
+            this.StudentJobs = new HashSet<StudentJob>();
+            this.Categories= new HashSet<Category>();
         }
-
-        public string Name { get; set; }
 
         public string Tittle { get; set; }
 
         public int RegistrationNumber { get; set; }
 
+        public UserType Type { get; set; }
+
         public string ImageUrl { get; set; }
 
         public string Description { get; set; }
 
-        public int Size { get; set; }
+        public string FullName { get; set; }
+
+        public double Score { get; set; }
+
+        public GenderType Gender { get; set; }
+
+        public DateTime DateOfBirth { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -47,5 +59,11 @@ namespace SoftUniJobPlatform.Data.Models
         public virtual ICollection<IdentityUserLogin<string>> Logins { get; set; }
 
         public virtual ICollection<Job> Jobs { get; set; }
+
+        public virtual ICollection<Category> Categories { get; set; }
+
+        public virtual ICollection<StudentCourse> Courses { get; set; }
+
+        public virtual ICollection<StudentJob> StudentJobs { get; set; }
     }
 }

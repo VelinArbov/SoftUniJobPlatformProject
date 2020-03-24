@@ -2,9 +2,9 @@
 {
     public class StudentCourse
     {
-        public string StudentId { get; set; }
+        public string ApplicationUserId { get; set; }
 
-        public Student Student { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
         public int CourseId { get; set; }
 

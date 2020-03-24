@@ -1,17 +1,14 @@
-﻿using System.Linq;
-using SoftUniJobPlatform.Data;
-using SoftUniJobPlatform.Data.Common.Repositories;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Services.Mapping;
-using SoftUniJobPlatform.Web.ViewModels.Home;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Diagnostics;
-
-    using SoftUniJobPlatform.Web.ViewModels;
+    using System.Linq;
 
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Data;
+    using SoftUniJobPlatform.Data.Common.Repositories;
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Mapping;
+    using SoftUniJobPlatform.Web.ViewModels;
 
     public class HomeController : BaseController
     {
@@ -29,10 +26,6 @@ namespace SoftUniJobPlatform.Web.Controllers
             return this.View();
         }
 
-        public IActionResult HomeRegister()
-        {
-            return this.View();
-        }
 
         public IActionResult Privacy()
         {

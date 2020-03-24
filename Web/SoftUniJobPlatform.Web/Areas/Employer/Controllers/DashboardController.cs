@@ -7,11 +7,11 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
 
-    public class DashboardController : AdministrationController
+    public class EmployerDashboardController : EmployerController
     {
         private readonly ISettingsService settingsService;
 
-        public DashboardController(ISettingsService settingsService)
+        public EmployerDashboardController(ISettingsService settingsService)
         {
             this.settingsService = settingsService;
         }
@@ -20,11 +20,6 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         {
             var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
             return this.View(viewModel);
-        }
-
-        public IActionResult CreateRole()
-        {
-            return this.Redirect("/Home");
         }
 
     }

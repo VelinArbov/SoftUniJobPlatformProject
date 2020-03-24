@@ -11,8 +11,8 @@
         public Student()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Courses = new HashSet<StudentCourse>();
-            this.StudentJobs = new HashSet<StudentJob>();
+            //this.Courses = new HashSet<StudentCourse>();
+            //this.StudentJobs = new HashSet<StudentJob>();
         }
 
         public string Username { get; set; }
@@ -37,9 +37,9 @@
 
         public double Raiting { get; set; }
 
-        public virtual ICollection<StudentCourse> Courses { get; set; }
+        //public virtual ICollection<StudentCourse> Courses { get; set; }
 
-        public virtual ICollection<StudentJob> StudentJobs { get; set; }
+        //public virtual ICollection<StudentJob> StudentJobs { get; set; }
 
     }
 }

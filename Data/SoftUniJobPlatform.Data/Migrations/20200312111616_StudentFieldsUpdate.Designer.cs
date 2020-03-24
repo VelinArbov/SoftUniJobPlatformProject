@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoftUniJobPlatform.Data;
 
 namespace SoftUniJobPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200312111616_StudentFieldsUpdate")]
+    partial class StudentFieldsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,9 +181,6 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
@@ -194,12 +193,6 @@ namespace SoftUniJobPlatform.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
@@ -215,6 +208,9 @@ namespace SoftUniJobPlatform.Data.Migrations
 
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasColumnType("nvarchar(256)")
@@ -236,20 +232,17 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<int>("RegistrationNumber")
                         .HasColumnType("int");
 
-                    b.Property<double>("Score")
-                        .HasColumnType("float");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Size")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tittle")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
@@ -277,9 +270,6 @@ namespace SoftUniJobPlatform.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -301,15 +291,10 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ShortName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("IsDeleted");
 
@@ -358,7 +343,7 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -481,13 +466,13 @@ namespace SoftUniJobPlatform.Data.Migrations
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.StudentCourse", b =>
                 {
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.HasKey("ApplicationUserId", "CourseId");
+                    b.HasKey("StudentId", "CourseId");
 
                     b.HasIndex("CourseId");
 
@@ -496,13 +481,13 @@ namespace SoftUniJobPlatform.Data.Migrations
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.StudentJob", b =>
                 {
-                    b.Property<string>("ApplicationUserId")
+                    b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-                    b.HasKey("ApplicationUserId", "JobId");
+                    b.HasKey("StudentId", "JobId");
 
                     b.HasIndex("JobId");
 
@@ -560,13 +545,6 @@ namespace SoftUniJobPlatform.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Category", b =>
-                {
-                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Job", b =>
                 {
                     b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", "ApplicationUser")
@@ -575,37 +553,35 @@ namespace SoftUniJobPlatform.Data.Migrations
 
                     b.HasOne("SoftUniJobPlatform.Data.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
                 });
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.StudentCourse", b =>
                 {
-                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Courses")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SoftUniJobPlatform.Data.Models.Course", "Course")
                         .WithMany("StudentCourses")
                         .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SoftUniJobPlatform.Data.Models.Student", "Student")
+                        .WithMany("Courses")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.StudentJob", b =>
                 {
-                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("StudentJobs")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SoftUniJobPlatform.Data.Models.Job", "Job")
                         .WithMany("Candidates")
                         .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SoftUniJobPlatform.Data.Models.Student", "Student")
+                        .WithMany("StudentJobs")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });

@@ -66,7 +66,7 @@
             //    .WithOne(c=> c.ApplicationUser);
 
             builder.Entity<StudentJob>()
-                .HasKey(x => new { x.StudentId, x.JobId });
+                .HasKey(x => new { x.ApplicationUserId, x.JobId });
 
             //builder.Entity<StudentJob>()
             //    .HasOne(x => x.Student)
@@ -80,7 +80,7 @@
 
 
             builder.Entity<StudentCourse>()
-                .HasKey(x => new { x.StudentId, x.CourseId });
+                .HasKey(x => new { x.ApplicationUserId, x.CourseId });
 
             //builder.Entity<StudentCourse>()
             //    .HasOne(x => x.Student)
