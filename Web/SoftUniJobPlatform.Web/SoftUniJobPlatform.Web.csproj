@@ -47,4 +47,8 @@
     <ProjectReference Include="..\SoftUniJobPlatform.Web.Infrastructure\SoftUniJobPlatform.Web.Infrastructure.csproj" />
     <ProjectReference Include="..\SoftUniJobPlatform.Web.ViewModels\SoftUniJobPlatform.Web.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Companies\" />
+  </ItemGroup>
 </Project>
