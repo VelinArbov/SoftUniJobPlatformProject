@@ -1,11 +1,12 @@
-﻿using System;
-using System.Net;
-using System.Text.RegularExpressions;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Services.Mapping;
-
-namespace SoftUniJobPlatform.Web.ViewModels.Categories
+﻿namespace SoftUniJobPlatform.Web.ViewModels.Categories
 {
+    using System;
+    using System.Net;
+    using System.Text.RegularExpressions;
+
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Mapping;
+
     public class JobsInCategoryViewModel : IMapFrom<Job>
     {
         public int Id { get; set; }

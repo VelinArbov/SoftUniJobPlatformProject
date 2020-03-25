@@ -8,7 +8,7 @@
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Mapping;
 
-   public class CategoriesService : ICategoriesService
+    public class CategoriesService : ICategoriesService
     {
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
 
@@ -34,6 +34,18 @@
             var category = this.categoriesRepository.All().Where(x => x.Name == name)
                 .To<T>().FirstOrDefault();
             return category;
+        }
+
+        public void CreateCategory(string title, string description, string imageUrl)
+        {
+            var category = this.categoriesRepository.AddAsync(new Category
+            {
+                Title = title,
+                Description = description,
+                ImageUrl = imageUrl,
+            });
+
+            this.categoriesRepository.SaveChangesAsync();
         }
     }
 }

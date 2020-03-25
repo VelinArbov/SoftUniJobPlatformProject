@@ -1,4 +1,7 @@
-﻿namespace SoftUniJobPlatform.Web.Controllers
+﻿using SoftUniJobPlatform.Services.Data;
+using SoftUniJobPlatform.Web.ViewModels.Home;
+
+namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Diagnostics;
     using System.Linq;
@@ -12,20 +15,22 @@
 
     public class HomeController : BaseController
     {
-        private readonly IDeletableEntityRepository<Category> categories;
+        private readonly ICategoriesService categoriesService;
 
-        public HomeController(IDeletableEntityRepository<Category> categories)
+        public HomeController(ICategoriesService categoriesService)
         {
-            this.categories = categories;
+            this.categoriesService = categoriesService;
         }
-
-
 
         public IActionResult Index()
         {
-            return this.View();
+            var viewModel = new IndexViewModel
+            {
+                Categories =
+                    this.categoriesService.GetAll<IndexCategoryViewModel>(),
+            };
+            return this.View(viewModel);
         }
-
 
         public IActionResult Privacy()
         {

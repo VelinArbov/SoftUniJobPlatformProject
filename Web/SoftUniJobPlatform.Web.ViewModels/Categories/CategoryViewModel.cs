@@ -1,18 +1,36 @@
-﻿
-using System.Collections.Generic;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Services.Mapping;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace SoftUniJobPlatform.Web.ViewModels.Categories
 {
+    using System.Collections.Generic;
+
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Mapping;
+
     public class CategoryViewModel : IMapFrom<Category>
     {
         public int Id { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        public string ShortContent
+        {
+            get
+            {
+                var content = WebUtility.HtmlDecode(Regex.Replace(this.Description, @"<[^>]+>", string.Empty));
+                return content.Length > 100
+                    ? content.Substring(0, 100) + "..."
+                    : content;
+            }
+        }
+
+        [Required]
         public string ImageUrl { get; set; }
 
         public IEnumerable<JobsInCategoryViewModel> Jobs { get; set; }

@@ -17,5 +17,10 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
             return this.View();
         }
 
+        public async Task<IActionResult> CreateJobOffer()
+        {
+            return this.View();
+        }
+
     }
 }

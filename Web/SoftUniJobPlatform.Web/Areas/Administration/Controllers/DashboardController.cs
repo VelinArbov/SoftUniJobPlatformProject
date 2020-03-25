@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using SoftUniJobPlatform.Web.ViewModels.Categories;
 
 namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 {
@@ -9,20 +10,42 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 
     public class DashboardController : AdministrationController
     {
-        private readonly ISettingsService settingsService;
+        private readonly ICategoriesService categoriesService;
 
-        public DashboardController(ISettingsService settingsService)
+        public DashboardController(ICategoriesService categoriesService)
         {
-            this.settingsService = settingsService;
+            this.categoriesService = categoriesService;
         }
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            return this.View();
         }
 
-        public IActionResult CreateRole()
+        public IActionResult CreateCategory()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateCategory(CategoryViewModel model)
+        {
+            this.categoriesService.CreateCategory(model.Title, model.Description, model.ImageUrl);
+            return this.View();
+        }
+
+        public IActionResult RoleManagement()
+        {
+            return this.Redirect("/Home");
+        }
+
+        public IActionResult AddCompany()
+        {
+            return this.Redirect("/Home");
+        }
+
+
+        public IActionResult DeleteCompany()
         {
             return this.Redirect("/Home");
         }
