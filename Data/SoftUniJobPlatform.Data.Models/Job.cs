@@ -25,6 +25,14 @@
 
         public Category Category { get; set; }
 
+        public string Location { get; set; }
+
+        public EngagementType Engagement { get; set; }
+
+        public SeniorityType Level { get; set; }
+
+        public int? Salary { get; set; }
+
         public virtual ICollection<StudentJob> Candidates { get; set; }
 
     }

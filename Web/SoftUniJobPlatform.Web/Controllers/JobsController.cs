@@ -7,17 +7,10 @@ namespace SoftUniJobPlatform.Web.Controllers
 
     public class JobsController : Controller
     {
-        private readonly IJobsService jobsService;
-
-        public JobsController(IJobsService jobsService)
+        public IActionResult GetAll()
         {
-            this.jobsService = jobsService;
-        }
 
-        public IActionResult GetAll() {
-            var jobs = this.jobsService.GetAll();
-
-            return this.View(jobs);
+            return this.View();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
+﻿namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,5 @@
     [Area("Employer")]
     public class EmployerController : BaseController
     {
-
-      
     }
 }

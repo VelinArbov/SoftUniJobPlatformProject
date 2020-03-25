@@ -1,4 +1,6 @@
-﻿using SoftUniJobPlatform.Data.Models.Enum;
+﻿using System.Net.Mime;
+using SoftUniJobPlatform.Data;
+using SoftUniJobPlatform.Data.Models.Enum;
 
 namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
 {
@@ -28,17 +30,23 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<RegisterModel> logger;
         private readonly IEmailSender emailSender;
+        private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly ApplicationDbContext dbContext;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<ApplicationRole> roleManager,
+            ApplicationDbContext dbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.logger = logger;
             this.emailSender = emailSender;
+            this.roleManager = roleManager;
+            this.dbContext = dbContext;
         }
 
         [BindProperty]
@@ -55,7 +63,6 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
             [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [Display(Name = "Username")]
             public string Username { get; set; }
-
 
             [Required]
             [EmailAddress]
@@ -90,10 +97,20 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
             ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email , Type = Input.IsEmployer};
+                var user = new ApplicationUser { UserName = Input.Username, Email = Input.Email, Type = Input.IsEmployer };
                 var result = await userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+
+                    var role = await roleManager.FindByNameAsync(Input.IsEmployer.ToString());
+
+                    dbContext.UserRoles.Add(new IdentityUserRole<string>
+                    {
+                        RoleId = role.Id,
+                        UserId = user.Id
+                    });
+
+                    await dbContext.SaveChangesAsync();
                     logger.LogInformation("User created a new account with password.");
 
                     var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -114,9 +131,18 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
                     else
                     {
                         await signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        var roleString = Input.IsEmployer.ToString();
+                        if (roleString == "Employer")
+                        {
+                            return this.Redirect("/Employer/Dashboard/");
+                        }
+                        else
+                        {
+                            return this.Redirect("/Student/Dashboard/");
+                        }
                     }
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

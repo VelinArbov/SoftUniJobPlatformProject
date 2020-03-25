@@ -1,25 +1,20 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using SoftUniJobPlatform.Web.Areas.Administration.Controllers;
+using SoftUniJobPlatform.Web.Areas.Employer.Controllers;
 
-namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
+namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using SoftUniJobPlatform.Services.Data;
-    using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
 
-    public class EmployerDashboardController : EmployerController
+
+    public class DashboardController : EmployerController
     {
-        private readonly ISettingsService settingsService;
-
-        public EmployerDashboardController(ISettingsService settingsService)
-        {
-            this.settingsService = settingsService;
-        }
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel { SettingsCount = this.settingsService.GetCount(), };
-            return this.View(viewModel);
+            return this.View();
         }
 
     }

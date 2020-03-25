@@ -44,7 +44,6 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            
             public string Username { get; set; }
 
             [Required]
@@ -81,10 +80,24 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user =await this._userManager.FindByNameAsync(Input.Username);
+                var userType = string.Empty;
+
+                if (result != null && user != null)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                     userType = user.Type.ToString();
+                }
+
+                if (result.Succeeded && userType == "Employer")
+                {
+                    _logger.LogInformation("Employer logged in.");
+                    return this.Redirect("/Employer/Dashboard/");
+                }
+
+                if (result.Succeeded && userType == "Student")
+                {
+                    _logger.LogInformation("Employer logged in.");
+                    return this.Redirect("/Student/Dashboard/");
                 }
                 if (result.RequiresTwoFactor)
                 {

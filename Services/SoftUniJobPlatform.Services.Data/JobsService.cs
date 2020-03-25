@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SoftUniJobPlatform.Data.Common.Repositories;
 using SoftUniJobPlatform.Data.Models;
 
@@ -16,9 +17,9 @@ namespace SoftUniJobPlatform.Services.Data
             this.jobRepository = jobRepository;
         }
 
-        public IEnumerable<Job> GetAll()
+        public int GetAll()
         {
-            return this.jobRepository.All();
+            return this.jobRepository.All().Count();
         }
     }
 }
