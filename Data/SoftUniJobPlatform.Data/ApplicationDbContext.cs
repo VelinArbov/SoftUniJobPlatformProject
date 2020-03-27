@@ -36,6 +36,8 @@
 
         public DbSet<Course> Courses { get; set; }
 
+        public DbSet<UsersSkill> UsersSkills { get; set; }
+
         public DbSet<Setting> Settings { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
@@ -81,6 +83,11 @@
 
             builder.Entity<StudentCourse>()
                 .HasKey(x => new { x.ApplicationUserId, x.CourseId });
+
+
+            builder.Entity<UsersSkill>()
+                .HasKey(x => new { x.ApplicationUserId, x.SkillId });
+
 
             //builder.Entity<StudentCourse>()
             //    .HasOne(x => x.Student)

@@ -11,10 +11,12 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
     public class DashboardController : AdministrationController
     {
         private readonly ICategoriesService categoriesService;
+        private readonly IJobsService jobsService;
 
-        public DashboardController(ICategoriesService categoriesService)
+        public DashboardController(ICategoriesService categoriesService, IJobsService jobsService)
         {
             this.categoriesService = categoriesService;
+            this.jobsService = jobsService;
         }
 
         public IActionResult Index()
@@ -31,6 +33,18 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         public IActionResult CreateCategory(CategoryViewModel model)
         {
             this.categoriesService.CreateCategory(model.Title, model.Description, model.ImageUrl);
+            return this.View();
+        }
+
+        public IActionResult CreateJob()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateJob(CategoryViewModel model)
+        {
+           
             return this.View();
         }
 

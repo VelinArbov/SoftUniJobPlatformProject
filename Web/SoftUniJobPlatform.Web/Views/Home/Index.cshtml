@@ -1,7 +1,4 @@
-﻿
-
-
-@using SoftUniJobPlatform.Common
+﻿@using SoftUniJobPlatform.Common
 @model SoftUniJobPlatform.Web.ViewModels.Home.IndexViewModel
 @{
     this.ViewData["Title"] = $"Welcome to {GlobalConstants.SystemName}!";
@@ -16,9 +13,9 @@
             <img src="@category.ImageUrl" width="100" class="mr-3" alt="@category.Title">
             <div class="media-body">
                 <h5 class="mt-0">
-                    @*<a href="@category.Url">*@
-                    @*@category.Title
-                        </a>*@
+                    <a>
+                    @category.Title
+                        </a>
                 </h5>
                 @category.Description
             </div>

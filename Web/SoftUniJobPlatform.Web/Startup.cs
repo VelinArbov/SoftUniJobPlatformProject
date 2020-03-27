@@ -60,6 +60,7 @@
             services.AddTransient<IEmailSender> (x => new SendGridEmailSender("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"));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
+            services.AddTransient<ICompaniesService, CompaniesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,12 +1,11 @@
-﻿using System.Net;
-using System.Text.RegularExpressions;
-
-namespace SoftUniJobPlatform.Web.ViewModels.Home
+﻿namespace SoftUniJobPlatform.Web.ViewModels.Home
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Net;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Mapping;
@@ -24,6 +23,5 @@ namespace SoftUniJobPlatform.Web.ViewModels.Home
 
         public string Name { get; set; }
 
-       // public string Url => $"/{this.Name.Replace(" ", "-")}";
     }
 }

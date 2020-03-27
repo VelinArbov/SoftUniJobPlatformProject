@@ -30,6 +30,6 @@
 
         public string UserUserName { get; set; }
 
-        public int CommentsCount { get; set; }
+        public int JobsCount { get; set; }
     }
 }

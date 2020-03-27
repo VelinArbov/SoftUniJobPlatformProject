@@ -1,9 +1,20 @@
-﻿@Model
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1 align="center">Companies</h1>
-<span></span>
+﻿@model SoftUniJobPlatform.Web.ViewModels.Companies.CompaniesViewModel
 
 
+<h1 align="center"> Welcome to SоftUni Job Platform </h1>
+<div class="row">
+    @foreach (var category in Model.Companies)
+    {
+        <div class="col-md-4 media">
+            <img src="@category.ImageUrl" width="100" class="mr-3" alt="@category.FullName">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a>
+                        @category.FullName
+                    </a>
+                </h5>
+                @category.FullName
+            </div>
+        </div>
+    }
+</div>
