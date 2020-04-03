@@ -1,26 +1,60 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using SoftUniJobPlatform.Web.Areas.Administration.Controllers;
-using SoftUniJobPlatform.Web.Areas.Employer.Controllers;
-
-namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
+﻿namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using SoftUniJobPlatform.Services.Data;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Data;
+    using SoftUniJobPlatform.Services.Mapping;
+    using SoftUniJobPlatform.Web.Areas.Administration.Controllers;
+    using SoftUniJobPlatform.Web.Areas.Employer.Controllers;
+    using SoftUniJobPlatform.Web.ViewModels.Jobs;
 
     public class DashboardController : EmployerController
     {
+        private readonly IJobsService jobsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public IActionResult Index()
+        public DashboardController(IJobsService jobsService, UserManager<ApplicationUser> userManager)
+        {
+            this.jobsService = jobsService;
+            this.userManager = userManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var user = await this.userManager.GetUserAsync(this.User);
+            var viewModel = new AllJobsViewModel
+            {
+                Jobs = this.jobsService.GetById<JobsViewModel>(user.Id),
+            };
+
+            return this.View(viewModel);
+        }
+
+        public IActionResult Create()
         {
             return this.View();
         }
 
-        public async Task<IActionResult> CreateJobOffer()
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(JobsViewModel input)
         {
-            return this.View();
-        }
+            var user = await this.userManager.GetUserAsync(this.User);
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
 
+            var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, 1, input.Level,input.Location,input.Salary,input.Engagement);
+            this.TempData["InfoMessage"] = "New jobs created!";
+            return this.Redirect("/");
+        }
     }
 }

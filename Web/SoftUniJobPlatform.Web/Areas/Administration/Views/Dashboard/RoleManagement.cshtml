@@ -1,7 +1,12 @@
-﻿
+﻿@model SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard.RolesViewModel
 @{
     ViewData["Title"] = "RoleManagement";
 }
 
     <h1>RoleManagement</h1>
-
+    <div>
+        @foreach (var item in Model.Roles)
+        {
+            <h2>@item.Username</h2>
+        }
+    </div>

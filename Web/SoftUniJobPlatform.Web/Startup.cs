@@ -47,6 +47,7 @@
                     });
 
             services.AddControllersWithViews();
+            services.AddResponseCompression();
             services.AddRazorPages();
 
             services.AddSingleton(this.configuration);
@@ -61,6 +62,8 @@
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
+            services.AddTransient<IJobsService, JobsService>();
+            services.AddTransient<IApplicationUsersService, ApplicationUsersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,7 +98,7 @@
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseResponseCompression();
             app.UseRouting();
 
             app.UseAuthentication();

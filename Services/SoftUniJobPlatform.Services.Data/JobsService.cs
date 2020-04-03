@@ -1,4 +1,6 @@
 ﻿
+using System.Threading.Tasks;
+
 namespace SoftUniJobPlatform.Services.Data
 {
     using System;
@@ -18,11 +20,10 @@ namespace SoftUniJobPlatform.Services.Data
             this.jobRepository = jobRepository;
         }
 
-
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
             IQueryable<Job> query =
-                this.jobRepository.All().OrderBy(x => x.Title);
+                this.jobRepository.All().OrderByDescending(x => x.CreatedOn);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -31,10 +32,31 @@ namespace SoftUniJobPlatform.Services.Data
             return query.To<T>().ToList();
         }
 
-        public void CreateJob(string companyId, string title, string description, string categoryId, string level, string location,
-            decimal salary, string engagement)
+        public async Task<int> CreateJob(string companyId, string title, string description, string position, int categoryId, string level, string location, int salary, string engagement)
         {
-            throw new NotImplementedException();
+            var job = new Job
+            {
+                ApplicationUserId = companyId,
+                Title = title,
+                Description = description,
+                Position = position,
+                Salary = salary,
+                CategoryId = categoryId,
+                Level = Enum.Parse<SeniorityType>(level, true),
+                Engagement = Enum.Parse<EngagementType>(engagement, true),
+                Location = location,
+            };
+            await this.jobRepository.AddAsync(job);
+            await this.jobRepository.SaveChangesAsync();
+            return job.Id;
+        }
+
+        public IEnumerable<T> GetById<T>(string id)
+        {
+            IQueryable<Job> query =
+                this.jobRepository.All().Where(x => x.ApplicationUserId == id);
+            
+            return query.To<T>().ToList();
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Services.Mapping;
-
-namespace SoftUniJobPlatform.Web.ViewModels.Companies
+﻿namespace SoftUniJobPlatform.Web.ViewModels.Companies
 {
+    using System.ComponentModel.DataAnnotations;
+
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Mapping;
+
     public class CompanyViewModel : IMapFrom<ApplicationUser>
     {
         public string Id { get; set; }

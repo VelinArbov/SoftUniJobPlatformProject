@@ -1,16 +1,26 @@
-﻿using SoftUniJobPlatform.Services.Data;
-using SoftUniJobPlatform.Web.ViewModels.Jobs;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Services.Data;
+    using SoftUniJobPlatform.Web.ViewModels.Jobs;
 
     public class JobsController : Controller
     {
-        public IActionResult GetAll()
-        {
+        private readonly IJobsService jobsService;
 
-            return this.View();
+        public JobsController(IJobsService jobsService)
+        {
+            this.jobsService = jobsService;
         }
+
+        public IActionResult Index()
+        {
+            var viewModel = new AllJobsViewModel
+            {
+                Jobs = this.jobsService.GetAll<JobsViewModel>(),
+            };
+            return this.View(viewModel);
+        }
+
     }
 }

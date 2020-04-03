@@ -12,11 +12,16 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
     {
         private readonly ICategoriesService categoriesService;
         private readonly IJobsService jobsService;
+        private readonly IApplicationUsersService usersService;
 
-        public DashboardController(ICategoriesService categoriesService, IJobsService jobsService)
+        public DashboardController(
+            ICategoriesService categoriesService,
+            IJobsService jobsService,
+            IApplicationUsersService usersService)
         {
             this.categoriesService = categoriesService;
             this.jobsService = jobsService;
+            this.usersService = usersService;
         }
 
         public IActionResult Index()
@@ -44,13 +49,19 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         [HttpPost]
         public IActionResult CreateJob(CategoryViewModel model)
         {
-           
             return this.View();
         }
 
         public IActionResult RoleManagement()
         {
-            return this.Redirect("/Home");
+            var viewModel = this.usersService.GetAll<RolesViewModel>();
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult RoleManagement(RolesViewModel model)
+        {
+            return this.View();
         }
 
         public IActionResult AddCompany()

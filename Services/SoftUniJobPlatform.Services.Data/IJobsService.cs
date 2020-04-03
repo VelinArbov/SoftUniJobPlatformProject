@@ -1,13 +1,17 @@
-﻿using SoftUniJobPlatform.Data.Models;
-using System.Collections.Generic;
+﻿using System.Threading.Tasks;
 
 namespace SoftUniJobPlatform.Services.Data
 {
+    using System.Collections.Generic;
+
+    using SoftUniJobPlatform.Data.Models;
+
     public interface IJobsService
     {
         IEnumerable<T> GetAll<T>(int? count = null);
 
-        void CreateJob(string companyId, string title, string description,string categoryId,string level, string location,decimal salary,string engagement);
+        Task<int> CreateJob(string companyId, string title, string description, string position, int categoryId, string level, string location, int salary, string engagement);
 
+        IEnumerable<T> GetById<T>(string id);
     }
 }

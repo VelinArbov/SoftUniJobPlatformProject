@@ -2,13 +2,8 @@
 @{
     ViewData["Title"] = "Jobs Page";
 }
-<div>
-    <a asp-area="Employer" asp-controller="Dashboard" asp-action="Create"> New Job</a>
-</div>
 
-
-
-<h1 align="center">My Jobs</h1>
+<h1 align="center">JobsPage</h1>
 <span></span>
 <div>
     <table class="table table-hover table-dark">
@@ -26,16 +21,16 @@
         @foreach (var job in Model.Jobs)
         {
             <tbody>
-            <tr>
-                <th scope="row"></th>
-                <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="@job.Title"></td>
-                <td>@job.Title</td>
-                <td>@job.Location</td>
-                <td>@job.Engagement</td>
-                <td>@job.Level</td>
-                <td>@job.ViewSalary</td>
+                <tr>
+                    <th scope="row"></th>
+                    <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="@job.Title"></td>
+                    <td>@job.Title</td>
+                    <td>@job.Location</td>
+                    <td>@job.Engagement</td>
+                    <td>@job.Level</td>
+                    <td>@job.ViewSalary</td>
 
-            </tr>
+                </tr>
             </tbody>
         }
     </table>
