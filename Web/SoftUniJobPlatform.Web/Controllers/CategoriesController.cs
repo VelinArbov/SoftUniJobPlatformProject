@@ -1,9 +1,8 @@
-﻿using SoftUniJobPlatform.Services.Data;
-using SoftUniJobPlatform.Web.ViewModels.Categories;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Services.Data;
+    using SoftUniJobPlatform.Web.ViewModels.Categories;
 
     public class CategoriesController : Controller
     {
@@ -14,13 +13,17 @@ namespace SoftUniJobPlatform.Web.Controllers
             this.categoriesService = categoriesService;
         }
 
-        public IActionResult ByName(string name)
+        public IActionResult Index()
         {
             var viewModel =
-                this.categoriesService.GetByName<CategoryViewModel>(name);
+                this.categoriesService.GetAll<CategoryViewModel>();
             return this.View(viewModel);
         }
 
+        public IActionResult Details(int id)
+        {
+            return this.View();
+        }
 
     }
 }

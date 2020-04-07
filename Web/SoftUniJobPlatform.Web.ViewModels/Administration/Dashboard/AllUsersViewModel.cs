@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
 
-    public class RolesViewModel
+    public class AllUsersViewModel
     {
-        //public IEnumerable<AllUserRolesViewModel> Roles { get; set; }
+        public IEnumerable<UserViewModel> Users { get; set; }
     }
 }

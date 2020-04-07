@@ -36,7 +36,14 @@
             return category;
         }
 
-        public void CreateCategory(string title, string description, string imageUrl)
+        public T GetById<T>(int id)
+        {
+            var category = this.categoriesRepository.All().Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return category;
+        }
+
+        public void Create(string title, string description, string imageUrl)
         {
             var category = this.categoriesRepository.AddAsync(new Category
             {
@@ -46,6 +53,11 @@
             });
 
             this.categoriesRepository.SaveChangesAsync();
+        }
+
+        public void Delete(int id)
+        {
+            throw new ArgumentNullException();
         }
     }
 }

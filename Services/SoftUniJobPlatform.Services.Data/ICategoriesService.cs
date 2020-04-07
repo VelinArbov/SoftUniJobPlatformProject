@@ -8,6 +8,10 @@
 
         T GetByName<T>(string name);
 
-        void CreateCategory(string title, string description, string imageUrl);
+        T GetById<T>(int id);
+
+        void Create(string title, string description, string imageUrl);
+
+        void Delete(int id);
     }
 }

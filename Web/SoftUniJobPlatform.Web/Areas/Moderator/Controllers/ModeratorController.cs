@@ -5,7 +5,7 @@
     using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Web.Controllers;
 
-    [Authorize(Roles = GlobalConstants.ModeratorRoleName)]
+    [Authorize(Roles = GlobalConstants.ModeratorRoleName + "," + GlobalConstants.AdministratorRoleName)]
     [Area("Moderator")]
     public class ModeratorController : BaseController
     {

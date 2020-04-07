@@ -1,5 +1,4 @@
 ﻿@using SoftUniJobPlatform.Common
-@model SoftUniJobPlatform.Web.ViewModels.Home.IndexViewModel
 @{
     this.ViewData["Title"] = $"Welcome to {GlobalConstants.SystemName}!";
 }
@@ -7,19 +6,6 @@
 
 <h1 align="center"> Welcome to SоftUni Job Platform </h1>
 <div class="row">
-    @foreach (var category in Model.Categories)
-    {
-        <div class="col-md-4 media">
-            <img src="@category.ImageUrl" width="100" class="mr-3" alt="@category.Title">
-            <div class="media-body">
-                <h5 class="mt-0">
-                    <a>
-                    @category.Title
-                        </a>
-                </h5>
-                @category.Description
-            </div>
-        </div>
-    }
+
 </div>
 

@@ -1,13 +1,12 @@
-﻿
-
-using System.Collections.Generic;
-using System.Linq;
-using SoftUniJobPlatform.Data.Common.Repositories;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Services.Mapping;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using SoftUniJobPlatform.Data.Common.Repositories;
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Mapping;
+
     public class ApplicationUsersService : IApplicationUsersService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;

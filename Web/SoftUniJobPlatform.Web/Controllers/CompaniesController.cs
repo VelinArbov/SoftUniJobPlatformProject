@@ -1,9 +1,4 @@
-﻿using SoftUniJobPlatform.Services.Data;
-using SoftUniJobPlatform.Web.ViewModels.Categories;
-using SoftUniJobPlatform.Web.ViewModels.Companies;
-using SoftUniJobPlatform.Web.ViewModels.Home;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
     using System;
     using System.Collections.Generic;
@@ -11,6 +6,9 @@ namespace SoftUniJobPlatform.Web.Controllers
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Services.Data;
+    using SoftUniJobPlatform.Web.ViewModels.Categories;
+    using SoftUniJobPlatform.Web.ViewModels.Companies;
 
     public class CompaniesController : Controller
     {

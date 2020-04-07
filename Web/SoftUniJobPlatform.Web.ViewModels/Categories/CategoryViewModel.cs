@@ -22,6 +22,6 @@ namespace SoftUniJobPlatform.Web.ViewModels.Categories
         [Required]
         public string ImageUrl { get; set; }
 
-        public IEnumerable<JobsInCategoryViewModel> Jobs { get; set; }
+       // public IEnumerable<JobsInCategoryViewModel> Jobs { get; set; }
     }
 }

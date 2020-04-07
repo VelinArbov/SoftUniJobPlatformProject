@@ -1,0 +1,34 @@
+﻿@model SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard.AllUsersViewModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+
+@foreach (var input in Model.Users)
+{
+    <span>USERNAME: @input.Username </span>
+    <span>ROLE:</span>
+foreach (var role in input.Roles)
+{
+    if (role.RoleId == "a6e7f501-9ba6-4c67-9970-3d3a20ce9e5a")
+    {
+        <span>Employer</span>
+    }
+    if (role.RoleId == "f5a19bbd-e729-409c-ae15-0f1c31b882ff")
+    {
+        <span>Student</span>
+    }
+    if (role.RoleId == "7b973aa2-76b0-4474-b203-ccc0dc515ca9")
+    {
+        <span>Admin</span>
+    }
+    if (role.RoleId == "f3b8e756-3c1e-4fea-82e7-6db77a9e3886")
+    {
+        <span>Moderator</span>
+    }
+
+
+}
+    <hr />
+}

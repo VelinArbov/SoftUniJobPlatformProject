@@ -1,4 +1,5 @@
-﻿@{
+﻿@model SoftUniJobPlatform.Web.ViewModels.Categories.AllCategoriesViewModel
+@{
     this.ViewData["Title"] = "Admin dashboard";
 }
 
@@ -6,6 +7,25 @@
 
 <div class="button-holder">
     <a asp-controller="Dashboard" asp-action="CreateCategory" class="btn btn-info text-uppercase">Create Category</a>
-    <a asp-controller="Dashboard" asp-action="CreateCategory" class="btn btn-info text-uppercase">Create Category</a>
+    <a asp-controller="Dashboard" asp-action="DeleteCategory" class="btn btn-danger text-uppercase">Delete Category</a>
     <a asp-controller="Dashboard" asp-action="RoleManagement" class="btn btn-info text-uppercase">Roles</a>
+</div>
+
+<hr>
+<div>
+    @foreach (var category in Model.Categories)
+    {
+        <div class="col-md-3 media">
+            <img src="@category.ImageUrl" width="100" class="mr-3" alt="@category.Title">
+            <div class="media-body">
+                <h5 class="mt-0">
+                    <a>
+                        @category.Title
+                    </a>
+                </h5>
+                @category.Description
+            </div>
+        </div>
+
+    }
 </div>

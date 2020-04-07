@@ -1,7 +1,4 @@
-﻿using SoftUniJobPlatform.Services.Data;
-using SoftUniJobPlatform.Web.ViewModels.Home;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Diagnostics;
     using System.Linq;
@@ -10,8 +7,10 @@ namespace SoftUniJobPlatform.Web.Controllers
     using SoftUniJobPlatform.Data;
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Services.Mapping;
     using SoftUniJobPlatform.Web.ViewModels;
+
 
     public class HomeController : BaseController
     {
@@ -24,12 +23,7 @@ namespace SoftUniJobPlatform.Web.Controllers
 
         public IActionResult Index()
         {
-            var viewModel = new IndexViewModel
-            {
-                Categories =
-                    this.categoriesService.GetAll<IndexCategoryViewModel>(),
-            };
-            return this.View(viewModel);
+            return this.View();
         }
 
         public IActionResult Privacy()
