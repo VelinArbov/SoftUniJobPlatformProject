@@ -1,4 +1,7 @@
-﻿namespace SoftUniJobPlatform.Services.Data
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+
+namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -11,8 +14,10 @@
     public class CategoriesService : ICategoriesService
     {
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public CategoriesService(IDeletableEntityRepository<Category> categoriesRepository)
+        public CategoriesService(
+            IDeletableEntityRepository<Category> categoriesRepository)
         {
             this.categoriesRepository = categoriesRepository;
         }
@@ -43,7 +48,7 @@
             return category;
         }
 
-        public void Create(string title, string description, string imageUrl)
+        public async Task CreateAsync(string title, string description, string imageUrl)
         {
             var category = this.categoriesRepository.AddAsync(new Category
             {
@@ -52,12 +57,27 @@
                 ImageUrl = imageUrl,
             });
 
-            this.categoriesRepository.SaveChangesAsync();
+            await this.categoriesRepository.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new ArgumentNullException();
+            var category = this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
+
+            this.categoriesRepository.Delete(category);
+
+            await this.categoriesRepository.SaveChangesAsync();
+        }
+
+        public async Task EditAsync(int id, string title, string description, string imageUrl)
+        {
+            var category = this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
+
+            category.Title = title == null ? category.Title : title;
+            category.Description = description == null ? category.Description : description;
+            category.ImageUrl = imageUrl == null ? category.ImageUrl : imageUrl;
+
+            await this.categoriesRepository.SaveChangesAsync();
         }
     }
 }

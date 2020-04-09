@@ -1,6 +1,9 @@
 ﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using SoftUniJobPlatform.Data.Models;
 
     public interface ICategoriesService
     {
@@ -10,8 +13,10 @@
 
         T GetById<T>(int id);
 
-        void Create(string title, string description, string imageUrl);
+        Task CreateAsync(string title, string description, string imageUrl);
 
-        void Delete(int id);
+        Task DeleteAsync(int id);
+
+        Task EditAsync(int id, string title, string description, string imageUrl);
     }
 }

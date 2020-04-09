@@ -22,7 +22,9 @@ namespace SoftUniJobPlatform.Services.Data
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
             IQueryable<ApplicationUser> query =
-                this.companiesRepository.All().OrderBy(x => x.Type == UserType.Employer);
+                this.companiesRepository.All()
+                    .OrderBy(x => x.Type == UserType.Employer)
+                    .Where(x => x.ImageUrl != null);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);

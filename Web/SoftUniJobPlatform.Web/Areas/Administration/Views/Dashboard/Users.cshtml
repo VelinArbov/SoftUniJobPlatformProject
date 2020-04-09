@@ -6,11 +6,11 @@
 
 
 
-<h1 align="center">Users Page(@Model.Users.Count())</h1>
+<<h1 align="center">Users Page(@Model.Users.Count())</h1>
 
-div>
-<table class="table table-hover table-dark">
-    <thead>
+<<div>
+    <table class="table table-hover table-dark">
+        <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Image</th>
@@ -21,10 +21,10 @@ div>
             <th scope="col">Moderator</th>
 
         </tr>
-    </thead>
-    @foreach (var user in Model.Users)
-    {
-        <tbody>
+        </thead>
+        @foreach (var user in Model.Users)
+        {
+            <tbody>
             <tr>
 
                 <th scope="row"></th>
@@ -56,8 +56,12 @@ div>
                 </td>
                 <td>
                     <a class="btn btn-primary" href="#" role="button">Edit</a>
-                    <a class="btn btn-danger" asp-controller="Dashboard" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
-                
+                    @if (!user.Roles.Any(x => x.RoleId == "7b973aa2-76b0-4474-b203-ccc0dc515ca9"))
+                    {
+                        <a class="btn btn-danger" asp-controller="Dashboard" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                    }
+                  
+
                     
                 </td>
                 <td>
@@ -72,7 +76,22 @@ div>
                 </td>
 
             </tr>
-        </tbody>
-    }
-</table>
+            </tbody>
+        }
+    </table>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $(".btn-danger").click(function(e)
+    {
+        if(confirm("Are you sure?"))
+        {
+            alert('OK');
+        }
+        else
+        {
+            e.preventDefault();
+        }
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using SoftUniJobPlatform.Common;
+﻿using Microsoft.AspNetCore.Mvc.Routing;
+using SoftUniJobPlatform.Common;
 
 namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 {
@@ -45,6 +46,7 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.View(viewModel);
         }
 
+        // Users Control//
         public IActionResult Users(AllUsersViewModel model)
         {
             var viewModel = new AllUsersViewModel
@@ -61,35 +63,41 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
+        // Categories Control //
         public IActionResult CreateCategory()
         {
             return this.View();
         }
 
         [HttpPost]
-        public IActionResult CreateCategory(CategoryViewModel model)
+        public async Task<ActionResult> CreateCategory(CategoryViewModel model)
         {
-            this.categoriesService.Create(model.Title, model.Description, model.ImageUrl);
-            return this.View();
+            await this.categoriesService.CreateAsync(model.Title, model.Description, model.ImageUrl);
+            return this.RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public IActionResult DeleteCategory()
+        public IActionResult EditCategory(int id)
         {
-            var viewModel = new AllCategoriesViewModel
-            {
-                Categories = this.categoriesService.GetAll<CategoryViewModel>(),
-            };
+            var viewModel = this.categoriesService.GetById<CategoryViewModel>(id);
+
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public IActionResult DeleteCategory(int id)
+        public async Task<IActionResult> EditCategory(CategoryViewModel model)
         {
-            this.categoriesService.Delete(id);
-            return this.Ok("Delete");
+            await this.categoriesService.EditAsync(model.Id, model.Title, model.Description, model.ImageUrl);
+
+            return this.Redirect("/Administration/Dashboard");
         }
 
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            await this.categoriesService.DeleteAsync(id);
+            return this.Redirect("/Administration/Dashboard");
+        }
+
+        // Jobs Control //
         public IActionResult CreateJob()
         {
             return this.View();
@@ -101,6 +109,7 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.View();
         }
 
+        // Moderator Control //
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles(string userId)
         {
@@ -134,16 +143,7 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 
         }
 
-        public IActionResult AddCompany()
-        {
-            return this.Redirect("/Home");
-        }
 
-
-        public IActionResult DeleteCompany()
-        {
-            return this.Redirect("/Home");
-        }
 
     }
 }

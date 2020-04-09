@@ -43,7 +43,6 @@
             this.usersRepository.Delete(user);
 
             await this.usersRepository.SaveChangesAsync();
-
         }
     }
 }
