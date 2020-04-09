@@ -1,34 +1,78 @@
-﻿@model SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard.AllUsersViewModel
+﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
+@model SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard.AllUsersViewModel
 @{
     ViewData["Title"] = "Users";
 }
 
-<h1>Users</h1>
-
-@foreach (var input in Model.Users)
-{
-    <span>USERNAME: @input.Username </span>
-    <span>ROLE:</span>
-foreach (var role in input.Roles)
-{
-    if (role.RoleId == "a6e7f501-9ba6-4c67-9970-3d3a20ce9e5a")
-    {
-        <span>Employer</span>
-    }
-    if (role.RoleId == "f5a19bbd-e729-409c-ae15-0f1c31b882ff")
-    {
-        <span>Student</span>
-    }
-    if (role.RoleId == "7b973aa2-76b0-4474-b203-ccc0dc515ca9")
-    {
-        <span>Admin</span>
-    }
-    if (role.RoleId == "f3b8e756-3c1e-4fea-82e7-6db77a9e3886")
-    {
-        <span>Moderator</span>
-    }
 
 
-}
-    <hr />
-}
+<h1 align="center">Users Page(@Model.Users.Count())</h1>
+
+div>
+<table class="table table-hover table-dark">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Username</th>
+            <th scope="col">CreatedOn</th>
+            <th scope="col">Role</th>
+            <th scope="col">Action</th>
+            <th scope="col">Moderator</th>
+
+        </tr>
+    </thead>
+    @foreach (var user in Model.Users)
+    {
+        <tbody>
+            <tr>
+
+                <th scope="row"></th>
+                <td><img src="@user.ViewImage" width="80" class="mr-3" alt="@user.Username"></td>
+                <td>@user.Username</td>
+                <td>@user.ViewCreatedOn</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        if (role.RoleId == "a6e7f501-9ba6-4c67-9970-3d3a20ce9e5a")
+                        {
+                            <span>Employer</span>
+                        }
+                        if (role.RoleId == "f5a19bbd-e729-409c-ae15-0f1c31b882ff")
+                        {
+                            <span>Student</span>
+                        }
+                        if (role.RoleId == "7b973aa2-76b0-4474-b203-ccc0dc515ca9")
+                        {
+                            <span>Admin</span>
+                        }
+                        if (role.RoleId == "f3b8e756-3c1e-4fea-82e7-6db77a9e3886")
+                        {
+                            <span>Moderator</span>
+                        }
+
+
+                    }
+                </td>
+                <td>
+                    <a class="btn btn-primary" href="#" role="button">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Dashboard" asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                
+                    
+                </td>
+                <td>
+                    @if (!user.Roles.Any(x => x.RoleId == "f3b8e756-3c1e-4fea-82e7-6db77a9e3886"))
+                    {
+                        <a class="btn btn-outline-success" asp-controller="Dashboard" asp-action="AddModerator" asp-route-id="@user.Id">Add</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-danger" asp-controller="Dashboard" asp-action="DeleteModerator" asp-route-id="@user.Id">Delete</a>
+                    }
+                </td>
+
+            </tr>
+        </tbody>
+    }
+</table>
+</div>

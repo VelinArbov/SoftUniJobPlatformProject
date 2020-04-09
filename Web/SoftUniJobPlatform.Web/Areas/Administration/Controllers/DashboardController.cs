@@ -1,9 +1,14 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
+﻿using SoftUniJobPlatform.Common;
+
+namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
     using SoftUniJobPlatform.Web.ViewModels.Categories;
@@ -14,15 +19,21 @@
         private readonly ICategoriesService categoriesService;
         private readonly IJobsService jobsService;
         private readonly IApplicationUsersService usersService;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
 
         public DashboardController(
             ICategoriesService categoriesService,
             IJobsService jobsService,
-            IApplicationUsersService usersService)
+            IApplicationUsersService usersService,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager)
         {
             this.categoriesService = categoriesService;
             this.jobsService = jobsService;
             this.usersService = usersService;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -41,6 +52,13 @@
                 Users = this.usersService.GetAll<UserViewModel>(),
             };
             return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            await this.usersService.DeleteAsync(id);
+
+            return this.RedirectToAction("Index");
         }
 
         public IActionResult CreateCategory()
@@ -83,16 +101,37 @@
             return this.View();
         }
 
-        public IActionResult RoleManagement()
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
         {
-            var viewModel = this.usersService.GetAll<RolesViewModel>();
-            return this.View(viewModel);
+            var user = await this.userManager.FindByIdAsync(userId);
+            var roles = await this.userManager.GetRolesAsync(user);
+            this.ViewBag.currentRole = roles.Last();
+
+            return this.View();
+
         }
 
-        [HttpPost]
-        public IActionResult RoleManagement(RolesViewModel model)
+        public async Task<IActionResult> AddModerator(string id)
         {
-            return this.View();
+            var user = await this.userManager.FindByIdAsync(id);
+            var roles = await this.userManager.GetRolesAsync(user);
+
+            await this.userManager.AddToRoleAsync(user, GlobalConstants.ModeratorRoleName);
+
+            return this.Redirect("/Administration/Dashboard/Users");
+
+        }
+
+        public async Task<IActionResult> DeleteModerator(string id)
+        {
+            var user = await this.userManager.FindByIdAsync(id);
+            var roles = await this.userManager.GetRolesAsync(user);
+
+            await this.userManager.RemoveFromRoleAsync(user, GlobalConstants.ModeratorRoleName);
+
+            return this.Redirect("/Administration/Dashboard/Users");
+
         }
 
         public IActionResult AddCompany()
