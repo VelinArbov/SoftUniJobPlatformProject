@@ -59,12 +59,11 @@ namespace SoftUniJobPlatform.Services.Data
             return query.To<T>().ToList();
         }
 
-        public Job GetJobById<T>(int jobid)
+        public T GetJobById<T>(int id)
         {
-            var query =
-                   this.jobRepository.All().FirstOrDefault(x => x.Id == id);
-
-            return query.To
+            var job = this.jobRepository.All().Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return job;
         }
     }
 }

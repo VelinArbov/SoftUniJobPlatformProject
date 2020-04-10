@@ -15,6 +15,6 @@ namespace SoftUniJobPlatform.Services.Data
 
         IEnumerable<T> GetById<T>(string id);
 
-        Job GetJobById<T>(int id);
+        T GetJobById<T>(int id);
     }
 }

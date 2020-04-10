@@ -100,7 +100,6 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         }
 
         // Jobs Control //
-
         public IActionResult EditJob(int id)
         {
             var viewModel = this.jobsService.GetJobById<JobsViewModel>(id);
