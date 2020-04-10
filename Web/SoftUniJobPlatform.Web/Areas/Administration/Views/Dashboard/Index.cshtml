@@ -6,14 +6,14 @@
 <h1 align="center">@this.ViewData["Title"]</h1>
 
 <div class="button-holder">
-    <a asp-controller="Dashboard" asp-action="Users" class="btn btn-info float-lg-none">Users</a>
+    <a asp-area="Administration" asp-controller="Dashboard" asp-action="Users" class="btn btn-info float-lg-none">Users</a>
 
 </div>
 
 <hr>
 <h2 align="center">Categories Page(@Model.Categories.Count())</h2>
 
-<a asp-controller="Dashboard" asp-action="CreateCategory" class="btn btn-info float-right ">New Category</a>
+<a asp-area="Administration" asp-controller="Dashboard" asp-action="CreateCategory" class="btn btn-info float-right ">New Category</a>
 
 <div>
     <table class="table table-hover table-dark">

@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Services.Data
+﻿using System.Linq;
+
+namespace SoftUniJobPlatform.Services.Data
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,6 +10,8 @@
     public interface ICategoriesService
     {
         IEnumerable<T> GetAll<T>(int? count = null);
+
+        IQueryable<Category> GetCategories();
 
         T GetByName<T>(string name);
 

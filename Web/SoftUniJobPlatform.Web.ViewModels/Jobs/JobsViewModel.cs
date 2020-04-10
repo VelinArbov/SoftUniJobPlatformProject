@@ -9,9 +9,7 @@
 
     public class JobsViewModel : IMapFrom<Job>
     {
-        public string ApplicationUserId { get; set; }
-
-        public string ApplicaCategorytionUserId { get; set; }
+        public int Id { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 
@@ -31,8 +29,11 @@
 
         public string Position { get; set; }
 
-        public string Category { get; set; }
+        public int CategoryId { get; set; }
+
+        public IEnumerable<Category> Categories { get; set; }
 
         public string ViewSalary => this.Salary == 0 ? "--" : this.Salary.ToString();
+
     }
 }

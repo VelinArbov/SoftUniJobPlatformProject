@@ -10,8 +10,11 @@ namespace SoftUniJobPlatform.Services.Data
     {
         IEnumerable<T> GetAll<T>(int? count = null);
 
-        Task<int> CreateJob(string companyId, string title, string description, string position, int categoryId, string level, string location, int salary, string engagement);
+        public Task<int> CreateJob(string companyId, string title, string description, string position, int categoryId,
+            string level, string location, int salary, string engagement);
 
         IEnumerable<T> GetById<T>(string id);
+
+        Job GetJobById<T>(int id);
     }
 }

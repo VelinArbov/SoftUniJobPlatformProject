@@ -1,11 +1,10 @@
 ﻿
-using System.Threading.Tasks;
-
 namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
@@ -15,7 +14,8 @@ namespace SoftUniJobPlatform.Services.Data
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
 
-        public JobsService(IDeletableEntityRepository<Job> jobRepository)
+        public JobsService(
+                IDeletableEntityRepository<Job> jobRepository)
         {
             this.jobRepository = jobRepository;
         }
@@ -55,8 +55,16 @@ namespace SoftUniJobPlatform.Services.Data
         {
             IQueryable<Job> query =
                 this.jobRepository.All().Where(x => x.ApplicationUserId == id);
-            
+
             return query.To<T>().ToList();
+        }
+
+        public Job GetJobById<T>(int jobid)
+        {
+            var query =
+                   this.jobRepository.All().FirstOrDefault(x => x.Id == id);
+
+            return query.To
         }
     }
 }

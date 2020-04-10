@@ -19,11 +19,16 @@
     {
         private readonly IJobsService jobsService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICategoriesService categoriesService;
 
-        public DashboardController(IJobsService jobsService, UserManager<ApplicationUser> userManager)
+        public DashboardController(
+            IJobsService jobsService,
+            UserManager<ApplicationUser> userManager,
+            ICategoriesService categoriesService)
         {
             this.jobsService = jobsService;
             this.userManager = userManager;
+            this.categoriesService = categoriesService;
         }
 
         public async Task<IActionResult> Index()
@@ -52,7 +57,7 @@
                 return this.View(input);
             }
 
-            var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, 1, input.Level,input.Location,input.Salary,input.Engagement);
+            var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, input.CategoryId, input.Level, input.Location, input.Salary, input.Engagement);
             this.TempData["InfoMessage"] = "New jobs created!";
             return this.Redirect("/");
         }

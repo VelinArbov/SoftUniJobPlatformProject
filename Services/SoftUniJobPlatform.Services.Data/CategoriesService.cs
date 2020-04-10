@@ -34,6 +34,11 @@ namespace SoftUniJobPlatform.Services.Data
             return query.To<T>().ToList();
         }
 
+        public IQueryable<Category> GetCategories()
+        {
+            return this.categoriesRepository.All();
+        }
+
         public T GetByName<T>(string name)
         {
             var category = this.categoriesRepository.All().Where(x => x.Name == name)

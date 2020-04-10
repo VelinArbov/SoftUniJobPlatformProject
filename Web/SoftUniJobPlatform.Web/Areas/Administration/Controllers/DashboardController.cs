@@ -63,10 +63,12 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
+
+
         // Categories Control //
         public IActionResult CreateCategory()
         {
-            return this.View();
+            return this.View("Category/CreateCategory");
         }
 
         [HttpPost]
@@ -80,7 +82,7 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         {
             var viewModel = this.categoriesService.GetById<CategoryViewModel>(id);
 
-            return this.View(viewModel);
+            return this.View("Category/EditCategory",viewModel);
         }
 
         [HttpPost]
@@ -98,29 +100,16 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         }
 
         // Jobs Control //
-        public IActionResult CreateJob()
+
+        public IActionResult EditJob(int id)
         {
-            return this.View();
+            var viewModel = this.jobsService.GetJobById<JobsViewModel>(id);
+
+            return this.View("Job/EditJob", viewModel);
         }
 
-        [HttpPost]
-        public IActionResult CreateJob(CategoryViewModel model)
-        {
-            return this.View();
-        }
 
         // Moderator Control //
-        [HttpGet]
-        public async Task<IActionResult> ManageUserRoles(string userId)
-        {
-            var user = await this.userManager.FindByIdAsync(userId);
-            var roles = await this.userManager.GetRolesAsync(user);
-            this.ViewBag.currentRole = roles.Last();
-
-            return this.View();
-
-        }
-
         public async Task<IActionResult> AddModerator(string id)
         {
             var user = await this.userManager.FindByIdAsync(id);
@@ -142,8 +131,6 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.Redirect("/Administration/Dashboard/Users");
 
         }
-
-
 
     }
 }
