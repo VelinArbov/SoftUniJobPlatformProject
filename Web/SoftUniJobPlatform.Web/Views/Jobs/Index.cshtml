@@ -1,4 +1,5 @@
-﻿@using SoftUniJobPlatform.Common
+﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
+@using SoftUniJobPlatform.Common
 @model SoftUniJobPlatform.Web.ViewModels.Jobs.AllJobsViewModel
 @{
     ViewData["Title"] = "Jobs Page";
@@ -36,7 +37,8 @@
                         <td>@job.ViewSalary</td>
                         <td>
                             <a class="btn btn-primary" asp-area="Administration" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@job.Id">Edit</a>
-                            <a class="btn btn-danger" asp-controller="Dashboard" asp-action="DeleteJob" asp-route-id="@job.Id">Delete</a>
+                            <a class="btn btn-danger" asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteJobAsync" asp-route-id="@job.Id">Delete</a>
+
                         </td>
                     </tr>
                 </tbody>
@@ -44,4 +46,49 @@
         </table>
     </div>
 }
+else
+{
+    <div>
 
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Engagement</th>
+                    <th scope="col">Seniority Level</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            @foreach (var job in Model.Jobs)
+            {
+                <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="@job.Title"></td>
+                        <td>@job.Title</td>
+                        <td>@job.Location</td>
+                        <td>@job.Engagement</td>
+                        <td>@job.Level</td>
+                        <td>@job.ViewSalary</td>
+
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+}
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $(".btn-danger").click(function (e) {
+        if (confirm("Are you sure?")) {
+            alert('OK');
+        }
+        else {
+            e.preventDefault();
+        }
+    });
+</script>

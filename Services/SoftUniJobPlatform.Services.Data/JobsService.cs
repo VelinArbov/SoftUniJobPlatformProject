@@ -1,5 +1,4 @@
-﻿
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -64,6 +63,26 @@ namespace SoftUniJobPlatform.Services.Data
             var job = this.jobRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
             return job;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var category = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
+
+            this.jobRepository.Delete(category);
+
+            await this.jobRepository.SaveChangesAsync();
+        }
+
+        public async Task EditAsync(int id, string title, string description, int salary)
+        {
+            var job = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
+
+            job.Title = title == null ? job.Title : title;
+            job.Description = description == null ? job.Description : description;
+            job.Salary = salary == null ? job.Salary : salary;
+
+            await this.jobRepository.SaveChangesAsync();
         }
     }
 }

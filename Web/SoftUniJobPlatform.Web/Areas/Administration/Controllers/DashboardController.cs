@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Routing;
-using SoftUniJobPlatform.Common;
-
-namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
+﻿namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -9,6 +6,8 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.Routing;
+    using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
@@ -63,8 +62,6 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.RedirectToAction("Index");
         }
 
-
-
         // Categories Control //
         public IActionResult CreateCategory()
         {
@@ -107,6 +104,20 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.View("Job/EditJob", viewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditJob(JobsViewModel model)
+        {
+            await this.jobsService.EditAsync(model.Id, model.Title, model.Description, model.Salary);
+
+            return this.Redirect("/Administration/Dashboard");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteJobAsync(int id)
+        {
+            await this.jobsService.DeleteAsync(id);
+            return this.Redirect("/Jobs");
+        }
 
         // Moderator Control //
         public async Task<IActionResult> AddModerator(string id)
@@ -130,6 +141,5 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.Redirect("/Administration/Dashboard/Users");
 
         }
-
     }
 }
