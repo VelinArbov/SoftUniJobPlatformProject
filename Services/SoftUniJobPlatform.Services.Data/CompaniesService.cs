@@ -1,14 +1,14 @@
-﻿using System.Linq;
-using SoftUniJobPlatform.Data.Common.Repositories;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Data.Models.Enum;
-using SoftUniJobPlatform.Services.Mapping;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
+
+    using SoftUniJobPlatform.Data.Common.Repositories;
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Data.Models.Enum;
+    using SoftUniJobPlatform.Services.Mapping;
 
     public class CompaniesService : ICompaniesService
     {
@@ -23,14 +23,21 @@ namespace SoftUniJobPlatform.Services.Data
         {
             IQueryable<ApplicationUser> query =
                 this.companiesRepository.All()
-                    .OrderBy(x => x.Type == UserType.Employer)
-                    .Where(x => x.ImageUrl != null);
+                    .Where(x => x.Type == UserType.Employer)
+                    .OrderByDescending(x => x.CreatedOn);
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
             }
 
             return query.To<T>().ToList();
+        }
+
+        public T GetCompanyAsync<T>(string id)
+        {
+            var job = this.companiesRepository.All().Where(x => x.Id == id)
+                .To<T>().FirstOrDefault();
+            return job;
         }
     }
 }

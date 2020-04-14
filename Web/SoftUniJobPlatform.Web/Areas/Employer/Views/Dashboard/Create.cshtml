@@ -7,74 +7,75 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create Job</h1>
+<h1 align="center">New Job</h1>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-8 col-md-8 col-lg-6">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+                <div class="form-group">
+                    <label asp-for="CategoryId">Choose Category</label>
+                    <select asp-for="CategoryId" class="form-control"
+                            asp-items="@(new SelectList(Categories.GetCategories(), "Id", "Title"))">
+                        <option selected="selected" value="">Please select</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Engagement">Choose Category</label>
+                <div class="form-group">
+                    <label asp-for="Level">Choose Position</label>
 
-                <select asp-for="Engagement" asp-items="Html.GetEnumSelectList<EngagementType>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="Engagement" class="text-danger" />
+                    <select asp-for="Level" asp-items="Html.GetEnumSelectList<SeniorityType>()" class="form-control">
+                        <option selected="selected" value="">Please select</option>
+                    </select>
+                    <span asp-validation-for="Level" class="text-danger" />
 
-            </div>
+                </div>
 
-            <div class="form-group">
-                <label asp-for="Level">Choose Category</label>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label">Job Requerments</label>
+                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
 
-                <select asp-for="Level" asp-items="Html.GetEnumSelectList<SeniorityType>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-                <span asp-validation-for="Level" class="text-danger" />
+                <div class="form-group">
+                    <label asp-for="Engagement">Choose Engagement</label>
 
-            </div>
+                    <select asp-for="Engagement" class="form-control" asp-items="Html.GetEnumSelectList<EngagementType>()">
+                        <option selected="selected" value="">Please select</option>
+                    </select>
+                    <span asp-validation-for="Engagement" class="text-danger" />
 
-            <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
-            </div>
+                </div>
 
 
-            <div class="form-group">
-                <select asp-for="CategoryId"
-                        asp-items="@(new SelectList(Categories.GetCategories(),"Id","Title"))">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-            </div>
+
+                <div class="form-group">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" class="form-control" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
 
 
 
 
 
-            <div class="form-group">
-                <label asp-for="Salary" class="control-label"></label>
-                <input asp-for="Salary" class="form-control" />
-                <span asp-validation-for="Salary" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
 
 
-        </form>
+                <div class="form-group">
+                    <label asp-for="Salary" class="control-label"></label>
+                    <input asp-for="Salary" class="form-control" />
+                    <span asp-validation-for="Salary" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+
+
+            </form>
+        </div>
     </div>
 </div>
 

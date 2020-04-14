@@ -1,7 +1,5 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
 
-using SoftUniJobPlatform.Data.Models.Enum;
-
 namespace SoftUniJobPlatform.Data.Models
 {
     using System;
@@ -9,6 +7,7 @@ namespace SoftUniJobPlatform.Data.Models
 
     using Microsoft.AspNetCore.Identity;
     using SoftUniJobPlatform.Data.Common.Models;
+    using SoftUniJobPlatform.Data.Models.Enum;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -40,6 +39,8 @@ namespace SoftUniJobPlatform.Data.Models
         public string FullName { get; set; }
 
         public double Score { get; set; }
+
+        public bool IsAdmin { get; set; }
 
         public GenderType Gender { get; set; }
 

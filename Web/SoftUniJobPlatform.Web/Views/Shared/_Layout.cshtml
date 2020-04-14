@@ -39,23 +39,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
                         </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>*@
-
-                        @*@if (this.User.IsInRole("Employer"))
+                        @if (User.IsInRole(GlobalConstants.EmployerRoleName)
+                             || User.IsInRole(GlobalConstants.AdministratorRoleName)
+                             || User.IsInRole(GlobalConstants.ModeratorRoleName))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Employer" asp-controller="Dashboard" asp-action="Index">EmployerDashboard</a>
+                                <a class="nav-link text-dark" asp-area="Employer" asp-controller="Dashboard" asp-action="AllStudents">Students</a>
                             </li>
                         }
 
-                        @if (this.User.IsInRole("Student"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Student" asp-controller="Dashboard" asp-action="Index">StudentDashboard</a>
-                            </li>
-                        }*@
                     </ul>
 
                 </div>

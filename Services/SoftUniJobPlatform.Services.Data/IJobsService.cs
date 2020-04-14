@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
     using SoftUniJobPlatform.Data.Models;
 
     public interface IJobsService
@@ -16,7 +16,7 @@ namespace SoftUniJobPlatform.Services.Data
 
         T GetJobById<T>(int id);
 
-        Task EditAsync(int id, string title, string description,int salary);
+        Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int salary);
 
         Task DeleteAsync(int id);
     }

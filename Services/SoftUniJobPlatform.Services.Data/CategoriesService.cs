@@ -53,6 +53,11 @@ namespace SoftUniJobPlatform.Services.Data
             return category;
         }
 
+        public Category GetById(int id)
+        {
+            return this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
+        }
+
         public async Task CreateAsync(string title, string description, string imageUrl)
         {
             var category = this.categoriesRepository.AddAsync(new Category

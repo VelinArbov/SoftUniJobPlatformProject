@@ -6,7 +6,7 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
 }
-
+body { background: url('https://source.unsplash.com/twukN12EN7c/1920x1080') no-repeat center center fixed; }
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

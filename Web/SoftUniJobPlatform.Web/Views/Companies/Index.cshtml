@@ -22,7 +22,9 @@
                 <td>@company.FullName</td>
                 <td>@company.Location</td>
                
-
+                <td>
+                    <a class="btn btn-outline-danger"asp-controller="Companies" asp-action="Details" asp-route-id="@company.Id">Details</a>
+                </td>
             </tr>
             </tbody>
         }

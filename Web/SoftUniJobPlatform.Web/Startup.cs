@@ -1,7 +1,20 @@
-﻿namespace SoftUniJobPlatform.Web
+﻿using SoftUniJobPlatform.Common;
+
+namespace SoftUniJobPlatform.Web
 {
+    using System;
     using System.Reflection;
 
+    using Hangfire;
+    using Hangfire.SqlServer;
+    using Hangfire.Dashboard;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using SoftUniJobPlatform.Data;
     using SoftUniJobPlatform.Data.Common;
     using SoftUniJobPlatform.Data.Common.Repositories;
@@ -12,14 +25,6 @@
     using SoftUniJobPlatform.Services.Mapping;
     using SoftUniJobPlatform.Services.Messaging;
     using SoftUniJobPlatform.Web.ViewModels;
-
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
 
     public class Startup
     {
@@ -45,7 +50,20 @@
                         options.CheckConsentNeeded = context => true;
                         options.MinimumSameSitePolicy = SameSiteMode.None;
                     });
-
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(this.configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    UsePageLocksOnDequeue = true,
+                    DisableGlobalLocks = true
+                }));
+            services.AddHangfireServer();
             services.AddControllersWithViews();
             services.AddResponseCompression();
             services.AddRazorPages();
@@ -58,7 +76,7 @@
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender> (x => new SendGridEmailSender("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"));
+            services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
@@ -67,7 +85,7 @@
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBackgroundJobClient backgroundJobs)
         {
             AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
@@ -103,14 +121,31 @@
 
             app.UseAuthentication();
             app.UseAuthorization();
+            if (env.IsDevelopment())
+            {
+                app.UseHangfireServer(new BackgroundJobServerOptions { WorkerCount = 2 });
+                app.UseHangfireDashboard(
+                    "/hangfire",
+                    new DashboardOptions { Authorization = new[] { new HangfireAuthorizationFilter() } });
+            }
 
             app.UseEndpoints(
                 endpoints =>
                     {
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                        endpoints.MapControllerRoute("Students", "{controller=Dashboard}/{action=ApplyJobAsync}/{id?}", new { control = "Dashboard", action = "ApplyJobAsync" });
                         endpoints.MapRazorPages();
                     });
+        }
+
+        public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter
+        {
+            public bool Authorize(DashboardContext context)
+            {
+                var httpContext = context.GetHttpContext();
+                return httpContext.User.IsInRole(GlobalConstants.AdministratorRoleName);
+            }
         }
     }
 }

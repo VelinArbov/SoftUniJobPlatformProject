@@ -1,0 +1,73 @@
+﻿@using SoftUniJobPlatform.Data.Models
+@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.Jobs.JobsViewModel
+@inject ICategoriesService Categories
+
+@{
+    ViewData["Title"] = "EditJob";
+}
+
+<h1 class ="text-center">EditJob</h1>
+
+    <img src=@Model.CompanyLogo width="250" alt="@Model.CompanyName">
+
+<h4>@Model.CompanyName</h4>
+<hr />
+
+<div class="text-center">
+    <div class="col-md-4">
+        <form asp-action="EditJob">
+            <div class="form-group">
+                <label asp-for="Level">Change Position</label>
+
+                <select asp-for="Level" asp-items="Html.GetEnumSelectList<SeniorityType>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="Level" class="text-danger" />
+
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location" class="control-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Engagement">Choose Engagement</label>
+                <select asp-for="Engagement" asp-items="Html.GetEnumSelectList<EngagementType>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="Engagement" class="text-danger" />
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Salary" class="control-label"></label>
+                <input asp-for="Salary" class="form-control" />
+                <span asp-validation-for="Salary" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <select asp-for="CategoryId"
+                        asp-items="@(new SelectList(Categories.GetCategories(), "Id", "Title"))">
+                    <option selected="selected" value="">Please Choose</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

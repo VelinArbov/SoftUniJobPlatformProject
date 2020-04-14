@@ -15,9 +15,13 @@
 
         public string CompanyLogo => this.ApplicationUser.ImageUrl;
 
+        public string CompanyName => this.ApplicationUser.UserName;
+
         public string Title { get; set; }
 
         public string Location { get; set; }
+
+        public DateTime CreatedOn { get; set; }
 
         public string Description { get; set; }
 

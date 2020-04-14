@@ -25,6 +25,8 @@
                 return;
             }
 
+            user.IsAdmin = true;
+
             dbContext.UserRoles.Add(new IdentityUserRole<string>
             {
                 RoleId = role.Id,

@@ -1,0 +1,73 @@
+﻿@using System.Security.Claims
+@using SoftUniJobPlatform.Common
+@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.Jobs.JobsViewModel
+@inject ICategoriesService Categories
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 align="center">Details</h1>
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">
+        @Model.CompanyName is looking for a <span id="JobCategory">@Categories.GetById(@Model.CategoryId).Title @Model.Level</span> in @Model.Location, Bulgaria.
+    </h1>
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-8">
+            <img class="img-fluid" src="@Model.CompanyLogo" alt="">
+        </div>
+
+        <div class="col-md-4">
+            <h3 class="my-3">JobOffer Description</h3>
+            <p>@Model.Description</p>
+            <h3 class="my-3">Offer Details</h3>
+            <ul>
+                <li>Engagement: @Model.Engagement</li>
+                <li>Location: @Model.Location</li>
+                <li>Level: @Model.Level</li>
+                <li>Salary: @Model.ViewSalary</li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- /.row -->
+    .id
+    @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == @Model.ApplicationUser.Id
+    || User.IsInRole(GlobalConstants.AdministratorRoleName)
+    || User.IsInRole(GlobalConstants.ModeratorRoleName))
+    {
+        <a class="btn btn-danger float-right" asp-area="Employer" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@Model.Id">Edit</a>
+
+    }
+
+    @if (User.IsInRole(GlobalConstants.StudentRoleName))
+    {
+
+        <a class="btn btn-primary" asp-action="ApplyJobAsync" asp-controller="Dashboard" asp-route-Id="@Model.Id">Delete</a>
+        <a class="btn btn-danger float-right" asp-area="Student" asp-controller="Dashboard" asp-action="ApplyJobAsync" asp-route-id="@Model.Id">Apply</a>
+    }
+
+    <a class="btn btn-primary " asp-action="Index">Back to List</a>
+</div>
+<ul class="list-inline list-unstyled text-right">
+    <li class="list-inline-item">
+        <i class="fas fa-user-edit"></i> @Model.CompanyName
+    </li>
+    <li class="list-inline-item">
+        <i class="fas fa-calendar-alt"></i> @Model.CreatedOn
+    </li>
+
+</ul>
+
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $('#JobCategory').css("color", "red");
+</script>

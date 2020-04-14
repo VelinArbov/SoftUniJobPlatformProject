@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Services.Data
+﻿using System.Data.Common;
+
+namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -74,12 +76,13 @@
             await this.jobRepository.SaveChangesAsync();
         }
 
-        public async Task EditAsync(int id, string title, string description, int salary)
+        public async Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int salary)
         {
             var job = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
-
-            job.Title = title == null ? job.Title : title;
-            job.Description = description == null ? job.Description : description;
+            job.Level = Enum.Parse<SeniorityType>(jobRequirements, true);
+            job.Location = location;
+            job.Engagement = Enum.Parse<EngagementType>(engagement, true);
+            job.Description = jobRequirements == null ? job.Description : jobRequirements;
             job.Salary = salary == null ? job.Salary : salary;
 
             await this.jobRepository.SaveChangesAsync();

@@ -28,5 +28,11 @@
             };
             return this.View(viewModel);
         }
+
+        public IActionResult Details(string id)
+        {
+            var viewModel = this.companiesService.GetCompanyAsync<CompanyViewModel>(id);
+            return this.View(viewModel);
+        }
     }
 }

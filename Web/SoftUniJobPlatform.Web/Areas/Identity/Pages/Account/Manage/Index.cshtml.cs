@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account.Manage
+﻿using SoftUniJobPlatform.Common;
+
+namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account.Manage
 {
     using System;
     using System.Collections.Generic;
@@ -13,15 +15,15 @@
 
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public string Username { get; set; }
@@ -34,29 +36,51 @@
 
         public class InputModel
         {
-            [Required]
+            
             [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [Display(Name = "Company Name")]
             public string CompanyName { get; set; }
 
-            [Required]
+           
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long or Incorrect format.(example: Ivan Ivanov Ivanov)", MinimumLength = 4)]
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
+
+          
+            [Display(Name = "BirthDate")]
+            public string BirthDate { get; set; }
+
             [Display(Name = "ImageUrl")]
             public string ImageUrl { get; set; }
+
+            [Required]
+            [Display(Name = "Location")]
+            public string Location { get; set; }
 
             [Required]
             [StringLength(9, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 9)]
             [Display(Name = "Register Number")]
             public string RegisterNumber { get; set; }
 
+           
+            [StringLength(9, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 9)]
+            [Display(Name = "Student Number")]
+            public string StudentNumber { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [Display(Name = "Gender")]
+            public GenderType Gender { get; set; }
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var userName = await this.userManager.GetUserNameAsync(user);
+            var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
 
@@ -68,10 +92,10 @@
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await this.userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{this.userManager.GetUserId(User)}'.");
             }
 
             await LoadAsync(user);
@@ -80,10 +104,10 @@
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await this.userManager.GetUserAsync(User);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{this.userManager.GetUserId(User)}'.");
             }
 
             if (!ModelState.IsValid)
@@ -92,22 +116,36 @@
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            var phoneNumber = await this.userManager.GetPhoneNumberAsync(user);
+            var setPhoneResult = await this.userManager.SetPhoneNumberAsync(user, this.Input.PhoneNumber);
+
+            if (!setPhoneResult.Succeeded)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, this.Input.PhoneNumber);
+                var userId = await this.userManager.GetUserIdAsync(user);
+                throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
+            }
+            else if (this.User.IsInRole(GlobalConstants.EmployerRoleName))
+            {
+
                 user.FullName = this.Input.CompanyName;
                 user.RegistrationNumber = this.Input.RegisterNumber;
                 user.ImageUrl = this.Input.ImageUrl;
-                _userManager.UpdateAsync(user);
-                if (!setPhoneResult.Succeeded)
-                {
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
-                }
+                user.Location = this.Input.Location;
+            }
+            else if (this.User.IsInRole(GlobalConstants.StudentRoleName))
+            {
+
+                user.FullName = this.Input.FullName;
+                user.RegistrationNumber = this.Input.RegisterNumber;
+                user.ImageUrl = this.Input.ImageUrl;
+                user.DateOfBirth = DateTime.Parse(this.Input.BirthDate);
+                user.Location = this.Input.Location;
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+
+            await this.userManager.UpdateAsync(user);
+
+            await this.signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }

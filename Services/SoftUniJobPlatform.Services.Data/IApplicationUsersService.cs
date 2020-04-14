@@ -8,5 +8,9 @@ namespace SoftUniJobPlatform.Services.Data
         IEnumerable<T> GetAll<T>(int? count = null);
 
         Task DeleteAsync(string id);
+
+        IEnumerable<T> GetAllStudents<T>(int? count = null);
+
+        Task AddJobAsync(int jobId, string userId);
     }
 }

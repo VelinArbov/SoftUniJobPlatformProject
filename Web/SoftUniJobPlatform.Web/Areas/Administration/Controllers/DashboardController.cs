@@ -1,4 +1,7 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
+﻿using System;
+using Hangfire;
+
+namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -107,12 +110,12 @@
         [HttpPost]
         public async Task<IActionResult> EditJob(JobsViewModel model)
         {
-            await this.jobsService.EditAsync(model.Id, model.Title, model.Description, model.Salary);
+            await this.jobsService.EditAsync(model.Id, model.Level, model.Location, model.Level, model.Engagement,
+                model.Salary);
 
             return this.Redirect("/Administration/Dashboard");
         }
 
-        [HttpPost]
         public async Task<IActionResult> DeleteJobAsync(int id)
         {
             await this.jobsService.DeleteAsync(id);

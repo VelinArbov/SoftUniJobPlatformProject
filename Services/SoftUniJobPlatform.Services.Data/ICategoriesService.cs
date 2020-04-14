@@ -17,6 +17,8 @@ namespace SoftUniJobPlatform.Services.Data
 
         T GetById<T>(int id);
 
+         Category GetById(int id);
+
         Task CreateAsync(string title, string description, string imageUrl);
 
         Task DeleteAsync(int id);
