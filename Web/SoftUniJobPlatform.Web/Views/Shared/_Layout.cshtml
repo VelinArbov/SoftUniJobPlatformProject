@@ -40,11 +40,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index">Companies</a>
                         </li>
                         @if (User.IsInRole(GlobalConstants.EmployerRoleName)
-                             || User.IsInRole(GlobalConstants.AdministratorRoleName)
-                             || User.IsInRole(GlobalConstants.ModeratorRoleName))
+                            || User.IsInRole(GlobalConstants.AdministratorRoleName)
+                            || User.IsInRole(GlobalConstants.ModeratorRoleName))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Employer" asp-controller="Dashboard" asp-action="AllStudents">Students</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(GlobalConstants.AdministratorRoleName))
+
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="/hangfire">HangFire</a>
                             </li>
                         }
 
@@ -84,7 +92,7 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-    
+
 
     @this.RenderSection("Scripts", required: false)
 </body>

@@ -68,7 +68,6 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 
             var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, input.CategoryId, input.Level, input.Location, input.Salary, input.Engagement);
 
-            
             BackgroundJob.Schedule(
                 () => this.jobsService.DeleteAsync(jobsId),
                 TimeSpan.FromDays(14));
