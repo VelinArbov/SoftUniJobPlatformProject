@@ -14,10 +14,15 @@
 </head>
 
 <body>
-    
+@if (this.TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-success">
+        @this.TempData["InfoMessage"]
+    </div>
+}
 
 
-<div class="counting-sec">
+    <div class="counting-sec">
         <div class="inner-width">
             <div class="col">
                 <i class="far fa-smile-wink"></i>
@@ -44,12 +49,18 @@
             </div>
         </div>
     </div>
+    @if (this.TempData["InfoMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @this.TempData["InfoMessage"]
+        </div>
+    }
 
 
 
-<script type="text/javascript">
-    $(".num").counterUp({delay:10,time:1000});
-</script>
+    <script type="text/javascript">
+        $(".num").counterUp({ delay: 10, time: 1000 });
+    </script>
 
 
 </body>
