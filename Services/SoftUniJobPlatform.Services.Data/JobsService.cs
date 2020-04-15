@@ -63,6 +63,14 @@ namespace SoftUniJobPlatform.Services.Data
             return query.To<T>().ToList();
         }
 
+        public IEnumerable<Job> SearchJob(string searchTerms)
+        {
+            IQueryable<Job> query =
+                this.jobRepository.All().Where(x => x.Description.Contains(searchTerms));
+
+            return query.ToList();
+        }
+
         public T GetJobById<T>(int id)
         {
             var job = this.jobRepository.All().Where(x => x.Id == id)

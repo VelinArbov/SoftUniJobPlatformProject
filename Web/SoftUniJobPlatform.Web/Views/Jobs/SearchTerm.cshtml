@@ -1,0 +1,12 @@
+﻿@model IEnumerable<SoftUniJobPlatform.Data.Models.Job>
+@{
+    ViewData["Title"] = "SearchTerm";
+}
+
+<h1>SearchTerm</h1>
+
+@foreach (var job in Model)
+{
+    <div>@job.Location</div>
+}
+

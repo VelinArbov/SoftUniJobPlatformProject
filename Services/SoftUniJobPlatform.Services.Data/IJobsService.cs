@@ -14,6 +14,8 @@
 
         IEnumerable<T> GetById<T>(string id);
 
+        IEnumerable<Job> SearchJob(string searchTerms);
+
         T GetJobById<T>(int id);
 
         Job JobById(int id);

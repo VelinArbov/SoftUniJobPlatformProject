@@ -4,8 +4,15 @@
     using System.Collections.Generic;
     using System.Text;
 
-    public class AllJobsViewModel
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
+    public class AllJobsViewModel : PageModel
     {
-       public IEnumerable<JobsViewModel> Jobs { get; set; }
+        public IEnumerable<JobsViewModel> Jobs { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
+
     }
 }
