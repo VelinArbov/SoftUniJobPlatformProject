@@ -1,6 +1,7 @@
 ﻿@using Microsoft.CodeAnalysis.CSharp.Syntax
 @using SoftUniJobPlatform.Common
 @model SoftUniJobPlatform.Web.ViewModels.Jobs.AllJobsViewModel
+
 @{
     ViewData["Title"] = "Jobs Page";
 }
@@ -29,7 +30,7 @@
                 <tbody>
                     <tr>
                         <th scope="row"></th>
-                        <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="@job.Title"></td>
+                        <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="Avatar"></td>
                         <td>@job.Title</td>
                         <td>@job.Location</td>
                         <td>@job.Engagement</td>
@@ -37,7 +38,7 @@
                         <td>@job.ViewSalary</td>
                         <td>
                             <a class="btn btn-primary" asp-area="Administration" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@job.Id">Edit</a>
-                            <a class="btn btn-danger" asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteJobAsync" asp-route-id="@job.Id">Delete</a>
+                            <a class="btn btn-danger" asp-area="Administration" asp-controller="Dashboard" asp-action="DeleteJob" asp-route-id="@job.Id">@job.Id</a>
                             <a class="btn btn-primary" asp-controller="Jobs" asp-action="Details" asp-route-id="@job.Id">Details</a>
                         </td>
                     </tr>
@@ -56,8 +57,8 @@ else
                     <th scope="col">#</th>
                     <th scope="col">Company</th>
                     <th scope="col">Title</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Engagement</th>
+                    <th scope="col" id="sortLocation">Location</th>
+                    <th scope="col" id="sortEngag">Engagement</th>
                     <th scope="col">Seniority Level</th>
                     <th scope="col">Salary</th>
                     <th scope="col">Action</th>
@@ -94,4 +95,21 @@ else
             e.preventDefault();
         }
     });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $('th').click(function () {
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    })
+    function comparer(index) {
+        return function (a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index)
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+        }
+    }
+    function getCellValue(row, index) { return $(row).children('td').eq(index).text() }
 </script>

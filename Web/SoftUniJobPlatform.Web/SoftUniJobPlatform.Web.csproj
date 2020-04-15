@@ -18,21 +18,8 @@
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\css\custom-bs.css.map" />
-    <None Include="wwwroot\js\bootstrap-select.min.js" />
-    <None Include="wwwroot\js\bootstrap.bundle.min.js" />
-    <None Include="wwwroot\js\custom.js" />
-    <None Include="wwwroot\js\isotope.pkgd.min.js" />
-    <None Include="wwwroot\js\jquery.animateNumber.min.js" />
-    <None Include="wwwroot\js\jquery.easing.1.3.js" />
-    <None Include="wwwroot\js\jquery.fancybox.min.js" />
-    <None Include="wwwroot\js\jquery.min.js" />
-    <None Include="wwwroot\js\jquery.waypoints.min.js" />
-    <None Include="wwwroot\js\owl.carousel.min.js" />
-    <None Include="wwwroot\js\quill.min.js" />
     <None Include="wwwroot\js\site.js" />
     <None Include="wwwroot\js\site.min.js" />
-    <None Include="wwwroot\js\stickyfill.min.js" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.js" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
     <None Include="wwwroot\lib\fontawesome\webfonts\fa-brands-400.svg" />

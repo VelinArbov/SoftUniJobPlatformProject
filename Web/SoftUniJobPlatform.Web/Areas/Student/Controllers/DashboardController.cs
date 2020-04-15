@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
+﻿using SoftUniJobPlatform.Web.ViewModels.Student;
+
+namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
 {
     using System.Linq;
     using System.Security.Claims;
@@ -26,12 +28,17 @@
 
         public IActionResult Index()
         {
-            return this.View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var viewModel = this.usersService.GetStudentById<StudentJobViewModel>(userId);
+            return this.View(viewModel);
         }
 
-        public IActionResult ApplyJobAsync()
+        public async Task<IActionResult> ApplyJob(int id)
         {
-            return this.View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await this.usersService.AddJobAsync(id, userId);
+            return this.Redirect("/Jobs");
         }
+
     }
 }

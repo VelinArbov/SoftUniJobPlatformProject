@@ -52,7 +52,7 @@
     {
 
         <a class="btn btn-primary" asp-action="ApplyJobAsync" asp-controller="Dashboard" asp-route-Id="@Model.Id">Delete</a>
-        <a class="btn btn-danger float-right" asp-area="Student" asp-controller="Dashboard" asp-action="ApplyJobAsync" asp-route-id="@Model.Id">Apply</a>
+        <a class="btn btn-danger float-right" asp-area="Student" asp-controller="Dashboard" asp-action="ApplyJob" asp-route-id="@Model.Id">@Model.Id</a> 
     }
 
     <a class="btn btn-primary " asp-action="Index">Back to List</a>

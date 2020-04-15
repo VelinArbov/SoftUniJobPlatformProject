@@ -1,8 +1,7 @@
-﻿using System.Linq;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using SoftUniJobPlatform.Data.Models;
@@ -17,7 +16,7 @@ namespace SoftUniJobPlatform.Services.Data
 
         T GetById<T>(int id);
 
-         Category GetById(int id);
+        Category GetById(int id);
 
         Task CreateAsync(string title, string description, string imageUrl);
 

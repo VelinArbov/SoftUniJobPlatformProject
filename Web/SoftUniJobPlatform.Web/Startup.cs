@@ -76,7 +76,8 @@ namespace SoftUniJobPlatform.Web
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender>(x => new SendGridEmailSender("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"));
+            services.AddTransient<IEmailSender>(
+                serviceProvider => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ICompaniesService, CompaniesService>();

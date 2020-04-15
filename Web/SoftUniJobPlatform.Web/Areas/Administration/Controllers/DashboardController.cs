@@ -1,18 +1,18 @@
-﻿using System;
-using Hangfire;
-
-namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
+﻿namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Hangfire;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Routing;
     using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
+    using SoftUniJobPlatform.Services.Messaging;
     using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
     using SoftUniJobPlatform.Web.ViewModels.Categories;
     using SoftUniJobPlatform.Web.ViewModels.Jobs;
@@ -24,19 +24,22 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         private readonly IApplicationUsersService usersService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly IEmailSender emailSender;
 
         public DashboardController(
             ICategoriesService categoriesService,
             IJobsService jobsService,
             IApplicationUsersService usersService,
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager,
+            IEmailSender emailSender)
         {
             this.categoriesService = categoriesService;
             this.jobsService = jobsService;
             this.usersService = usersService;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -74,7 +77,9 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCategory(CategoryViewModel model)
         {
+
             await this.categoriesService.CreateAsync(model.Title, model.Description, model.ImageUrl);
+            await emailSender.SendEmailAsync("arbov.v@gmail.com", "VelinArbov", "softunijobs@abv.bg", "Test", "Test");
             return this.RedirectToAction("Index");
         }
 
@@ -82,7 +87,7 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
         {
             var viewModel = this.categoriesService.GetById<CategoryViewModel>(id);
 
-            return this.View("Category/EditCategory",viewModel);
+            return this.View("Category/EditCategory", viewModel);
         }
 
         [HttpPost]
@@ -116,7 +121,7 @@ namespace SoftUniJobPlatform.Web.Areas.Administration.Controllers
             return this.Redirect("/Administration/Dashboard");
         }
 
-        public async Task<IActionResult> DeleteJobAsync(int id)
+        public async Task<IActionResult> DeleteJob(int id)
         {
             await this.jobsService.DeleteAsync(id);
             return this.Redirect("/Jobs");

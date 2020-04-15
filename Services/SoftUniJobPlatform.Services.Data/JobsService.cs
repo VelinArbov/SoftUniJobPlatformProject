@@ -14,11 +14,14 @@ namespace SoftUniJobPlatform.Services.Data
     public class JobsService : IJobsService
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
+        private readonly IRepository<StudentJob> studentjobsRepository;
 
         public JobsService(
-                IDeletableEntityRepository<Job> jobRepository)
+                IDeletableEntityRepository<Job> jobRepository,
+                IRepository<StudentJob> studentjobsRepository)
         {
             this.jobRepository = jobRepository;
+            this.studentjobsRepository = studentjobsRepository;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -67,11 +70,30 @@ namespace SoftUniJobPlatform.Services.Data
             return job;
         }
 
+        public Job JobById(int id)
+        {
+            var job = this.jobRepository.All()
+                .FirstOrDefault(x => x.Id == id);
+            return job;
+        }
+
         public async Task DeleteAsync(int id)
         {
-            var category = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
+            var job = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
 
-            this.jobRepository.Delete(category);
+            var isExist = this.studentjobsRepository.All().Any(x => x.JobId == id);
+
+            if (isExist)
+            {
+                foreach (var studentJob in this.studentjobsRepository.All().Where(x => x.JobId == id))
+                {
+                    this.studentjobsRepository.Delete(studentJob);
+                }
+
+                await this.studentjobsRepository.SaveChangesAsync();
+            }
+
+            this.jobRepository.Delete(job);
 
             await this.jobRepository.SaveChangesAsync();
         }

@@ -67,6 +67,7 @@ namespace SoftUniJobPlatform.Services.Data
                 ImageUrl = imageUrl,
             });
 
+            
             await this.categoriesRepository.SaveChangesAsync();
         }
 

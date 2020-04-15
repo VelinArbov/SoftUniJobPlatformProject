@@ -1,5 +1,6 @@
 ﻿using System;
 using Hangfire;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
 
 namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
@@ -30,7 +31,8 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
             IJobsService jobsService,
             UserManager<ApplicationUser> userManager,
             ICategoriesService categoriesService,
-            IApplicationUsersService usersService)
+            IApplicationUsersService usersService,
+            IEmailSender emailSender)
         {
             this.jobsService = jobsService;
             this.userManager = userManager;
@@ -66,6 +68,7 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 
             var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, input.CategoryId, input.Level, input.Location, input.Salary, input.Engagement);
 
+            
             BackgroundJob.Schedule(
                 () => this.jobsService.DeleteAsync(jobsId),
                 TimeSpan.FromDays(14));

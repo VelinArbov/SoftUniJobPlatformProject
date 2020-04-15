@@ -1,7 +1,19 @@
-﻿
+﻿@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.Student.StudentJobViewModel
+@inject IJobsService JobsService
 @{
     this.ViewData["Title"] = "Student dashboard";
 }
+@if (Model.StudentJobs.Any())
+{
+    <h1>My application @Model.StudentJobs.Count()</h1>
 
-<h1>@this.ViewData["Title"]</h1>
-
+    @*@foreach (var job in @Model.StudentJobs)
+    {
+        <div>@JobsService.JobById(job.JobId).Location</div>
+    }*@
+}
+else
+{
+    <h1> No job offer</h1>
+}
