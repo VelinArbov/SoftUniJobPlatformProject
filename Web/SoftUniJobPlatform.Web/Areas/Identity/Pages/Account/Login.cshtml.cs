@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SoftUniJobPlatform.Data.Models;
+using SoftUniJobPlatform.Web.Infrastructure;
 
 namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
 {
@@ -41,6 +42,10 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
+        [GoogleReCaptchaValidation]
+        [BindProperty(Name = "g-recaptcha-response")]
+        public string RecaptchaValue { get; set; }
+
         public class InputModel
         {
             [Required]
@@ -52,6 +57,8 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+          
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -79,7 +86,7 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 var user =await this._userManager.FindByNameAsync(Input.Username);
                 var userType = string.Empty;
 

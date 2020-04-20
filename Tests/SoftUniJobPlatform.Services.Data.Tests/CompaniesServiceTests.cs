@@ -1,16 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using SoftUniJobPlatform.Data;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Data.Models.Enum;
-using SoftUniJobPlatform.Data.Repositories;
-using Xunit;
-
-namespace SoftUniJobPlatform.Services.Data.Tests
+﻿namespace SoftUniJobPlatform.Services.Data.Tests
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
+    using Microsoft.EntityFrameworkCore;
+    using SoftUniJobPlatform.Data;
+    using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Data.Models.Enum;
+    using SoftUniJobPlatform.Data.Repositories;
     using SoftUniJobPlatform.Services.Mapping;
+    using Xunit;
 
     public class CompaniesServiceTests
     {
@@ -23,25 +23,26 @@ namespace SoftUniJobPlatform.Services.Data.Tests
         [Fact]
         public void TestAllPositiveCompanies()
         {
-            
-
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository =
                 new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
 
-            repository.AddAsync(new ApplicationUser()
+            var user = new ApplicationUser
             {
                 Description = "test",
                 Type = UserType.Employer,
-            });
-
+            };
+            repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var company = new CompaniesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             var job = company.GetAll<CompaniesServiceTests.MyTest>();
 
             Assert.Single(company.GetAll<CompaniesServiceTests.MyTest>());
+            repository.Delete(user);
+            repository.SaveChangesAsync().GetAwaiter().GetResult();
+
         }
 
         [Fact]

@@ -1,5 +1,7 @@
 ﻿namespace SoftUniJobPlatform.Data
 {
+    using System;
+
     using Microsoft.AspNetCore.Identity;
 
     public static class IdentityOptionsProvider
@@ -11,6 +13,9 @@
             options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequiredLength = 6;
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
         }
     }
 }

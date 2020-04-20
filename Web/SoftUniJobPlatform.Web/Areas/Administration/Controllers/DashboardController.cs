@@ -159,34 +159,5 @@
             return this.Redirect("/Administration/Dashboard/Users");
 
         }
-
-
-        public async Task<string> UploadImg(Cloudinary cloudinary, IFormFile file)
-        {
-            byte[] destinationData;
-
-            ImageUploadResult finalResult = null;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                destinationData = memoryStream.ToArray();
-            }
-
-
-
-            using (var memoryStream = new MemoryStream(destinationData))
-            {
-                ImageUploadParams uploadParams = new ImageUploadParams
-                {
-                    File = new FileDescription(file.FileName, memoryStream),
-                };
-
-                 finalResult = await this.cloudinary.UploadAsync(uploadParams);
-                
-            }
-
-            return finalResult.SecureUri.AbsoluteUri;
-        }
     }
 }

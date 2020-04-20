@@ -15,8 +15,8 @@ namespace SoftUniJobPlatform.Services.Data
 
     public class ApplicationUsersService : IApplicationUsersService
     {
+        private const string NoUserWithId = "No user with Id {0}";
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
-       
         private readonly IJobsService jobsService;
         private readonly IRepository<StudentJob> studentJobRepository;
 
@@ -36,6 +36,12 @@ namespace SoftUniJobPlatform.Services.Data
             IQueryable<ApplicationUser> query =
                 this.usersRepository.All()
                     .OrderByDescending(x => x.CreatedOn);
+
+            if (!query.Any())
+            {
+                throw new ArgumentNullException("No users.");
+            }
+
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -48,7 +54,12 @@ namespace SoftUniJobPlatform.Services.Data
         {
             var user = this.usersRepository.All()
                 .FirstOrDefault(x => x.Id == id);
-            
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(string.Format(NoUserWithId, id));
+            }
+
             this.usersRepository.Delete(user);
 
             await this.usersRepository.SaveChangesAsync();
@@ -69,10 +80,13 @@ namespace SoftUniJobPlatform.Services.Data
 
         public async Task AddJobAsync(int jobId, string userId)
         {
-            var user = usersRepository.All()
-                .Where(x => x.Id == userId)
-                .FirstOrDefault();
+            var user = this.usersRepository.All()
+                .FirstOrDefault(x => x.Id == userId);
             var job = this.jobsService.JobById(jobId);
+            if (user == null || job == null)
+            {
+                throw new ArgumentNullException("Not correct input");
+            }
 
             var exist = this.studentJobRepository.All().FirstOrDefault(x => x.JobId == jobId && x.ApplicationUserId == userId);
             if (exist == null)

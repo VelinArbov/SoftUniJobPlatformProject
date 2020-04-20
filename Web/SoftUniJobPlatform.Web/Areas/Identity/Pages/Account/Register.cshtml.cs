@@ -1,6 +1,7 @@
 ﻿using System.Net.Mime;
 using SoftUniJobPlatform.Data;
 using SoftUniJobPlatform.Data.Models.Enum;
+using SoftUniJobPlatform.Web.Infrastructure;
 
 namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
 {
@@ -53,6 +54,9 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        [GoogleReCaptchaValidation]
+        public string RecaptchaValue { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 

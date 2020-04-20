@@ -1,4 +1,5 @@
-﻿namespace SoftUniJobPlatform.Web
+﻿
+namespace SoftUniJobPlatform.Web
 {
     using System;
     using System.Reflection;
@@ -43,7 +44,6 @@
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-
             services.Configure<CookiePolicyOptions>(
                 options =>
                     {
@@ -86,7 +86,6 @@
             // Application services
             services.AddTransient<IEmailSender>(
                 serviceProvider => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
-            services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
