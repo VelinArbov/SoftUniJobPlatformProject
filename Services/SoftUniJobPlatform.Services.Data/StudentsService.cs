@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mime;
-using System.Text;
-using SoftUniJobPlatform.Data;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Mime;
+    using System.Text;
+
+    using SoftUniJobPlatform.Data;
+
     public class StudentsService : IStudentsService
     {
       

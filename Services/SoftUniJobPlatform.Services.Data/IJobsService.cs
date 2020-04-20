@@ -16,12 +16,16 @@
 
         IEnumerable<Job> SearchJob(string searchTerms);
 
+        IEnumerable<T> GetByCategoryId<T>(int categoryId, int? take = null, int skip = 0);
+
         T GetJobById<T>(int id);
 
         Job JobById(int id);
 
-        Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int salary);
+        Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int? salary);
 
         Task DeleteAsync(int id);
+
+        int GetCountByCategoryId(int categoryId);
     }
 }

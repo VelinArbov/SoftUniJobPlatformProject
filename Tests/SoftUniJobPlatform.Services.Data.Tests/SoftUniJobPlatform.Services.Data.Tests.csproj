@@ -29,6 +29,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\SoftUniJobPlatform.Data\SoftUniJobPlatform.Data.csproj" />
     <ProjectReference Include="..\..\Services\SoftUniJobPlatform.Services.Data\SoftUniJobPlatform.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\SoftUniJobPlatform.Services\SoftUniJobPlatform.Services.csproj" />
+    <ProjectReference Include="..\..\Web\SoftUniJobPlatform.Web.ViewModels\SoftUniJobPlatform.Web.ViewModels.csproj" />
+    <ProjectReference Include="..\..\Web\SoftUniJobPlatform.Web\SoftUniJobPlatform.Web.csproj" />
   </ItemGroup>
 
 </Project>

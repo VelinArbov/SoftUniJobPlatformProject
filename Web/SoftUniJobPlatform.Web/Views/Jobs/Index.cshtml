@@ -64,37 +64,39 @@ else
 
         <table class="table table-hover table-dark">
             <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Company</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Engagement</th>
-                    <th scope="col">Seniority Level</th>
-                    <th scope="col">Salary</th>
-                    <th scope="col">Action</th>
-                </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Company</th>
+                <th scope="col">Title</th>
+                <th scope="col">Location</th>
+                <th scope="col">Engagement</th>
+                <th scope="col">Seniority Level</th>
+                <th scope="col">Salary</th>
+                <th scope="col">Action</th>
+            </tr>
             </thead>
             @foreach (var job in Model.Jobs)
             {
                 <tbody>
-                    <tr>
-                        <th scope="row"></th>
-                        <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="@job.Title"></td>
-                        <td>@job.Title</td>
-                        <td>@job.Location</td>
-                        <td>@job.Engagement</td>
-                        <td>@job.Level</td>
-                        <td>@job.ViewSalary</td>
-                        <td>
-                            <a class="btn btn-primary" asp-controller="Jobs" asp-action="Details" asp-route-id="@job.Id">Details</a>
-                        </td>
+                <tr>
+                    <th scope="row"></th>
+                    <td><img src="@job.CompanyLogo" width="80" class="mr-3" alt="@job.Title"></td>
+                    <td>@job.Title</td>
+                    <td>@job.Location</td>
+                    <td>@job.Engagement</td>
+                    <td>@job.Level</td>
+                    <td>@job.ViewSalary</td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="Jobs" asp-action="Details" asp-route-id="@job.Id">Details</a>
+                    </td>
 
-                    </tr>
+                </tr>
                 </tbody>
             }
         </table>
     </div>
+    
+        
 }
 <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
 <script>

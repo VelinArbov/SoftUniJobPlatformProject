@@ -1,4 +1,7 @@
-﻿namespace SoftUniJobPlatform.Web.Controllers
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+
+namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Diagnostics;
     using System.Linq;
@@ -15,10 +18,13 @@
     public class HomeController : BaseController
     {
         private readonly ICategoriesService categoriesService;
+        private readonly ICloudinaryService clodinaryService;
 
-        public HomeController(ICategoriesService categoriesService)
+        public HomeController(ICategoriesService categoriesService,
+            ICloudinaryService clodinaryService)
         {
             this.categoriesService = categoriesService;
+            this.clodinaryService = clodinaryService;
         }
 
         public IActionResult Index()
@@ -31,11 +37,15 @@
             return this.View();
         }
 
-        public IActionResult SearchTerm(string searchTerm)
+        [HttpPost]
+        public async Task<string> UploadImg(IFormFile file)
         {
-
-            return this.View();
+            ;
+           return await this.clodinaryService.UploadFormFileAsync(file);
+           
         }
+
+     
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -1,13 +1,12 @@
-﻿using SoftUniJobPlatform.Common;
-
-namespace SoftUniJobPlatform.Web
+﻿namespace SoftUniJobPlatform.Web
 {
     using System;
     using System.Reflection;
 
+    using CloudinaryDotNet;
     using Hangfire;
-    using Hangfire.SqlServer;
     using Hangfire.Dashboard;
+    using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -15,6 +14,7 @@ namespace SoftUniJobPlatform.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Data;
     using SoftUniJobPlatform.Data.Common;
     using SoftUniJobPlatform.Data.Common.Repositories;
@@ -61,13 +61,21 @@ namespace SoftUniJobPlatform.Web
                     QueuePollInterval = TimeSpan.Zero,
                     UseRecommendedIsolationLevel = true,
                     UsePageLocksOnDequeue = true,
-                    DisableGlobalLocks = true
+                    DisableGlobalLocks = true,
                 }));
+
             services.AddHangfireServer();
             services.AddControllersWithViews();
             services.AddResponseCompression();
             services.AddRazorPages();
 
+            Account account = new Account(
+                this.configuration["Cloudinary:Name"],
+                this.configuration["Cloudinary:ApiKey"],
+                this.configuration["Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinary = new Cloudinary(account);
+            services.AddSingleton(cloudinary);
             services.AddSingleton(this.configuration);
 
             // Data repositories
@@ -81,6 +89,7 @@ namespace SoftUniJobPlatform.Web
             services.AddTransient<ISettingsService, SettingsService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<IJobsService, JobsService>();
             services.AddTransient<IApplicationUsersService, ApplicationUsersService>();
         }
@@ -133,6 +142,7 @@ namespace SoftUniJobPlatform.Web
             app.UseEndpoints(
                 endpoints =>
                     {
+                        endpoints.MapControllerRoute("StudentsJob", "/{name:minlength(3)}", new { controller = "Jobs", action = "Index" });
                         endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                         endpoints.MapControllerRoute("Students", "{controller=Dashboard}/{action=ApplyJobAsync}/{id?}", new { control = "Dashboard", action = "ApplyJobAsync" });

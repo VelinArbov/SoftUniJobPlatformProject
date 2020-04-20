@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
-
+    using Microsoft.AspNetCore.Http;
     using SoftUniJobPlatform.Data.Common.Models;
 
     public class Category : BaseDeletableModel<int>

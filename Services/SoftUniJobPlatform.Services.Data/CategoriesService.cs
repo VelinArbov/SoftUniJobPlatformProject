@@ -13,6 +13,9 @@ namespace SoftUniJobPlatform.Services.Data
 
     public class CategoriesService : ICategoriesService
     {
+        private const string InvalidCategoryIdErrorMessage = "Category with ID: {0} does not exist.";
+        private const string InvalidCategoryTitleErrorMessage = "Category with Title: {0} does not exist.";
+        private const string NoCategoriesErrorMessage = "No Categories.";
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -22,13 +25,19 @@ namespace SoftUniJobPlatform.Services.Data
             this.categoriesRepository = categoriesRepository;
         }
 
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public IEnumerable<T> GetAll<T>(int? take = null, int skip = 0)
         {
             IQueryable<Category> query =
-                this.categoriesRepository.All().OrderBy(x => x.Name);
-            if (count.HasValue)
+                this.categoriesRepository.All().OrderByDescending(x => x.CreatedOn).Skip(skip);
+            if (take.HasValue)
             {
-                query = query.Take(count.Value);
+                query = query.Take(take.Value);
+            }
+
+            if (!query.Any())
+            {
+                throw new ArgumentNullException(
+                    string.Format(NoCategoriesErrorMessage));
             }
 
             return query.To<T>().ToList();
@@ -36,13 +45,29 @@ namespace SoftUniJobPlatform.Services.Data
 
         public IQueryable<Category> GetCategories()
         {
-            return this.categoriesRepository.All();
+            var category = this.categoriesRepository.All();
+
+            if (!category.Any())
+            {
+                throw new ArgumentNullException(
+                        string.Format(NoCategoriesErrorMessage));
+            }
+
+            return category;
         }
 
         public T GetByName<T>(string name)
         {
-            var category = this.categoriesRepository.All().Where(x => x.Name == name)
+            var category = this.categoriesRepository.All()
+                .Where(x => x.Name.Replace(" ", "-") == name.Replace(" ", "-"))
                 .To<T>().FirstOrDefault();
+
+            if (category == null)
+            {
+                throw new ArgumentNullException(
+                    string.Format(InvalidCategoryIdErrorMessage, name));
+            }
+
             return category;
         }
 
@@ -50,30 +75,56 @@ namespace SoftUniJobPlatform.Services.Data
         {
             var category = this.categoriesRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
+            if (category == null)
+            {
+                throw new ArgumentNullException(
+                    string.Format(InvalidCategoryIdErrorMessage, id));
+            }
+
             return category;
         }
 
         public Category GetById(int id)
         {
-            return this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
+            var category = this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
+
+            if (category == null)
+            {
+                throw new ArgumentNullException(
+                    string.Format(InvalidCategoryIdErrorMessage, id));
+
+            }
+
+            return category;
         }
 
         public async Task CreateAsync(string title, string description, string imageUrl)
         {
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description))
+            {
+                throw new ArgumentException("Please insert correct data.");
+            }
+
             var category = this.categoriesRepository.AddAsync(new Category
             {
                 Title = title,
                 Description = description,
-                ImageUrl = imageUrl,
+                ImageUrl = imageUrl ?? "https://arbikas.com/pub/media/brands/asi.jpg",
             });
 
-            
             await this.categoriesRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
             var category = this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
+
+            if (category == null)
+            {
+                throw new ArgumentNullException(
+                    string.Format(InvalidCategoryIdErrorMessage, id));
+
+            }
 
             this.categoriesRepository.Delete(category);
 
@@ -83,10 +134,26 @@ namespace SoftUniJobPlatform.Services.Data
         public async Task EditAsync(int id, string title, string description, string imageUrl)
         {
             var category = this.categoriesRepository.All().FirstOrDefault(x => x.Id == id);
-
-            category.Title = title == null ? category.Title : title;
-            category.Description = description == null ? category.Description : description;
-            category.ImageUrl = imageUrl == null ? category.ImageUrl : imageUrl;
+            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description)
+                                                 || string.IsNullOrWhiteSpace(imageUrl))
+            {
+                category.Title = title == null ? category.Title : title;
+                category.Description = description == null ? category.Description : description;
+                category.ImageUrl = imageUrl == null ? category.ImageUrl : imageUrl;
+            }
+            else if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description)
+                                                         || string.IsNullOrEmpty(imageUrl))
+            {
+                category.Title = title == null ? category.Title : title;
+                category.Description = description == null ? category.Description : description;
+                category.ImageUrl = imageUrl == null ? category.ImageUrl : imageUrl;
+            }
+            else
+            {
+                category.Title = title;
+                category.ImageUrl = imageUrl;
+                category.Description = description;
+            }
 
             await this.categoriesRepository.SaveChangesAsync();
         }

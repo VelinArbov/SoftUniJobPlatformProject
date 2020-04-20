@@ -8,7 +8,7 @@
 
     public interface ICategoriesService
     {
-        IEnumerable<T> GetAll<T>(int? count = null);
+        IEnumerable<T> GetAll<T>(int? take = null, int skip = 0);
 
         IQueryable<Category> GetCategories();
 

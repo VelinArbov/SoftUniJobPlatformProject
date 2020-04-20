@@ -33,6 +33,8 @@
 
         public string Position { get; set; }
 
+        public int PageCount { get; set; }
+
         public int CategoryId { get; set; }
 
         public IEnumerable<Category> Categories { get; set; }

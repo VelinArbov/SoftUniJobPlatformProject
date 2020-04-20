@@ -1,6 +1,4 @@
-﻿using System.Data.Common;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -14,20 +12,27 @@ namespace SoftUniJobPlatform.Services.Data
     public class JobsService : IJobsService
     {
         private readonly IDeletableEntityRepository<Job> jobRepository;
-        private readonly IRepository<StudentJob> studentjobsRepository;
-
+        private readonly IRepository<StudentJob> studentJobsRepository;
+        private const string NoAvailableJobsError = "No available jobs.";
+        private const string NoCategorywithId = "No category with id {0}.";
+        private const string NoJobwithId = "No job with id {0}.";
         public JobsService(
                 IDeletableEntityRepository<Job> jobRepository,
-                IRepository<StudentJob> studentjobsRepository)
+                IRepository<StudentJob> studentJobsRepository)
         {
             this.jobRepository = jobRepository;
-            this.studentjobsRepository = studentjobsRepository;
+            this.studentJobsRepository = studentJobsRepository;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
         {
             IQueryable<Job> query =
                 this.jobRepository.All().OrderByDescending(x => x.CreatedOn);
+
+            if (!query.Any())
+            {
+                throw new ArgumentNullException("NoAvailableJobsError");
+            }
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -41,8 +46,8 @@ namespace SoftUniJobPlatform.Services.Data
             var job = new Job
             {
                 ApplicationUserId = companyId,
-                Title = title,
-                Description = description,
+                Title = title == null ? "No Tittle" : title,
+                Description = description == null ? "No description" : description,
                 Position = position,
                 Salary = salary,
                 CategoryId = categoryId,
@@ -60,21 +65,55 @@ namespace SoftUniJobPlatform.Services.Data
             IQueryable<Job> query =
                 this.jobRepository.All().Where(x => x.ApplicationUserId == id);
 
+            if (!query.Any())
+            {
+                throw new ArgumentNullException("No company with this ID.");
+            }
+
             return query.To<T>().ToList();
         }
 
         public IEnumerable<Job> SearchJob(string searchTerms)
         {
+            if (string.IsNullOrWhiteSpace(searchTerms) || string.IsNullOrEmpty(searchTerms))
+            {
+                throw new ArgumentNullException("No correct search.");
+            }
+
             IQueryable<Job> query =
                 this.jobRepository.All().Where(x => x.Description.Contains(searchTerms));
 
             return query.ToList();
         }
 
+        public IEnumerable<T> GetByCategoryId<T>(int categoryId, int? take = null, int skip = 0)
+        {
+            var query = this.jobRepository.All()
+                .OrderByDescending(x => x.CreatedOn)
+                .Where(x => x.CategoryId == categoryId).Skip(skip);
+
+            if (!query.Any())
+            {
+                throw new ArgumentNullException(string.Format(NoCategorywithId, categoryId));
+            }
+            if (take.HasValue)
+            {
+                query = query.Take(take.Value);
+            }
+
+            return query.To<T>().ToList();
+        }
+
         public T GetJobById<T>(int id)
         {
             var job = this.jobRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
+
+            if (job == null)
+            {
+                throw new ArgumentNullException(string.Format(NoJobwithId, id));
+            }
+
             return job;
         }
 
@@ -82,6 +121,12 @@ namespace SoftUniJobPlatform.Services.Data
         {
             var job = this.jobRepository.All()
                 .FirstOrDefault(x => x.Id == id);
+
+            if (job == null)
+            {
+                throw new ArgumentNullException(string.Format(NoJobwithId, id));
+            }
+
             return job;
         }
 
@@ -89,16 +134,21 @@ namespace SoftUniJobPlatform.Services.Data
         {
             var job = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
 
-            var isExist = this.studentjobsRepository.All().Any(x => x.JobId == id);
+            if (job == null)
+            {
+                throw new ArgumentNullException(string.Format(NoJobwithId, id));
+            }
+
+            var isExist = this.studentJobsRepository.All().Any(x => x.JobId == id);
 
             if (isExist)
             {
-                foreach (var studentJob in this.studentjobsRepository.All().Where(x => x.JobId == id))
+                foreach (var studentJob in this.studentJobsRepository.All().Where(x => x.JobId == id))
                 {
-                    this.studentjobsRepository.Delete(studentJob);
+                    this.studentJobsRepository.Delete(studentJob);
                 }
 
-                await this.studentjobsRepository.SaveChangesAsync();
+                await this.studentJobsRepository.SaveChangesAsync();
             }
 
             this.jobRepository.Delete(job);
@@ -106,7 +156,18 @@ namespace SoftUniJobPlatform.Services.Data
             await this.jobRepository.SaveChangesAsync();
         }
 
-        public async Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int salary)
+        public int GetCountByCategoryId(int categoryId)
+        {
+            var jobs = this.jobRepository.All().Count(x => x.CategoryId == categoryId);
+            if (jobs != 0)
+            {
+                return jobs;
+            }
+
+            throw new ArgumentNullException(string.Format(NoCategorywithId, categoryId));
+        }
+
+        public async Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int? salary)
         {
             var job = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
             job.Level = Enum.Parse<SeniorityType>(jobRequirements, true);

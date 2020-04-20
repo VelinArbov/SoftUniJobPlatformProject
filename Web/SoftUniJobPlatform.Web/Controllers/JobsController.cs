@@ -15,21 +15,19 @@ namespace SoftUniJobPlatform.Web.Controllers
             this.jobsService = jobsService;
         }
 
-        public IActionResult Index(string searchString = null)
+        public IActionResult Index(int? pageNumber, string searchString = null )
         {
 
-            ViewData["CurrentFilter"] = searchString;
+            this.ViewData["CurrentFilter"] = searchString;
             if (!string.IsNullOrEmpty(searchString))
             {
                 var viewModel = new AllJobsViewModel
                 {
                     Jobs = this.jobsService.GetAll<JobsViewModel>().Where(x
-                        => x.Description.ToLower().Contains(searchString.ToLower()) ||
-                           x.Title.ToLower().Contains(searchString.ToLower()) ||
-                           x.CompanyName.ToLower().Contains(searchString.ToLower())),
+                        => x.CompanyName.ToLower().Contains(searchString.ToLower())),
                 };
 
-                return this.View(viewModel);
+                return this.View();
             }
 
             var viewModel1 = new AllJobsViewModel

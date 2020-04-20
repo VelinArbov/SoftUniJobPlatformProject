@@ -11,8 +11,7 @@
     {
         public IEnumerable<JobsViewModel> Jobs { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public string SearchTerm { get; set; }
+        public int CurrentPage { get; set; }
 
     }
 }

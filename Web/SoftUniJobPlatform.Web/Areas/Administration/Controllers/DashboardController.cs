@@ -2,13 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using Hangfire;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Routing;
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
     using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
@@ -25,6 +30,8 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IEmailSender emailSender;
+        private readonly ICloudinaryService cloudinaryService;
+        private readonly Cloudinary cloudinary;
 
         public DashboardController(
             ICategoriesService categoriesService,
@@ -32,7 +39,9 @@
             IApplicationUsersService usersService,
             UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ICloudinaryService cloudinaryService,
+            Cloudinary cloudinary)
         {
             this.categoriesService = categoriesService;
             this.jobsService = jobsService;
@@ -40,6 +49,7 @@
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.emailSender = emailSender;
+            this.cloudinaryService = cloudinaryService;
         }
 
         public IActionResult Index()
@@ -77,9 +87,9 @@
         [HttpPost]
         public async Task<ActionResult> CreateCategory(CategoryViewModel model)
         {
-
-            await this.categoriesService.CreateAsync(model.Title, model.Description, model.ImageUrl);
-            await emailSender.SendEmailAsync("arbov.v@gmail.com", "VelinArbov", "softunijobs@abv.bg", "Test", "Test");
+            var imageUrl = await this.cloudinaryService.UploadFormFileAsync(model.Image);
+            await this.categoriesService.CreateAsync(model.Title, model.Description, imageUrl);
+            await this.emailSender.SendEmailAsync("arbov.v@gmail.com", "VelinArbov", "softunijobs@abv.bg", "Test", "Test");
             return this.RedirectToAction("Index");
         }
 
@@ -148,6 +158,35 @@
 
             return this.Redirect("/Administration/Dashboard/Users");
 
+        }
+
+
+        public async Task<string> UploadImg(Cloudinary cloudinary, IFormFile file)
+        {
+            byte[] destinationData;
+
+            ImageUploadResult finalResult = null;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                destinationData = memoryStream.ToArray();
+            }
+
+
+
+            using (var memoryStream = new MemoryStream(destinationData))
+            {
+                ImageUploadParams uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, memoryStream),
+                };
+
+                 finalResult = await this.cloudinary.UploadAsync(uploadParams);
+                
+            }
+
+            return finalResult.SecureUri.AbsoluteUri;
         }
     }
 }

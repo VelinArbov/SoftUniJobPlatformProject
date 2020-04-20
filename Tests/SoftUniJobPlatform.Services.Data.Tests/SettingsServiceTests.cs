@@ -4,15 +4,12 @@
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore;
+    using Moq;
     using SoftUniJobPlatform.Data;
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Data.Repositories;
-
-    using Microsoft.EntityFrameworkCore;
-
-    using Moq;
-
     using Xunit;
 
     public class SettingsServiceTests

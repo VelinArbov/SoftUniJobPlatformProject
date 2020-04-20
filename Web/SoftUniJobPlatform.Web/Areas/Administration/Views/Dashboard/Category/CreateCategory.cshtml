@@ -1,33 +1,35 @@
 ﻿@using SoftUniJobPlatform.Data.Models.Enum
-@model SoftUniJobPlatform.Web.ViewModels.Categories.CategoryViewModel 
+@model SoftUniJobPlatform.Web.ViewModels.Categories.CategoryViewModel
 @{
     ViewData["Title"] = "CreateCategory";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <form  method="post">
-            <h4>Create a category.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for=@Model.Title></label>
-                <input asp-for=@Model.Title class="form-control" />
-                <span asp-validation-for=@Model.Title class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for=@Model.Description></label>
-                <input asp-for=@Model.Description class="form-control" />
-                <span asp-validation-for=@Model.Description class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for=@Model.ImageUrl></label>
-                <input asp-for=@Model.ImageUrl class="form-control" placeholder="http://" />
-                <span asp-validation-for=@Model.ImageUrl class="text-danger"></span>
-            </div>
 
-            <button type="submit" class="btn btn-primary" asp-controller="Dashboard" asp-action="CreateCategory">Register</button>
+<div class="row text-center">
+    <div class="col-md-10 col-md-offset-1">
+        <form method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="form-group col-xs-6">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label asp-for="Image"></label>
+                    <div>
+                        <input asp-for="Image" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" rows="5" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Publish Article</button>
         </form>
     </div>
-
 </div>
+
+

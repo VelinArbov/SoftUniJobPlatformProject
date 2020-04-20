@@ -16,19 +16,17 @@ namespace SoftUniJobPlatform.Services.Data
     public class ApplicationUsersService : IApplicationUsersService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
-        private readonly UserManager<ApplicationUser> userManager;
+       
         private readonly IJobsService jobsService;
         private readonly IRepository<StudentJob> studentJobRepository;
 
         public ApplicationUsersService(
             IDeletableEntityRepository<ApplicationUser> usersRepository,
-            UserManager<ApplicationUser> userManager,
             IJobsService jobsService,
             IRepository<StudentJob> studentJobRepository)
 
         {
             this.usersRepository = usersRepository;
-            this.userManager = userManager;
             this.jobsService = jobsService;
             this.studentJobRepository = studentJobRepository;
         }
@@ -48,8 +46,9 @@ namespace SoftUniJobPlatform.Services.Data
 
         public async Task DeleteAsync(string id)
         {
-            var user = await this.userManager.FindByIdAsync(id);
-
+            var user = this.usersRepository.All()
+                .FirstOrDefault(x => x.Id == id);
+            
             this.usersRepository.Delete(user);
 
             await this.usersRepository.SaveChangesAsync();
@@ -70,7 +69,9 @@ namespace SoftUniJobPlatform.Services.Data
 
         public async Task AddJobAsync(int jobId, string userId)
         {
-            var user = this.userManager.Users.FirstOrDefault(x => x.Id == userId);
+            var user = usersRepository.All()
+                .Where(x => x.Id == userId)
+                .FirstOrDefault();
             var job = this.jobsService.JobById(jobId);
 
             var exist = this.studentJobRepository.All().FirstOrDefault(x => x.JobId == jobId && x.ApplicationUserId == userId);
