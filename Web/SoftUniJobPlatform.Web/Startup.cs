@@ -1,5 +1,4 @@
-﻿
-namespace SoftUniJobPlatform.Web
+﻿namespace SoftUniJobPlatform.Web
 {
     using System;
     using System.Reflection;
@@ -122,6 +121,7 @@ namespace SoftUniJobPlatform.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Home/HttpError?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
@@ -141,10 +141,10 @@ namespace SoftUniJobPlatform.Web
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("StudentsJob", "/{name:minlength(3)}", new { controller = "Jobs", action = "Index" });
-                        endpoints.MapControllerRoute("areaRoute", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                        endpoints.MapControllerRoute("Students", "{controller=Dashboard}/{action=ApplyJobAsync}/{id?}", new { control = "Dashboard", action = "ApplyJobAsync" });
+                        endpoints.MapControllerRoute("studentsjob", "/{name:minlength(3)}", new { controller = "jobs", action = "index" });
+                        endpoints.MapControllerRoute("arearoute", "{area:exists}/{controller=home}/{action=index}/{id?}");
+                        endpoints.MapControllerRoute("default", "{controller=home}/{action=index}/{id?}");
+                        endpoints.MapControllerRoute("students", "{controller=dashboard}/{action=applyjobasync}/{id?}", new { control = "dashboard", action = "applyjobasync" });
                         endpoints.MapRazorPages();
                     });
         }

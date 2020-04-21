@@ -1,35 +1,39 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Diagnostics;
-    using System.Linq;
 
     using Microsoft.AspNetCore.Mvc;
-    using SoftUniJobPlatform.Data;
-    using SoftUniJobPlatform.Data.Common.Repositories;
-    using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
-    using SoftUniJobPlatform.Services.Mapping;
     using SoftUniJobPlatform.Web.ViewModels;
-
+    using SoftUniJobPlatform.Web.ViewModels.Home;
 
     public class HomeController : BaseController
     {
         private readonly ICategoriesService categoriesService;
+        private readonly IApplicationUsersService usersService;
+        private readonly IJobsService jobsService;
         private readonly ICloudinaryService clodinaryService;
 
         public HomeController(ICategoriesService categoriesService,
+            IApplicationUsersService usersService,
+            IJobsService jobsService,
             ICloudinaryService clodinaryService)
         {
             this.categoriesService = categoriesService;
+            this.usersService = usersService;
+            this.jobsService = jobsService;
             this.clodinaryService = clodinaryService;
         }
 
         public IActionResult Index()
         {
-            return this.View();
+            var viewModel = new IndexCounterViewModel
+            {
+                Students = this.usersService.GetStudentsCount(),
+                Companies = this.usersService.GetCompaniesCount(),
+                Jobs = this.jobsService.GetCountJobs(),
+            };
+            return this.View(viewModel);
         }
 
         public IActionResult Privacy()
@@ -37,15 +41,10 @@ namespace SoftUniJobPlatform.Web.Controllers
             return this.View();
         }
 
-        [HttpPost]
-        public async Task<string> UploadImg(IFormFile file)
+        public IActionResult HttpError(int statusCode)
         {
-            ;
-           return await this.clodinaryService.UploadFormFileAsync(file);
-           
+            return this.View(statusCode);
         }
-
-     
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

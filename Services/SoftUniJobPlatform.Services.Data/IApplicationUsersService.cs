@@ -18,5 +18,10 @@
         T GetStudentById<T>(string id);
 
         ApplicationUser GetStudentById(string id);
+
+        int GetStudentsCount();
+
+        int GetCompaniesCount();
+
     }
 }

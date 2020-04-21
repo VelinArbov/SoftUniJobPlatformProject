@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using SoftUniJobPlatform.Data.Models;
-using SoftUniJobPlatform.Web.ViewModels.Student;
-using SoftUniJobPlatform.Web.ViewModels.StudentJob;
-
-namespace SoftUniJobPlatform.Web.Controllers
+﻿namespace SoftUniJobPlatform.Web.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Web.ViewModels.Jobs;
+    using SoftUniJobPlatform.Web.ViewModels.Student;
+    using SoftUniJobPlatform.Web.ViewModels.StudentJob;
 
     public class JobsController : Controller
     {
@@ -31,10 +31,10 @@ namespace SoftUniJobPlatform.Web.Controllers
                 var viewModel = new AllJobsViewModel
                 {
                     Jobs = this.jobsService.GetAll<JobsViewModel>().Where(x
-                        => x.CompanyName.ToLower().Contains(searchString.ToLower())),
+                        => x.Description.ToLower().Contains(searchString.ToLower())),
                 };
 
-                return this.View();
+                return this.View(viewModel);
             }
 
             var viewModel1 = new AllJobsViewModel

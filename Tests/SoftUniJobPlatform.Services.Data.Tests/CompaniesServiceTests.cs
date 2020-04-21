@@ -95,8 +95,7 @@
         [Fact]
         public void GetCompanyWithFakeId()
         {
-         
-
+            
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository =

@@ -32,6 +32,8 @@
 
         int GetCountByCategoryId(int categoryId);
 
-        
+        int GetCountJobs();
+
+
     }
 }

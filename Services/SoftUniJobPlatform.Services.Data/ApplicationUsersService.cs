@@ -1,13 +1,10 @@
-﻿using System;
-using System.ComponentModel.Design;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Identity;
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Data.Models.Enum;
@@ -123,6 +120,16 @@ namespace SoftUniJobPlatform.Services.Data
         public ApplicationUser GetStudentById(string id)
         {
             return this.usersRepository.All().FirstOrDefault(x => x.Id == id);
+        }
+
+        public int GetStudentsCount()
+        {
+            return this.usersRepository.All().Count(x => x.Type == UserType.Student && x.IsAdmin == false);
+        }
+
+        public int GetCompaniesCount()
+        {
+            return this.usersRepository.All().Count(x => x.Type == UserType.Employer);
         }
     }
 }

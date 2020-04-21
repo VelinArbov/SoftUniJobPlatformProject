@@ -326,13 +326,22 @@ namespace SoftUniJobPlatform.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Credit")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -341,10 +350,15 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("IsDeleted");
 
@@ -630,6 +644,15 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", null)
                         .WithMany("Categories")
                         .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Course", b =>
+                {
+                    b.HasOne("SoftUniJobPlatform.Data.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Job", b =>

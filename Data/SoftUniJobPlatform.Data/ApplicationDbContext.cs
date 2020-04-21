@@ -6,11 +6,10 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    using SoftUniJobPlatform.Data.Common.Models;
-    using SoftUniJobPlatform.Data.Models;
-
     using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
+    using SoftUniJobPlatform.Data.Common.Models;
+    using SoftUniJobPlatform.Data.Models;
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
@@ -35,6 +34,7 @@
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Course> Courses { get; set; }
+
 
         public DbSet<UsersSkill> UsersSkills { get; set; }
 
@@ -70,15 +70,7 @@
             builder.Entity<StudentJob>()
                 .HasKey(x => new { x.ApplicationUserId, x.JobId });
 
-            //builder.Entity<StudentJob>()
-            //    .HasOne(x => x.Student)
-            //    .WithMany(x => x.StudentJobs)
-            //    .HasForeignKey(x => x.StudentId);
-
-            //builder.Entity<StudentJob>()
-            //    .HasOne(x => x.Job)
-            //    .WithMany(x => x.Candidates)
-            //    .HasForeignKey(x => x.JobId);
+      
 
 
             builder.Entity<StudentCourse>()
@@ -88,16 +80,6 @@
             builder.Entity<UsersSkill>()
                 .HasKey(x => new { x.ApplicationUserId, x.SkillId });
 
-
-            //builder.Entity<StudentCourse>()
-            //    .HasOne(x => x.Student)
-            //    .WithMany(x => x.Courses)
-            //    .HasForeignKey(x => x.StudentId);
-
-            //builder.Entity<StudentCourse>()
-            //    .HasOne(x =>x.Course )
-            //    .WithMany(x => x.StudentCourses)
-            //    .HasForeignKey(x=> x.CourseId);
 
             base.OnModelCreating(builder);
 

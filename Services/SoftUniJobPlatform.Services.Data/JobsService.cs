@@ -181,7 +181,10 @@
             throw new ArgumentNullException(string.Format(NoCategorywithId, categoryId));
         }
 
-       
+        public int GetCountJobs()
+        {
+            return this.jobRepository.All().Count();
+        }
 
         public async Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int? salary)
         {

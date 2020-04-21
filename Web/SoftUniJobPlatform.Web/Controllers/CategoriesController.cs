@@ -8,9 +8,10 @@ namespace SoftUniJobPlatform.Web.Controllers
 
     public class CategoriesController : Controller
     {
+        private const int ItemsPerPage = 5;
         private readonly ICategoriesService categoriesService;
         private readonly IJobsService jobsService;
-        private const int ItemsPerPage = 5;
+
         public CategoriesController(ICategoriesService categoriesService,
             IJobsService jobsService)
         {
