@@ -36,7 +36,7 @@
             };
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
 
             Assert.Single(usersService.GetAll<CompaniesServiceTests.MyTest>());
@@ -56,7 +56,7 @@
             var jobRepository =
                 new EfDeletableEntityRepository<Job>(new ApplicationDbContext(options.Options));
             var jobService = new JobsService(jobRepository, studentEfRepository);
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository,jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             Assert.Throws<ArgumentNullException>(() => usersService.GetAll<CompaniesServiceTests.MyTest>());
         }
@@ -80,7 +80,7 @@
             };
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             usersService.DeleteAsync(user.Id).GetAwaiter().GetResult();
             Assert.Empty(repository.All());
@@ -108,7 +108,7 @@
             };
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
 
             Assert.Throws<ArgumentNullException>(() => usersService.DeleteAsync(fakeId).GetAwaiter().GetResult());
@@ -134,7 +134,7 @@
             };
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
 
             Assert.Single(usersService.GetAll<CompaniesServiceTests.MyTest>());
@@ -168,7 +168,7 @@
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.AddAsync(user1).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
 
             Assert.Single(usersService.GetAllStudents<MyTest>());
@@ -188,7 +188,7 @@
             var jobRepository =
                 new EfDeletableEntityRepository<Job>(new ApplicationDbContext(options.Options));
             var jobService = new JobsService(jobRepository, studentEfRepository);
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             Assert.Empty(usersService.GetAllStudents<MyTest>());
         }
@@ -218,7 +218,7 @@
             jobRepository.SaveChangesAsync().GetAwaiter().GetResult();
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             usersService.AddJobAsync(job.Id, user.Id).GetAwaiter().GetResult();
             Assert.Single(studentEfRepository.All());
@@ -249,7 +249,7 @@
             jobRepository.SaveChangesAsync().GetAwaiter().GetResult();
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             Assert.Throws<ArgumentNullException>(() => usersService.AddJobAsync(2352342, user.Id).GetAwaiter().GetResult());
         }
@@ -280,7 +280,7 @@
             jobRepository.SaveChangesAsync().GetAwaiter().GetResult();
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             Assert.Throws<ArgumentNullException>(() => usersService.AddJobAsync(job.Id, fakeId).GetAwaiter().GetResult());
         }
@@ -310,10 +310,10 @@
             jobRepository.SaveChangesAsync().GetAwaiter().GetResult();
             repository.AddAsync(user).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository);
+            var usersService = new ApplicationUsersService(repository, jobService, studentEfRepository, jobRepository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             usersService.AddJobAsync(job.Id, user.Id).GetAwaiter().GetResult();
-            Assert.Throws<ArgumentNullException>(() => usersService.AddJobAsync(job.Id, user.Id).GetAwaiter().GetResult());
+            Assert.Throws<ArgumentException>(() => usersService.AddJobAsync(job.Id, user.Id).GetAwaiter().GetResult());
         }
     }
 }

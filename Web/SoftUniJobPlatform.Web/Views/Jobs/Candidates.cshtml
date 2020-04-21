@@ -1,0 +1,15 @@
+﻿@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.StudentJob.CandidateJobViewModel
+@inject IApplicationUsersService UsersService
+@{
+    ViewData["Title"] = "Candidates";
+}
+
+@foreach (var candidate in Model.Candidates)
+{
+    var student = UsersService.GetStudentById(candidate.ApplicationUserId);
+    <div>@student.FullName </div>
+    <div>@student.CreatedOn </div>
+    <div>@student.Location </div>
+    <div>@student.UserName </div>
+}

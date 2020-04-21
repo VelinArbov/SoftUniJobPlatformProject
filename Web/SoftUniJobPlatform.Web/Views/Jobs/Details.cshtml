@@ -39,19 +39,23 @@
 
     </div>
     <!-- /.row -->
-    .id
+  
     @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == @Model.ApplicationUser.Id
     || User.IsInRole(GlobalConstants.AdministratorRoleName)
     || User.IsInRole(GlobalConstants.ModeratorRoleName))
     {
-        <a class="btn btn-danger float-right" asp-area="Employer" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@Model.Id">Edit</a>
-
+        <div>
+           
+            <a class="btn btn-warning" asp-area="" asp-controller="Jobs" asp-action="Candidates" asp-route-id="@Model.Id">Кaндидати:@Model.Candidates.Count()</a>
+        </div>
+        <a class="btn btn-primary float-right" asp-area="Employer" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@Model.Id">Edit</a>
+        <a class="btn btn-danger"  asp-area="Employer" asp-controller="Dashboard" asp-action="Delete" asp-route-Id="@Model.Id">Delete</a>
+     
     }
 
     @if (User.IsInRole(GlobalConstants.StudentRoleName))
     {
 
-        <a class="btn btn-primary" asp-action="ApplyJobAsync" asp-controller="Dashboard" asp-route-Id="@Model.Id">Delete</a>
         <a class="btn btn-danger float-right" asp-area="Student" asp-controller="Dashboard" asp-action="ApplyJob" asp-route-id="@Model.Id">@Model.Id</a> 
     }
 

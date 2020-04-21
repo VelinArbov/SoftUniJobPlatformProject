@@ -9,6 +9,5 @@
     [Area("Student")]
     public class StudentController : BaseController
     {
-      
     }
 }

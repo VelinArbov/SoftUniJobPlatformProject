@@ -41,5 +41,6 @@
 
         public string ViewSalary => this.Salary == 0 ? "--" : this.Salary.ToString();
 
+        public IEnumerable<StudentJob> Candidates { get; set; }
     }
 }

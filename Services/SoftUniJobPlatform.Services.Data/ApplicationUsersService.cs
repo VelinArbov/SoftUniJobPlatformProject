@@ -19,16 +19,19 @@ namespace SoftUniJobPlatform.Services.Data
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IJobsService jobsService;
         private readonly IRepository<StudentJob> studentJobRepository;
+        private readonly IDeletableEntityRepository<Job> jobRepository;
 
         public ApplicationUsersService(
             IDeletableEntityRepository<ApplicationUser> usersRepository,
             IJobsService jobsService,
-            IRepository<StudentJob> studentJobRepository)
+            IRepository<StudentJob> studentJobRepository,
+            IDeletableEntityRepository<Job> jobRepository)
 
         {
             this.usersRepository = usersRepository;
             this.jobsService = jobsService;
             this.studentJobRepository = studentJobRepository;
+            this.jobRepository = jobRepository;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -98,8 +101,9 @@ namespace SoftUniJobPlatform.Services.Data
                     JobId = jobId,
                     Job = job,
                 };
+                job.Candidates.Add(studentJob);
                 user.StudentJobs.Add(studentJob);
-
+                await this.jobRepository.SaveChangesAsync();
                 await this.usersRepository.SaveChangesAsync();
 
             }
@@ -114,6 +118,11 @@ namespace SoftUniJobPlatform.Services.Data
             var student = this.usersRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
             return student;
+        }
+
+        public ApplicationUser GetStudentById(string id)
+        {
+            return this.usersRepository.All().FirstOrDefault(x => x.Id == id);
         }
     }
 }

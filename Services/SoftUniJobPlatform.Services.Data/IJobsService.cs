@@ -14,6 +14,10 @@
 
         IEnumerable<T> GetById<T>(string id);
 
+        IEnumerable<T> GetStudentJobByJobId<T>(int id);
+
+        IEnumerable<StudentJob> GetStudentJobsById(int id);
+
         IEnumerable<Job> SearchJob(string searchTerms);
 
         IEnumerable<T> GetByCategoryId<T>(int categoryId, int? take = null, int skip = 0);
@@ -27,5 +31,7 @@
         Task DeleteAsync(int id);
 
         int GetCountByCategoryId(int categoryId);
+
+        
     }
 }

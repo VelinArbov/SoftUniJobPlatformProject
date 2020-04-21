@@ -1,17 +1,32 @@
 ﻿@using SoftUniJobPlatform.Services.Data
 @model SoftUniJobPlatform.Web.ViewModels.Student.StudentJobViewModel
 @inject IJobsService JobsService
+@inject IApplicationUsersService UsersService
 @{
     this.ViewData["Title"] = "Student dashboard";
+
 }
 @if (Model.StudentJobs.Any())
 {
-    <h1>My application @Model.StudentJobs.Count()</h1>
+    <h1 align="center">My application @Model.StudentJobs.Count()</h1>
+    <ul class="list-unstyled">
+        @foreach (var studentJob in @Model.StudentJobs)
+        {
 
-    @*@foreach (var job in @Model.StudentJobs)
-    {
-        <div>@JobsService.JobById(job.JobId).Location</div>
-    }*@
+            var job = JobsService.JobById(studentJob.JobId);
+            var user = UsersService.GetStudentById(job.ApplicationUserId);
+
+
+            <li class="media">
+                <img class="img-fluid" height="200" width="200" src="@user.ImageUrl" alt="@job.Title">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1">List-based media object</h5>
+                    @job.Description
+                </div>
+            </li>
+            <hr>
+        }
+    </ul>
 }
 else
 {

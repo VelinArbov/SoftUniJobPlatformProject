@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using SoftUniJobPlatform.Data.Models;
+using SoftUniJobPlatform.Web.ViewModels.Student;
+using SoftUniJobPlatform.Web.ViewModels.StudentJob;
 
 namespace SoftUniJobPlatform.Web.Controllers
 {
@@ -9,13 +14,15 @@ namespace SoftUniJobPlatform.Web.Controllers
     public class JobsController : Controller
     {
         private readonly IJobsService jobsService;
+        private readonly IApplicationUsersService userService;
 
-        public JobsController(IJobsService jobsService)
+        public JobsController(IJobsService jobsService, IApplicationUsersService userService)
         {
             this.jobsService = jobsService;
+            this.userService = userService;
         }
 
-        public IActionResult Index(int? pageNumber, string searchString = null )
+        public IActionResult Index(int? pageNumber, string searchString = null)
         {
 
             this.ViewData["CurrentFilter"] = searchString;
@@ -41,11 +48,19 @@ namespace SoftUniJobPlatform.Web.Controllers
         public IActionResult Details(int id)
         {
 
-
             var viewModel = this.jobsService.GetJobById<JobsViewModel>(id);
             return this.View(viewModel);
         }
 
+        public IActionResult Candidates(int id)
+        {
+
+
+
+            var viewModel = this.jobsService.GetJobById<CandidateJobViewModel>(id);
+
+
+            return this.View(viewModel);
+        }
     }
 }
-

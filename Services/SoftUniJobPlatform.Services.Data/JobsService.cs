@@ -73,6 +73,20 @@
             return query.To<T>().ToList();
         }
 
+        public IEnumerable<T> GetStudentJobByJobId<T>(int id)
+        {
+            IQueryable<StudentJob> query =
+                this.studentJobsRepository.All().Where(x => x.JobId == id);
+
+
+            return query.To<T>().ToList();
+        }
+
+        public IEnumerable<StudentJob> GetStudentJobsById(int id)
+        {
+            return this.studentJobsRepository.All().Where(x => x.JobId == id);
+        }
+
         public IEnumerable<Job> SearchJob(string searchTerms)
         {
             if (string.IsNullOrWhiteSpace(searchTerms) || string.IsNullOrEmpty(searchTerms))
@@ -166,6 +180,8 @@
 
             throw new ArgumentNullException(string.Format(NoCategorywithId, categoryId));
         }
+
+       
 
         public async Task EditAsync(int id, string position, string location, string jobRequirements, string engagement, int? salary)
         {
