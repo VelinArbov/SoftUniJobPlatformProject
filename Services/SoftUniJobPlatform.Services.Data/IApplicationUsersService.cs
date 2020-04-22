@@ -23,5 +23,7 @@
 
         int GetCompaniesCount();
 
+
+
     }
 }

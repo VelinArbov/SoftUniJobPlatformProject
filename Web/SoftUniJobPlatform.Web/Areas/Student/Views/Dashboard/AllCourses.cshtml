@@ -1,0 +1,68 @@
+﻿@model SoftUniJobPlatform.Web.ViewModels.Course.AllCoursesViewModel;
+
+
+<h1 align="center" style="font-kerning: auto">Course Page</h1>
+
+
+<span></span>
+<div>
+
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Course</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        @foreach (var course in Model.Courses)
+        {
+            <tbody>
+                <tr>
+                    <th scope="row"></th>
+                    <td><img src="@course.ImageUrl" width="80" class="mr-3" alt="@course.Title"></td>
+                    <td>@course.Title</td>
+                    <td>@course.ShortDescription</td>
+                    <td>@course.Category.Name</td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="Dashboard" asp-action="AddCourse" asp-route-id="@course.Id">Add</a>
+                    </td>
+                      
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>
+
+
+}
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $(".btn-danger").click(function (e) {
+        if (confirm("Are you sure?")) {
+            alert('OK');
+        }
+        else {
+            e.preventDefault();
+        }
+    });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $('th').click(function () {
+        var table = $(this).parents('table').eq(0)
+        var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()))
+        this.asc = !this.asc
+        if (!this.asc) { rows = rows.reverse() }
+        for (var i = 0; i < rows.length; i++) { table.append(rows[i]) }
+    })
+    function comparer(index) {
+        return function (a, b) {
+            var valA = getCellValue(a, index), valB = getCellValue(b, index)
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.toString().localeCompare(valB)
+        }
+    }
+    function getCellValue(row, index) { return $(row).children('td').eq(index).text() }
+</script>

@@ -1,0 +1,34 @@
+﻿@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.Course.StudentCourseViewModel
+@inject ICoursesService CoursesService
+@inject IApplicationUsersService UsersService
+@{
+    ViewData["Title"] = "MyCourses";
+}
+
+<h1>MyCourses</h1>
+
+<h1 align="center">My courses @Model.Courses.Count()</h1>
+<ul class="list-unstyled">
+    @foreach (var course in @Model.Courses)
+    {
+
+        var studentCourse = this.CoursesService.GetById(course.CourseId);
+        var student = UsersService.GetStudentById(course.ApplicationUserId);
+
+
+        <li class="media">
+            <img class="img-fluid" height="200" width="200" src="@studentCourse.ImageUrl" alt="@studentCourse.Title">
+            <div class="media-body">
+                <h5 class="mt-0 mb-1">
+                Progress: <button type="button" class="btn btn-primary">@studentCourse.CourseProgress.ToString()</button>
+                </h5>
+                    @studentCourse.Description
+            </div>
+
+        </li>
+        <hr />
+    }
+</ul>
+
+

@@ -5,5 +5,8 @@
     public class CourseController : Controller
     {
         public IActionResult Index()
+        {
+            return this.View();
+        }
     }
 }

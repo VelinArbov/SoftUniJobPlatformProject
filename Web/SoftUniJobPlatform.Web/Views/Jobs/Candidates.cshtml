@@ -12,4 +12,8 @@
     <div>@student.CreatedOn </div>
     <div>@student.Location </div>
     <div>@student.UserName </div>
+                           @foreach (var course in student.Courses)
+                           {
+                               <div>@course.Course.Title</div>
+                           }
 }

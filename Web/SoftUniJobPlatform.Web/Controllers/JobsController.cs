@@ -55,10 +55,7 @@
         public IActionResult Candidates(int id)
         {
 
-
-
             var viewModel = this.jobsService.GetJobById<CandidateJobViewModel>(id);
-
 
             return this.View(viewModel);
         }

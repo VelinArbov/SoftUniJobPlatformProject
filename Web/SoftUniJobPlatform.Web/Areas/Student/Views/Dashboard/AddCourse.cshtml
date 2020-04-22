@@ -1,0 +1,62 @@
+﻿@using SoftUniJobPlatform.Data.Models.Enum
+@model SoftUniJobPlatform.Web.ViewModels.Course.CourseViewModel
+@{
+    ViewData["Title"] = "AddCourse";
+}
+
+<h1>AddCourse</h1>
+
+
+<div class="text-center">
+    <div class="col-md-4">
+        <form asp-action="AddCourse">
+            <div class="form-group">
+                <label asp-for="CourseProgress">Change Position</label>
+
+                <select id="type" asp-for="CourseProgress" asp-items="Html.GetEnumSelectList<CourseProgressType>()">
+                    <option selected="selected" value="">Please select</option>
+                </select>
+                <span asp-validation-for="CourseProgress" class="text-danger" />
+
+            </div>
+
+            <div class="form-group"  id="row_dim1">
+                <label asp-for="Rate" class="control-label"></label>
+                <input asp-for="Rate" class="form-control" />
+                <span asp-validation-for="Rate" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="row_dim">
+                <label asp-for="Credit" class="control-label"></label>
+                <input asp-for="Credit" class="form-control" />
+                <span asp-validation-for="Credit" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+            
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('#type').on('change', function () {
+            if (this.value === '0') {
+                $("#row_dim").hide();
+                $("#row_dim1").hide();
+            }
+            else {
+                $("#row_dim").show();
+                $("#row_dim1").show();
+            }
+        });
+    });
+</script>

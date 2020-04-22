@@ -38,12 +38,12 @@
             <div class="form-group">
                 <label asp-for="Input.IsEmployer">Choose Type</label>
 
-                <select asp-for="Input.IsEmployer" asp-items="Html.GetEnumSelectList<UserType>()">
+                <select asp-for="Input.IsEmployer" class="form-control" asp-items="Html.GetEnumSelectList<UserType>()">
                     <option selected="selected" value="">Please select</option>
                 </select>
                 <span asp-validation-for="Input.IsEmployer" class="text-danger" />
-                <input type="hidden" id="RecaptchaValue" name="RecaptchaValue" />
             </div>
+                <input type="hidden" id="RecaptchaValue" name="RecaptchaValue" />
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>

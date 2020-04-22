@@ -28,7 +28,7 @@
                               new RolesSeeder(),
                               new CategorySeeder(),
                               new UserRolesSeeder(),
-
+                              new CoursesSeeder(),
                           };
 
             foreach (var seeder in seeders)
