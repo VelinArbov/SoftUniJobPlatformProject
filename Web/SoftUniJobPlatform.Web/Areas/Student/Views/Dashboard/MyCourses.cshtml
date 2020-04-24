@@ -6,7 +6,7 @@
 }
 
 <h1>MyCourses</h1>
-<a button type="button" class="btn btn-primary"asp-area="Student" asp-controller="Dashboard" asp-action="CreateCourse">Add Course</a>
+<a button type="button" class="btn btn-primary" asp-area="Student" asp-controller="Dashboard" asp-action="CreateCourse">Add Course</a>
 <h1 align="center">My courses @Model.Courses.Count()</h1>
 @if (Model.Courses.Any())
 {
@@ -24,7 +24,7 @@
                     </h5>
                     @course.ShortDescription
                 </div>
-
+                <a button type="button" class="btn btn-danger" asp-area="Student" asp-controller="Dashboard" asp-action="DeleteC" asp-route-id="@course.Id">Delete</a>
             </li>
             <hr />
         }
@@ -36,3 +36,14 @@ else
 }
 
 
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $(".btn-danger").click(function (e) {
+        if (confirm("Are you sure?")) {
+            alert('OK');
+        }
+        else {
+            e.preventDefault();
+        }
+    });
+</script>

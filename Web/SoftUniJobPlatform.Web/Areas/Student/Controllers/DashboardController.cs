@@ -61,21 +61,7 @@ namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
             return this.Redirect("/Jobs");
         }
 
-        public IActionResult AllCourses()
-        {
-            var viewModel = new AllCoursesViewModel()
-            {
-                Courses = this.coursesService.GetAll<CourseViewModel>(),
-            };
-            return this.View(viewModel);
-        }
 
-        [HttpGet]
-        public IActionResult AddCourse(int id)
-        {
-            var viewmodel = this.coursesService.GetById<CourseViewModel>(id);
-            return this.View(viewmodel);
-        }
 
         [HttpPost]
         public IActionResult AddCourse(CourseViewModel model)
@@ -122,7 +108,7 @@ namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             await this.skillsService.DeleteAsync(id, userId);
-            return this.Redirect("/Student/Dashboard/MySkills");
+            return this.Redirect("/Student/Dashboard/MyCourses");
         }
 
         public IActionResult CreateCourse()
@@ -148,6 +134,12 @@ namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
                 Courses = this.coursesService.GetAllByUserId<CourseViewModel>(userId),
             };
             return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> DeleteC(int id)
+        {
+            await this.coursesService.DeleteAsync(id);
+            return this.Redirect("/Student/Dashboard/MyCourses");
         }
     }
 }

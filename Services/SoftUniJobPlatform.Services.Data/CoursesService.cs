@@ -60,7 +60,7 @@ namespace SoftUniJobPlatform.Services.Data
                 .To<T>().FirstOrDefault();
             if (courses == null)
             {
-                throw new Exception(string.Format(NoCourseWithIdError,id));
+                throw new Exception(string.Format(NoCourseWithIdError, id));
             }
 
             return courses;
@@ -71,14 +71,14 @@ namespace SoftUniJobPlatform.Services.Data
             return this.courseRepository.All().FirstOrDefault(x => x.Id == id);
         }
 
-        public void Create(string userId, string title, string description, int categoryId, string imageUrl,string proggress)
+        public async Task Create(string userId, string title, string description, int categoryId, string imageUrl, string progress)
         {
             var user = this.userRepository.All().FirstOrDefault(x => x.Id == userId);
             var course = new Course
             {
                 ApplicationUserId = user.Id,
                 CategoryId = categoryId,
-                CourseProgress = Enum.Parse<CourseProgressType>(proggress,ignoreCase: true),
+                CourseProgress = CourseProgressType.Finished,
                 Title = title,
                 Description = description,
                 ImageUrl = imageUrl ?? "https://arbikas.com/pub/media/brands/asi.jpg",
@@ -87,11 +87,16 @@ namespace SoftUniJobPlatform.Services.Data
             this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
             this.courseRepository.AddAsync(course).GetAwaiter().GetResult();
             this.courseRepository.SaveChangesAsync().GetAwaiter().GetResult();
+
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var category = this.courseRepository.All().FirstOrDefault(x => x.Id == id);
+
+            this.courseRepository.Delete(category);
+
+            await this.courseRepository.SaveChangesAsync();
         }
 
         public Task EditAsync(int id, string title, string description, string imageUrl)

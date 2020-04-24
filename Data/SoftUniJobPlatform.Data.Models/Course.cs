@@ -11,6 +11,7 @@ namespace SoftUniJobPlatform.Data.Models
 
     public class Course : BaseDeletableModel<int>
     {
+
         public string ApplicationUserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }

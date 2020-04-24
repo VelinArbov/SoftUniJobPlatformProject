@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
+﻿using SoftUniJobPlatform.Services.Messaging;
+
+namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 {
     using System;
     using System.Linq;
@@ -9,7 +11,6 @@
     using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Data.Models;
@@ -23,6 +24,11 @@
 
     public class DashboardController : EmployerController
     {
+        private const string adminEmail = "arbov.v@gmail.com";
+        private const string adminName = "Velin Arbov";
+        private const string subject = "Има нова обява в softunijobs.bg";
+        private const string htmlContent = "Има нова обява от{0} в softunijobs.bg за позиция : {1}";
+
         private readonly IJobsService jobsService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICategoriesService categoriesService;
@@ -72,13 +78,16 @@
             var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, input.CategoryId, input.Level, input.Location, input.Salary, input.Engagement);
 
             var students = this.usersService.GetAll<StudentDetailsViewModel>();
-            //await this.emailSender.SendEmailAsync("arbov.v@gmail.com", "VelinArbov", "softunijobs@abv.bg", "Test", "Test");
+            foreach (var student in students)
+            {
+                await this.emailSender.SendEmailAsync(adminEmail, adminName, @student.Email, subject,string.Format(htmlContent,user.FullName,input.Title));
+            }
 
             BackgroundJob.Schedule(
                 () => this.jobsService.DeleteAsync(jobsId),
                 TimeSpan.FromDays(14));
 
-            this.TempData["InfoMessage"] = "New job created!";
+            this.TempData["InfoMessage"] = "Благодарим Ви, че добавихте нова обява. Тя е с валидност 14 дни!";
             return this.Redirect("/");
         }
 

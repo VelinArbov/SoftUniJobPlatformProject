@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace SoftUniJobPlatform.Web.ViewModels.Companies
+﻿namespace SoftUniJobPlatform.Web.ViewModels.Companies
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using SoftUniJobPlatform.Data.Models;
@@ -32,5 +31,9 @@ namespace SoftUniJobPlatform.Web.ViewModels.Companies
         public string Location { get; set; }
 
         public ICollection<UsersSkill> UsersSkills { get; set; }
+
+        public ICollection<Course> Courses { get; set; }
+
+        public virtual ICollection<Job> Jobs { get; set; }
     }
 }

@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\Data\SoftUniJobPlatform.Data.Common\SoftUniJobPlatform.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\SoftUniJobPlatform.Data.Models\SoftUniJobPlatform.Data.Models.csproj" />
     <ProjectReference Include="..\SoftUniJobPlatform.Services.Mapping\SoftUniJobPlatform.Services.Mapping.csproj" />
+    <ProjectReference Include="..\SoftUniJobPlatform.Services.Messaging\SoftUniJobPlatform.Services.Messaging.csproj" />
   </ItemGroup>
 
 </Project>

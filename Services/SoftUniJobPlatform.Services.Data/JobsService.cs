@@ -15,6 +15,7 @@
         private const string NoJobwithId = "Няма обява с ID {0}.";
         private readonly IDeletableEntityRepository<Job> jobRepository;
         private readonly IRepository<StudentJob> studentJobsRepository;
+
         public JobsService(
                 IDeletableEntityRepository<Job> jobRepository,
                 IRepository<StudentJob> studentJobsRepository)
@@ -60,7 +61,6 @@
             IQueryable<Job> query =
                 this.jobRepository.All().Where(x => x.ApplicationUserId == id);
 
-        
             return query.To<T>().ToList();
         }
 

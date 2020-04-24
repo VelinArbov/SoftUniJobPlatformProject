@@ -1,10 +1,10 @@
 ﻿
-using Microsoft.AspNetCore.Mvc;
-using SoftUniJobPlatform.Services.Data;
-using SoftUniJobPlatform.Web.ViewModels.Companies;
-
 namespace SoftUniJobPlatform.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Services.Data;
+    using SoftUniJobPlatform.Web.ViewModels.Companies;
+
     public class StudentController : Controller
     {
         private readonly IApplicationUsersService usersService;
