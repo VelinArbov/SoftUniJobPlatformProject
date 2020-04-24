@@ -13,6 +13,7 @@ namespace SoftUniJobPlatform.Services.Data
 
     public class CoursesService : ICoursesService
     {
+        private const string NoCourseWithIdError = "Няма курс с ID: {0}";
         private readonly IDeletableEntityRepository<Course> courseRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
 
@@ -29,10 +30,6 @@ namespace SoftUniJobPlatform.Services.Data
             IQueryable<Course> query =
                 this.courseRepository.All().OrderByDescending(x => x.CreatedOn);
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException("No courses");
-            }
 
             return query.To<T>().ToList();
         }
@@ -43,10 +40,6 @@ namespace SoftUniJobPlatform.Services.Data
             IQueryable<Course> query =
                 this.courseRepository.All().Where(x => x.ApplicationUserId == id);
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException("No courses");
-            }
 
             return query.To<T>().ToList();
         }
@@ -67,7 +60,7 @@ namespace SoftUniJobPlatform.Services.Data
                 .To<T>().FirstOrDefault();
             if (courses == null)
             {
-                throw new ArgumentNullException();
+                throw new Exception(string.Format(NoCourseWithIdError,id));
             }
 
             return courses;
@@ -78,14 +71,14 @@ namespace SoftUniJobPlatform.Services.Data
             return this.courseRepository.All().FirstOrDefault(x => x.Id == id);
         }
 
-        public void Create(string userId, string title, string description, int categoryId, string imageUrl)
+        public void Create(string userId, string title, string description, int categoryId, string imageUrl,string proggress)
         {
             var user = this.userRepository.All().FirstOrDefault(x => x.Id == userId);
             var course = new Course
             {
                 ApplicationUserId = user.Id,
                 CategoryId = categoryId,
-                CourseProgress = CourseProgressType.Finished,
+                CourseProgress = Enum.Parse<CourseProgressType>(proggress,ignoreCase: true),
                 Title = title,
                 Description = description,
                 ImageUrl = imageUrl ?? "https://arbikas.com/pub/media/brands/asi.jpg",
@@ -113,11 +106,6 @@ namespace SoftUniJobPlatform.Services.Data
             var course = this.GetById(courseId);
 
             this.courseRepository.SaveChangesAsync();
-
-            if (user == null || course == null)
-            {
-                throw new ArgumentNullException("Not correct input");
-            }
 
             if (!user.Courses.Contains(course))
             {

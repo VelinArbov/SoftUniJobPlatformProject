@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
@@ -43,11 +42,6 @@ namespace SoftUniJobPlatform.Services.Data
         {
             var skill = this.skillRepository.All().FirstOrDefault(x => x.Id == id);
 
-            if (skill == null)
-            {
-                throw new ArgumentNullException();
-            }
-
             var isExist = this.userSkillRepository.All().Any(x => x.SkillId == id);
 
             if (isExist)
@@ -58,7 +52,6 @@ namespace SoftUniJobPlatform.Services.Data
 
                 await this.userSkillRepository.SaveChangesAsync();
             }
-
         }
     }
 }

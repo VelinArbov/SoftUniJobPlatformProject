@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
+﻿using System;
+
+namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
 {
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -44,8 +46,18 @@
 
         public async Task<IActionResult> ApplyJob(int id)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.usersService.AddJobAsync(id, userId);
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.usersService.AddJobAsync(id, userId);
+                this.TempData["InfoMessage"] = "Благодарим Ви че кандидствахте по тази обява.";
+            }
+            catch (Exception e)
+            {
+                this.TempData["ErrorMessage"] = e.Message;
+                this.TempData["InfoMessage"] = null;
+            }
+
             return this.Redirect("/Jobs");
         }
 
@@ -85,8 +97,17 @@
 
         public async Task<IActionResult> AddSkill(int id)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await this.usersService.AddSkillAsync(id, userId);
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await this.usersService.AddSkillAsync(id, userId);
+
+            }
+            catch (Exception e)
+            {
+                this.TempData["ErrorMessage"] = e.Message;
+            }
+
             return this.Redirect("/Student/Dashboard/MySkills");
         }
 
@@ -114,7 +135,7 @@
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var imageUrl = this.cloudinary.UploadFormFileAsync(model.Image).GetAwaiter().GetResult();
-            this.coursesService.Create(userId, model.Title, model.Description, model.CategoryId, imageUrl);
+            this.coursesService.Create(userId, model.Title, model.Description, model.CategoryId, imageUrl,model.CourseProgress);
             return this.RedirectToAction("Index");
         }
 

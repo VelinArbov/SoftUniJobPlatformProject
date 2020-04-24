@@ -11,6 +11,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
+    using SoftUniJobPlatform.Common;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Services.Mapping;
@@ -18,6 +19,7 @@
     using SoftUniJobPlatform.Web.Areas.Employer.Controllers;
     using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
     using SoftUniJobPlatform.Web.ViewModels.Jobs;
+    using SoftUniJobPlatform.Web.ViewModels.Student;
 
     public class DashboardController : EmployerController
     {
@@ -25,6 +27,7 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICategoriesService categoriesService;
         private readonly IApplicationUsersService usersService;
+        private readonly IEmailSender emailSender;
 
         public DashboardController(
             IJobsService jobsService,
@@ -37,6 +40,7 @@
             this.userManager = userManager;
             this.categoriesService = categoriesService;
             this.usersService = usersService;
+            this.emailSender = emailSender;
         }
 
         public async Task<IActionResult> Index()
@@ -67,11 +71,14 @@
 
             var jobsId = await this.jobsService.CreateJob(user.Id, input.Title, input.Description, input.Position, input.CategoryId, input.Level, input.Location, input.Salary, input.Engagement);
 
+            var students = this.usersService.GetAll<StudentDetailsViewModel>();
+            //await this.emailSender.SendEmailAsync("arbov.v@gmail.com", "VelinArbov", "softunijobs@abv.bg", "Test", "Test");
+
             BackgroundJob.Schedule(
                 () => this.jobsService.DeleteAsync(jobsId),
                 TimeSpan.FromDays(14));
 
-            this.TempData["InfoMessage"] = "New jobs created!";
+            this.TempData["InfoMessage"] = "New job created!";
             return this.Redirect("/");
         }
 

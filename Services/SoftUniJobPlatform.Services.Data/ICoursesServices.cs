@@ -20,7 +20,7 @@
 
         Course GetById(int id);
 
-        void Create(string userId, string title, string description,int categoryId, string imageUrl);
+        void Create(string userId, string title, string description,int categoryId, string imageUrl,string progress);
 
         Task DeleteAsync(int id);
 

@@ -12,7 +12,10 @@
 
     public class ApplicationUsersService : IApplicationUsersService
     {
-        private const string NoUserWithId = "No user with Id {0}";
+        private const string UserAlreadyApplyOffer = "Вече сте кандидатсвали по тази обява!";
+        private const string NoUserWithId = "Няма юзър с това ИД {0}";
+        private const string UserAlreadyApplySkill = "Имате вече добавен този скил.";
+        private const string NotCorrectInput = "Грешни данни";
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly IJobsService jobsService;
         private readonly IRepository<StudentJob> studentJobRepository;
@@ -46,11 +49,6 @@
                 this.usersRepository.All()
                     .OrderByDescending(x => x.CreatedOn);
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException("No users.");
-            }
-
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -66,7 +64,7 @@
 
             if (user == null)
             {
-                throw new ArgumentNullException(string.Format(NoUserWithId, id));
+                throw new Exception(string.Format(NoUserWithId, id));
             }
 
             this.usersRepository.Delete(user);
@@ -94,7 +92,7 @@
             var job = this.jobsService.JobById(jobId);
             if (user == null || job == null)
             {
-                throw new ArgumentNullException("Not correct input");
+                throw new Exception(NotCorrectInput);
             }
 
             var exist = this.studentJobRepository.All().FirstOrDefault(x => x.JobId == jobId && x.ApplicationUserId == userId);
@@ -115,7 +113,7 @@
             }
             else
             {
-                throw new ArgumentNullException("Your candidate in this job offer");
+                throw new Exception(UserAlreadyApplyOffer);
             }
         }
 
@@ -126,7 +124,7 @@
             var skill = this.skillsService.GetById(jobId);
             if (user == null || skill == null)
             {
-                throw new ArgumentNullException("Not correct input");
+                throw new Exception(NotCorrectInput);
             }
 
             var exist = this.usersSkillRepository.All().FirstOrDefault(x => x.SkillId == jobId && x.ApplicationUserId == userId);
@@ -148,7 +146,7 @@
             }
             else
             {
-                throw new ArgumentNullException("Имате вече добавен този скил.");
+                throw new Exception(UserAlreadyApplySkill);
             }
         }
 

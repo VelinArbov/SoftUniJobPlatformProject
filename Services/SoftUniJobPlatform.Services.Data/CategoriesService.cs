@@ -13,9 +13,9 @@ namespace SoftUniJobPlatform.Services.Data
 
     public class CategoriesService : ICategoriesService
     {
-        private const string InvalidCategoryIdErrorMessage = "Category with ID: {0} does not exist.";
-        private const string InvalidCategoryTitleErrorMessage = "Category with Title: {0} does not exist.";
-        private const string NoCategoriesErrorMessage = "No Categories.";
+        private const string InvalidCategoryIdErrorMessage = "Категория с  ID: {0} не същесвува.";
+        private const string InvalidCategoryTitleErrorMessage = "Категория с име {0} не същесвува.";
+     
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -34,11 +34,6 @@ namespace SoftUniJobPlatform.Services.Data
                 query = query.Take(take.Value);
             }
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException(
-                    string.Format(NoCategoriesErrorMessage));
-            }
 
             return query.To<T>().ToList();
         }
@@ -46,12 +41,6 @@ namespace SoftUniJobPlatform.Services.Data
         public IQueryable<Category> GetCategories()
         {
             var category = this.categoriesRepository.All();
-
-            if (!category.Any())
-            {
-                throw new ArgumentNullException(
-                        string.Format(NoCategoriesErrorMessage));
-            }
 
             return category;
         }
@@ -64,7 +53,7 @@ namespace SoftUniJobPlatform.Services.Data
 
             if (category == null)
             {
-                throw new ArgumentNullException(
+                throw new Exception(
                     string.Format(InvalidCategoryIdErrorMessage, name));
             }
 
@@ -77,7 +66,7 @@ namespace SoftUniJobPlatform.Services.Data
                 .To<T>().FirstOrDefault();
             if (category == null)
             {
-                throw new ArgumentNullException(
+                throw new Exception(
                     string.Format(InvalidCategoryIdErrorMessage, id));
             }
 
@@ -90,7 +79,7 @@ namespace SoftUniJobPlatform.Services.Data
 
             if (category == null)
             {
-                throw new ArgumentNullException(
+                throw new Exception(
                     string.Format(InvalidCategoryIdErrorMessage, id));
 
             }
@@ -100,10 +89,6 @@ namespace SoftUniJobPlatform.Services.Data
 
         public async Task CreateAsync(string title, string description, string imageUrl)
         {
-            if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(description))
-            {
-                throw new ArgumentException("Please insert correct data.");
-            }
 
             var category = this.categoriesRepository.AddAsync(new Category
             {
@@ -121,7 +106,7 @@ namespace SoftUniJobPlatform.Services.Data
 
             if (category == null)
             {
-                throw new ArgumentNullException(
+                throw new Exception(
                     string.Format(InvalidCategoryIdErrorMessage, id));
 
             }

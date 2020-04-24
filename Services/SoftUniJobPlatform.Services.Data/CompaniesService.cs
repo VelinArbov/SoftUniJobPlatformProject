@@ -13,7 +13,6 @@
     public class CompaniesService : ICompaniesService
     {
         private readonly IDeletableEntityRepository<ApplicationUser> companiesRepository;
-        private const string noAvailableCompaniesError = "No Available Companies.";
 
         public CompaniesService(IDeletableEntityRepository<ApplicationUser> companiesRepository)
         {
@@ -27,11 +26,6 @@
                     .Where(x => x.Type == UserType.Employer)
                     .OrderByDescending(x => x.CreatedOn);
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException(string.Format(noAvailableCompaniesError));
-            }
-
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -44,10 +38,6 @@
         {
             var job = this.companiesRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
-            if (job == null)
-            {
-                throw new ArgumentNullException(string.Format(noAvailableCompaniesError));
-            }
 
             return job;
         }

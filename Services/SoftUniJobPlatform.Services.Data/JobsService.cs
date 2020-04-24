@@ -11,11 +11,10 @@
 
     public class JobsService : IJobsService
     {
+        private const string NoCategorywithId = "Категория с ID:{0} несъществува.";
+        private const string NoJobwithId = "Няма обява с ID {0}.";
         private readonly IDeletableEntityRepository<Job> jobRepository;
         private readonly IRepository<StudentJob> studentJobsRepository;
-        private const string NoAvailableJobsError = "No available jobs.";
-        private const string NoCategorywithId = "No category with id {0}.";
-        private const string NoJobwithId = "No job with id {0}.";
         public JobsService(
                 IDeletableEntityRepository<Job> jobRepository,
                 IRepository<StudentJob> studentJobsRepository)
@@ -29,10 +28,6 @@
             IQueryable<Job> query =
                 this.jobRepository.All().OrderByDescending(x => x.CreatedOn);
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException("NoAvailableJobsError");
-            }
             if (count.HasValue)
             {
                 query = query.Take(count.Value);
@@ -65,11 +60,7 @@
             IQueryable<Job> query =
                 this.jobRepository.All().Where(x => x.ApplicationUserId == id);
 
-            if (!query.Any())
-            {
-                throw new ArgumentNullException("No company with this ID.");
-            }
-
+        
             return query.To<T>().ToList();
         }
 
@@ -89,10 +80,6 @@
 
         public IEnumerable<Job> SearchJob(string searchTerms)
         {
-            if (string.IsNullOrWhiteSpace(searchTerms) || string.IsNullOrEmpty(searchTerms))
-            {
-                throw new ArgumentNullException("No correct search.");
-            }
 
             IQueryable<Job> query =
                 this.jobRepository.All().Where(x => x.Description.Contains(searchTerms));
@@ -122,12 +109,6 @@
         {
             var job = this.jobRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
-
-            if (job == null)
-            {
-                throw new ArgumentNullException(string.Format(NoJobwithId, id));
-            }
-
             return job;
         }
 
@@ -135,11 +116,6 @@
         {
             var job = this.jobRepository.All()
                 .FirstOrDefault(x => x.Id == id);
-
-            if (job == null)
-            {
-                throw new ArgumentNullException(string.Format(NoJobwithId, id));
-            }
 
             return job;
         }
@@ -150,7 +126,7 @@
 
             if (job == null)
             {
-                throw new ArgumentNullException(string.Format(NoJobwithId, id));
+                throw new Exception(string.Format(NoJobwithId, id));
             }
 
             var isExist = this.studentJobsRepository.All().Any(x => x.JobId == id);
@@ -178,7 +154,7 @@
                 return jobs;
             }
 
-            throw new ArgumentNullException(string.Format(NoCategorywithId, categoryId));
+            throw new Exception(string.Format(NoCategorywithId, categoryId));
         }
 
         public int GetCountJobs()
