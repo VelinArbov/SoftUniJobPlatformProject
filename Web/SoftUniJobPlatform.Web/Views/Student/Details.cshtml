@@ -1,0 +1,56 @@
+﻿@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.Companies.CompanyViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+@inject ISkillsService SkillsService
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="span3 well">
+        <center>
+            <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="@Model.ViewImage" name="aboutme" width="140" height="140" class="img-circle"></a>
+            <h3>@Model.FullName</h3>
+            <em>click my face for more</em>
+        </center>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                </div>
+                <div class="modal-body">
+                    <center>
+                        <img src="@Model.ImageUrl" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
+                        <h3 class="media-heading">@Model.FullName <small>@Model.Location</small></h3>
+                        <span><strong>Skills: </strong></span>
+                        @foreach (var userSkill in @Model.UsersSkills)
+                        {
+                            var skill = this.SkillsService.GetById(userSkill.SkillId);
+                            <span class="label label-warning">@skill.Name</span>
+                        }
+
+                    </center>
+                    <hr>
+                    <center>
+                        <p class="text-left">
+                            <strong>Location: @Model.Location </strong><br>
+                            <strong>Email: @Model.ViewEmail </strong><br>
+                            <strong>Phone: @Model.ViewPhoneNumber </strong><br>
+                        </p>
+                        <br>
+                    </center>
+                </div>
+                <div class="modal-footer">
+                    <center>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">I've heard enough about @Model.FullName</button>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a button type="button" class="btn btn-warning" asp-area="Employer" asp-controller="Dashboard" asp-action="AllStudents">Back</a>

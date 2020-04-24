@@ -17,5 +17,7 @@
 
         public virtual ICollection<UsersSkill> UsersSkills { get; set; }
 
+        public bool Check { get; set; }
+
     }
 }

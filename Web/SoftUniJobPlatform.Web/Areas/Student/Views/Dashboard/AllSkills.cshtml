@@ -1,0 +1,36 @@
+﻿@model SoftUniJobPlatform.Web.ViewModels.Skills.AllSkillsViewModel
+@{
+    ViewData["Title"] = "AllSkills";
+}
+
+
+
+<h1 align="center" style="font-kerning: auto">Skills Page</h1>
+
+
+<span></span>
+<div>
+
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Course</th>
+            
+        </tr>
+        </thead>
+        @foreach (var skill in Model.Skills)
+        {
+            <tbody>
+            <tr>
+                <td>@skill.Name</td>
+                
+                <td>
+                    <a class="btn btn-primary" asp-controller="Dashboard" asp-action="AddSkill" asp-route-id="@skill.Id">Add</a>
+                </td>
+                      
+            </tr>
+            </tbody>
+        }
+    </table>
+</div>

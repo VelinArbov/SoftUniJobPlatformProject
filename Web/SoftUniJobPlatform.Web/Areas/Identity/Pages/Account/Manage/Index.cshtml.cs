@@ -36,33 +36,27 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            
             [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [Display(Name = "Company Name")]
             public string CompanyName { get; set; }
 
-           
             [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long or Incorrect format.(example: Ivan Ivanov Ivanov)", MinimumLength = 4)]
             [Display(Name = "Full Name")]
             public string FullName { get; set; }
 
-          
             [Display(Name = "BirthDate")]
             public string BirthDate { get; set; }
 
             [Display(Name = "ImageUrl")]
             public string ImageUrl { get; set; }
 
-            [Required]
             [Display(Name = "Location")]
             public string Location { get; set; }
 
-            [Required]
             [StringLength(9, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 9)]
             [Display(Name = "Register Number")]
             public string RegisterNumber { get; set; }
 
-           
             [StringLength(9, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 9)]
             [Display(Name = "Student Number")]
             public string StudentNumber { get; set; }
@@ -74,6 +68,8 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account.Manage
             [Required]
             [Display(Name = "Gender")]
             public GenderType Gender { get; set; }
+
+            public string Description { get; set; }
 
         }
 
@@ -127,10 +123,13 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account.Manage
             else if (this.User.IsInRole(GlobalConstants.EmployerRoleName))
             {
 
-                user.FullName = this.Input.CompanyName;
-                user.RegistrationNumber = this.Input.RegisterNumber;
-                user.ImageUrl = this.Input.ImageUrl;
-                user.Location = this.Input.Location;
+                user.FullName = this.Input.CompanyName == null ? user.FullName : this.Input.CompanyName;
+                user.RegistrationNumber = this.Input.RegisterNumber == null
+                    ? user.RegistrationNumber
+                    : this.Input.RegisterNumber;
+                user.ImageUrl = this.Input.ImageUrl == null ? user.ImageUrl : this.Input.ImageUrl;
+                user.Location = this.Input.Location == null ? user.Location : this.Input.Location;
+                user.Description = this.Input.Description == null ? "No Description" : this.Input.Description;
             }
             else if (this.User.IsInRole(GlobalConstants.StudentRoleName))
             {
@@ -141,8 +140,6 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account.Manage
                 user.DateOfBirth = DateTime.Parse(this.Input.BirthDate);
                 user.Location = this.Input.Location;
             }
-
-
             await this.userManager.UpdateAsync(user);
 
             await this.signInManager.RefreshSignInAsync(user);

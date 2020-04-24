@@ -26,9 +26,9 @@
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">JobOffer Description</h3>
+            <h3 class="my-3">Description</h3>
             <p>@Model.Description</p>
-            <h3 class="my-3">Offer Details</h3>
+            <h3 class="my-3"> Details</h3>
             <ul>
                 <li>Engagement: @Model.Engagement</li>
                 <li>Location: @Model.Location</li>
@@ -39,24 +39,24 @@
 
     </div>
     <!-- /.row -->
-  
+
     @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == @Model.ApplicationUser.Id
-    || User.IsInRole(GlobalConstants.AdministratorRoleName)
-    || User.IsInRole(GlobalConstants.ModeratorRoleName))
+   || User.IsInRole(GlobalConstants.AdministratorRoleName)
+   || User.IsInRole(GlobalConstants.ModeratorRoleName))
     {
         <div>
-           
+
             <a class="btn btn-warning" asp-area="" asp-controller="Jobs" asp-action="Candidates" asp-route-id="@Model.Id">Кaндидати:@Model.Candidates.Count()</a>
         </div>
         <a class="btn btn-primary float-right" asp-area="Employer" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@Model.Id">Edit</a>
-        <a class="btn btn-danger"  asp-area="Employer" asp-controller="Dashboard" asp-action="Delete" asp-route-Id="@Model.Id">Delete</a>
-     
+        <a class="btn btn-danger" asp-area="Employer" asp-controller="Dashboard" asp-action="Delete" asp-route-Id="@Model.Id">Delete</a>
+
     }
 
     @if (User.IsInRole(GlobalConstants.StudentRoleName))
     {
 
-        <a class="btn btn-danger float-right" asp-area="Student" asp-controller="Dashboard" asp-action="ApplyJob" asp-route-id="@Model.Id">@Model.Id</a> 
+        <a class="btn btn-danger float-right" asp-area="Student" asp-controller="Dashboard" asp-action="ApplyJob" asp-route-id="@Model.Id">Apply</a>
     }
 
     <a class="btn btn-primary " asp-action="Index">Back to List</a>
@@ -74,4 +74,16 @@
 <script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
 <script>
     $('#JobCategory').css("color", "red");
+</script>
+
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $(".btn-danger").click(function (e) {
+        if (confirm("Are you sure?")) {
+            alert('OK');
+        }
+        else {
+            e.preventDefault();
+        }
+    });
 </script>
