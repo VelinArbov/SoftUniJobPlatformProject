@@ -64,7 +64,7 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
         {
 
             [Required]
-            [StringLength(20, ErrorMessage = " {0} трябва да е поне {2} символа и не повече от {1} символа .", MinimumLength = 4)]
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 4)]
             [Display(Name = "Username")]
             public string Username { get; set; }
 
@@ -74,18 +74,18 @@ namespace SoftUniJobPlatform.Web.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "Паролата трябва да е поне {2} символа и не повече от {1} символа.", MinimumLength = 6)]
+            [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            [Required(AllowEmptyStrings = false, ErrorMessage = "Моля въведете роля.")]
+            [Required]
             [Display(Name = "User type")]
             public UserType IsEmployer { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "Паролите не съвпадат.")]
+            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
         }
 

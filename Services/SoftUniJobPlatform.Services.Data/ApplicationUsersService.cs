@@ -17,27 +17,18 @@
         private readonly IJobsService jobsService;
         private readonly IRepository<StudentJob> studentJobRepository;
         private readonly IDeletableEntityRepository<Job> jobRepository;
-        private readonly ISkillsService skillsService;
-        private readonly IRepository<UsersSkill> usersSkillRepository;
-        private readonly IDeletableEntityRepository<Skill> skillRepository;
 
         public ApplicationUsersService(
             IDeletableEntityRepository<ApplicationUser> usersRepository,
             IJobsService jobsService,
             IRepository<StudentJob> studentJobRepository,
-            IDeletableEntityRepository<Job> jobRepository,
-            ISkillsService skillsService,
-            IRepository<UsersSkill> usersSkillRepository,
-            IDeletableEntityRepository<Skill> skillRepository)
+            IDeletableEntityRepository<Job> jobRepository)
 
         {
             this.usersRepository = usersRepository;
             this.jobsService = jobsService;
             this.studentJobRepository = studentJobRepository;
             this.jobRepository = jobRepository;
-            this.skillsService = skillsService;
-            this.usersSkillRepository = usersSkillRepository;
-            this.skillRepository = skillRepository;
         }
 
         public IEnumerable<T> GetAll<T>(int? count = null)
@@ -116,39 +107,6 @@
             else
             {
                 throw new ArgumentNullException("Your candidate in this job offer");
-            }
-        }
-
-        public async Task AddSkillAsync(int jobId, string userId)
-        {
-            var user = this.usersRepository.All()
-                .FirstOrDefault(x => x.Id == userId);
-            var skill = this.skillsService.GetById(jobId);
-            if (user == null || skill == null)
-            {
-                throw new ArgumentNullException("Not correct input");
-            }
-
-            var exist = this.usersSkillRepository.All().FirstOrDefault(x => x.SkillId == jobId && x.ApplicationUserId == userId);
-            if (exist == null)
-            {
-                var usersSkill = new UsersSkill
-                {
-                    ApplicationUserId = userId,
-                    ApplicationUser = user,
-                    SkillId = jobId,
-                    Skill = skill,
-                };
-                skill.Check = true;
-                skill.UsersSkills.Add(usersSkill);
-                user.UsersSkills.Add(usersSkill);
-                await this.skillRepository.SaveChangesAsync();
-                await this.usersRepository.SaveChangesAsync();
-
-            }
-            else
-            {
-                throw new ArgumentNullException("Имате вече добавен този скил.");
             }
         }
 

@@ -45,12 +45,6 @@
                     <input asp-for="Input.Location" class="form-control" />
                     <span asp-validation-for="Input.Location" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Input.Description" class="control-label">Company Description</label>
-                    <textarea asp-for="Input.Description" class="form-control" rows="3" placeholder="Description"></textarea>
-                    <span asp-validation-for="Input.Description" class="text-danger"></span>
-                </div>
-               
             }
             else
             {
@@ -79,7 +73,7 @@
 
                 <div class="form-group">
                     <label asp-for="Input.BirthDate"></label>
-                    <input type="date" asp-for="Input.BirthDate" class="form-control">
+                    <input type="date" asp-for="Input.BirthDate"  class="form-control" >
                     <span asp-validation-for="Input.BirthDate" class="text-danger"></span>
                 </div>
 

@@ -10,8 +10,6 @@
     {
         IEnumerable<T> GetAll<T>(int? take = null, int skip = 0);
 
-        IEnumerable<T> GetAllByUserId<T>(string id);
-
         IQueryable<Course> GetCategories();
 
         T GetByName<T>(string name);
@@ -20,12 +18,12 @@
 
         Course GetById(int id);
 
-        void Create(string userId, string title, string description,int categoryId, string imageUrl);
+        Task CreateAsync(string title, string description, string imageUrl);
 
         Task DeleteAsync(int id);
 
         Task EditAsync(int id, string title, string description, string imageUrl);
 
-        void AddCourseAsync(int courseId, string userId, double rate, int credit);
+        Task AddCourseAsync(int courseId, string userId, double rate, int credit);
     }
 }

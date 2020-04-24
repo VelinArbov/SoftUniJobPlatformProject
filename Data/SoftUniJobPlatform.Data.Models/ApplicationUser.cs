@@ -18,7 +18,7 @@ namespace SoftUniJobPlatform.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Jobs = new HashSet<Job>();
-            this.Courses = new HashSet<Course>();
+            this.Courses = new HashSet<StudentCourse>();
             this.StudentJobs = new HashSet<StudentJob>();
             this.Categories = new HashSet<Category>();
             this.UsersSkills = new HashSet<UsersSkill>();
@@ -66,7 +66,7 @@ namespace SoftUniJobPlatform.Data.Models
 
         public virtual ICollection<Category> Categories { get; set; }
 
-        public virtual ICollection<Course> Courses { get; set; }
+        public virtual ICollection<StudentCourse> Courses { get; set; }
 
         public virtual ICollection<StudentJob> StudentJobs { get; set; }
 

@@ -59,6 +59,7 @@
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
 
+          
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -99,12 +100,6 @@
                 {
                     _logger.LogInformation("Employer logged in.");
                     return this.Redirect("/Employer/Dashboard/");
-                }
-
-                if (result.Succeeded && user.IsAdmin == true)
-                {
-                    _logger.LogInformation("Employer logged in.");
-                    return this.Redirect("/Administration/Dashboard/");
                 }
 
                 if (result.Succeeded && userType == "Student")

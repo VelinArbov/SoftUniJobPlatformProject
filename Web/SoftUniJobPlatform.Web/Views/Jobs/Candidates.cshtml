@@ -5,34 +5,15 @@
     ViewData["Title"] = "Candidates";
 }
 
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">FullName</th>
-            <th scope="col">Location</th>
-            <th scope="col">Username</th>
-            <th scope="col">Skills</th>
-            <th scope="col">Courses</th>
-            <th scope="col">Details</th>
-        </tr>
-
-    <tbody>
-        @foreach (var candidate in Model.Candidates)
-        {
-            var student = UsersService.GetStudentById(candidate.ApplicationUserId);
-            <tr>
-                <th scope="row">1</th>
-                <td>@student.UserName</td>
-                <td>@student.Location</td>
-                <td>@student.UserName</td>
-                <td>@student.UsersSkills.Count</td>
-                <td>@student.Courses.Count</td>
-                <td>
-                    <a button type="button" class="btn btn-warning" asp-controller="Student" asp-action="Details" asp-route-id="@student.Id">Details</a>
-                </td>
-            </tr>
-        }
-
-    </tbody>
-</table>
+@foreach (var candidate in Model.Candidates)
+{
+    var student = UsersService.GetStudentById(candidate.ApplicationUserId);
+    <div>@student.FullName </div>
+    <div>@student.CreatedOn </div>
+    <div>@student.Location </div>
+    <div>@student.UserName </div>
+                           @foreach (var course in student.Courses)
+                           {
+                               <div>@course.Course.Title</div>
+                           }
+}

@@ -31,7 +31,7 @@
                 var viewModel = new AllJobsViewModel
                 {
                     Jobs = this.jobsService.GetAll<JobsViewModel>().Where(x
-                        => x.Description.ToLower().Contains(searchString.ToLower()) || x.Title.ToLower().Contains(searchString.ToLower())),
+                        => x.Description.ToLower().Contains(searchString.ToLower())),
                 };
 
                 return this.View(viewModel);

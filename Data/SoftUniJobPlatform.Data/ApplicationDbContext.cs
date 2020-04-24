@@ -23,17 +23,22 @@
         {
         }
 
+        public DbSet<StudentCourse> StudentCourses { get; set; }
+
         public DbSet<StudentJob> StudentJobs { get; set; }
 
         public DbSet<Job> Jobs { get; set; }
 
+        public DbSet<Student> Students { get; set; }
+
         public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Course> Course { get; set; }
+        public DbSet<Course> Courses { get; set; }
 
-        public DbSet<Skill> Skills { get; set; }
 
         public DbSet<UsersSkill> UsersSkills { get; set; }
+
+        public DbSet<Setting> Settings { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
@@ -56,12 +61,25 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            // Needed for Identity models configuration
+
+            //builder.Entity<ApplicationUser>()
+            //    .HasMany(x=> x.Jobs)
+            //    .WithOne(c=> c.ApplicationUser);
 
             builder.Entity<StudentJob>()
                 .HasKey(x => new { x.ApplicationUserId, x.JobId });
 
+      
+
+
+            builder.Entity<StudentCourse>()
+                .HasKey(x => new { x.ApplicationUserId, x.CourseId });
+
+
             builder.Entity<UsersSkill>()
                 .HasKey(x => new { x.ApplicationUserId, x.SkillId });
+
 
             base.OnModelCreating(builder);
 

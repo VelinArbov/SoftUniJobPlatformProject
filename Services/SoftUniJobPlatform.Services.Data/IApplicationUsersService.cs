@@ -15,8 +15,6 @@
 
         Task AddJobAsync(int jobId, string userId);
 
-        Task AddSkillAsync(int jobId, string userId);
-
         T GetStudentById<T>(string id);
 
         ApplicationUser GetStudentById(string id);
@@ -24,6 +22,8 @@
         int GetStudentsCount();
 
         int GetCompaniesCount();
+
+
 
     }
 }

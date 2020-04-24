@@ -11,31 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200422150701_CheckApp.cs" />
-    <Compile Remove="Migrations\20200422150701_CheckApp.Designer.cs" />
-    <Compile Remove="Migrations\20200423054756_InsretCourseProperties.cs" />
-    <Compile Remove="Migrations\20200423054756_InsretCourseProperties.Designer.cs" />
-    <Compile Remove="Migrations\20200423060056_InsretCourseProperties.cs" />
-    <Compile Remove="Migrations\20200423060056_InsretCourseProperties.Designer.cs" />
-    <Compile Remove="Migrations\20200423153543_InsretSkilljasdasdaswerwerwerjjn.cs" />
-    <Compile Remove="Migrations\20200423153543_InsretSkilljasdasdaswerwerwerjjn.Designer.cs" />
-    <Compile Remove="Migrations\20200423154917_InsretSkilljasdasdaswerwerwerjjn.cs" />
-    <Compile Remove="Migrations\20200423154917_InsretSkilljasdasdaswerwerwerjjn.Designer.cs" />
-    <Compile Remove="Migrations\20200423161452_InsretDelete.cs" />
-    <Compile Remove="Migrations\20200423161452_InsretDelete.Designer.cs" />
-    <Compile Remove="Migrations\20200423162325_InsretDelete.cs" />
-    <Compile Remove="Migrations\20200423162325_InsretDelete.Designer.cs" />
-    <Compile Remove="Migrations\20200423190338_InsertPropSoftUniCourses.cs" />
-    <Compile Remove="Migrations\20200423190338_InsertPropSoftUniCourses.Designer.cs" />
-    <Compile Remove="Migrations\20200423191243_InsertPropSoftUniCourses.cs" />
-    <Compile Remove="Migrations\20200423191243_InsertPropSoftUniCourses.Designer.cs" />
-    <Compile Remove="Migrations\20200423194833_Custom1.cs" />
-    <Compile Remove="Migrations\20200423194833_Custom1.Designer.cs" />
-    <Compile Remove="Migrations\20200423195812_Custom1.cs" />
-    <Compile Remove="Migrations\20200423195812_Custom1.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
   </ItemGroup>
 

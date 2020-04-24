@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SoftUniJobPlatform.Data.Models
+﻿namespace SoftUniJobPlatform.Data.Models
 {
     using System;
     using System.Collections.Generic;
@@ -11,9 +9,10 @@ namespace SoftUniJobPlatform.Data.Models
 
     public class Course : BaseDeletableModel<int>
     {
-        public string ApplicationUserId { get; set; }
-
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public Course()
+        {
+            this.StudentCourses = new HashSet<StudentCourse>();
+        }
 
         public string Title { get; set; }
 
@@ -27,5 +26,10 @@ namespace SoftUniJobPlatform.Data.Models
 
         public CourseProgressType CourseProgress { get; set; }
 
+        public double Rate { get; set; }
+
+        public int Credit { get; set; }
+
+        public virtual ICollection<StudentCourse> StudentCourses { get; set; }
     }
 }
