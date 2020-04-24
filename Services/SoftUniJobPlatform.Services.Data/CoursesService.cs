@@ -1,9 +1,10 @@
-﻿namespace SoftUniJobPlatform.Services.Data
+﻿using SoftUniJobPlatform.Data.Models.Enum;
+
+namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
     using SoftUniJobPlatform.Data.Common.Repositories;
@@ -14,21 +15,33 @@
     {
         private readonly IDeletableEntityRepository<Course> courseRepository;
         private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
-        private readonly IRepository<StudentCourse> studentCourseRepository;
 
-        public CoursesService(IDeletableEntityRepository<Course> courseRepository,
-            IDeletableEntityRepository<ApplicationUser> userRepository,
-            IRepository<StudentCourse> studentCourseRepository)
+        public CoursesService(
+            IDeletableEntityRepository<Course> courseRepository,
+            IDeletableEntityRepository<ApplicationUser> userRepository)
         {
             this.courseRepository = courseRepository;
             this.userRepository = userRepository;
-            this.studentCourseRepository = studentCourseRepository;
         }
 
         public IEnumerable<T> GetAll<T>(int? take = null, int skip = 0)
         {
             IQueryable<Course> query =
                 this.courseRepository.All().OrderByDescending(x => x.CreatedOn);
+
+            if (!query.Any())
+            {
+                throw new ArgumentNullException("No courses");
+            }
+
+            return query.To<T>().ToList();
+        }
+
+        public IEnumerable<T> GetAllByUserId<T>(string id)
+        {
+
+            IQueryable<Course> query =
+                this.courseRepository.All().Where(x => x.ApplicationUserId == id);
 
             if (!query.Any())
             {
@@ -65,9 +78,22 @@
             return this.courseRepository.All().FirstOrDefault(x => x.Id == id);
         }
 
-        public Task CreateAsync(string title, string description, string imageUrl)
+        public void Create(string userId, string title, string description, int categoryId, string imageUrl)
         {
-            throw new NotImplementedException();
+            var user = this.userRepository.All().FirstOrDefault(x => x.Id == userId);
+            var course = new Course
+            {
+                ApplicationUserId = user.Id,
+                CategoryId = categoryId,
+                CourseProgress = CourseProgressType.Finished,
+                Title = title,
+                Description = description,
+                ImageUrl = imageUrl ?? "https://arbikas.com/pub/media/brands/asi.jpg",
+            };
+            user.Courses.Add(course);
+            this.userRepository.SaveChangesAsync().GetAwaiter().GetResult();
+            this.courseRepository.AddAsync(course).GetAwaiter().GetResult();
+            this.courseRepository.SaveChangesAsync().GetAwaiter().GetResult();
         }
 
         public Task DeleteAsync(int id)
@@ -80,40 +106,26 @@
             throw new NotImplementedException();
         }
 
-        public async Task AddCourseAsync(int courseId, string userId, double rate, int credit)
+        public void AddCourseAsync(int courseId, string userId, double rate, int credit)
         {
             var user = this.userRepository.All()
                 .FirstOrDefault(x => x.Id == userId);
             var course = this.GetById(courseId);
-            course.Credit = credit;
-            course.Rate = rate;
-            await this.courseRepository.SaveChangesAsync();
+
+            this.courseRepository.SaveChangesAsync();
 
             if (user == null || course == null)
             {
                 throw new ArgumentNullException("Not correct input");
             }
 
-            var exist = this.studentCourseRepository.All().FirstOrDefault(x => x.CourseId == courseId && x.ApplicationUserId == userId);
-            if (exist == null)
+            if (!user.Courses.Contains(course))
             {
-                var studentCourse = new StudentCourse
-                {
-                    ApplicationUserId = userId,
-                    ApplicationUser = user,
-                    CourseId = courseId,
-                    Course = course,
-                };
-                course.StudentCourses.Add(studentCourse);
-                user.Courses.Add(studentCourse);
-                await this.courseRepository.SaveChangesAsync();
-                await this.userRepository.SaveChangesAsync();
+                user.Courses.Add(course);
+            }
 
-            }
-            else
-            {
-                throw new ArgumentNullException("Your candidate in this job offer");
-            }
+            this.userRepository.SaveChangesAsync();
+
         }
     }
 }

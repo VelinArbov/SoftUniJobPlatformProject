@@ -1,0 +1,41 @@
+﻿@using SoftUniJobPlatform.Services.Data
+@model SoftUniJobPlatform.Web.ViewModels.Skills.StudentSkillViewModel
+@inject IApplicationUsersService UsersService
+@inject ISkillsService SkillsService
+@{
+    ViewData["Title"] = "MySkills";
+}
+
+
+<a button type="button" class="btn btn-warning" asp-area="Student" asp-controller="Dashboard" asp-action="AllSKills">Add Skills</a>
+
+
+<h1 align="center">My Skills @Model.UsersSkills.Count()</h1>
+<ul class="list-unstyled">
+    @foreach (var usersSkill in @Model.UsersSkills)
+    {
+
+        var skill = SkillsService.GetById(usersSkill.SkillId);
+        var user = UsersService.GetStudentById(usersSkill.ApplicationUserId);
+
+        <ul>
+            <li>
+                @skill.Name
+                <a button type="button" class="btn btn-danger" asp-area="Student" asp-controller="Dashboard" asp-action="Delete" asp-route-id="@usersSkill.SkillId">Delete</a>
+            </li>
+        </ul>
+        <hr>
+    }
+</ul>
+
+<script src="~/lib/jquery/dist/jquery.js" asp-append-version="true"></script>
+<script>
+    $(".btn-danger").click(function (e) {
+        if (confirm("Are you sure?")) {
+            alert('OK');
+        }
+        else {
+            e.preventDefault();
+        }
+    });
+</script>

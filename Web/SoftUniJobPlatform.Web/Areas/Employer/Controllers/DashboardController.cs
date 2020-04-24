@@ -1,23 +1,22 @@
-﻿using System;
-using Hangfire;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
-
-namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
+﻿namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 {
+    using System;
     using System.Linq;
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.AspNetCore.Mvc;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Services.Mapping;
     using SoftUniJobPlatform.Web.Areas.Administration.Controllers;
     using SoftUniJobPlatform.Web.Areas.Employer.Controllers;
+    using SoftUniJobPlatform.Web.ViewModels.Administration.Dashboard;
     using SoftUniJobPlatform.Web.ViewModels.Jobs;
 
     public class DashboardController : EmployerController
@@ -58,7 +57,7 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Create(JobsViewModel input)
+        public async Task<IActionResult> Create(JobsInputModel input)
         {
             var user = await this.userManager.GetUserAsync(this.User);
             if (!this.ModelState.IsValid)
@@ -92,7 +91,7 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
             return this.Redirect("/Employer/Dashboard/");
         }
 
-        public async Task<IActionResult> DeleteJobAsync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await this.jobsService.DeleteAsync(id);
             return this.Redirect("/Jobs");

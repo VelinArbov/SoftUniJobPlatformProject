@@ -8,7 +8,9 @@
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Web.Areas.Administration.Controllers;
+    using SoftUniJobPlatform.Web.ViewModels.Companies;
     using SoftUniJobPlatform.Web.ViewModels.Course;
+    using SoftUniJobPlatform.Web.ViewModels.Skills;
     using SoftUniJobPlatform.Web.ViewModels.Student;
 
     public class DashboardController : StudentController
@@ -16,15 +18,21 @@
         private readonly IApplicationUsersService usersService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ICoursesService coursesService;
+        private readonly ISkillsService skillsService;
+        private readonly ICloudinaryService cloudinary;
 
         public DashboardController(
             IApplicationUsersService usersService,
             UserManager<ApplicationUser> userManager,
-            ICoursesService coursesService)
+            ICoursesService coursesService,
+            ISkillsService skillsService,
+            ICloudinaryService cloudinary)
         {
             this.usersService = usersService;
             this.userManager = userManager;
             this.coursesService = coursesService;
+            this.skillsService = skillsService;
+            this.cloudinary = cloudinary;
         }
 
         public IActionResult Index()
@@ -61,16 +69,64 @@
         public IActionResult AddCourse(CourseViewModel model)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var viewmodel = this.coursesService.AddCourseAsync(model.Id, userId, model.Rate, model.Credit);
+            this.coursesService.AddCourseAsync(model.Id, userId, model.Rate, model.Credit);
             return this.Redirect("/");
+        }
+
+
+        public IActionResult AllSKills()
+        {
+            var viewModel = new AllSkillsViewModel
+            {
+                Skills = this.skillsService.GetAll<SkillViewModel>(),
+            };
+            return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> AddSkill(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await this.usersService.AddSkillAsync(id, userId);
+            return this.Redirect("/Student/Dashboard/MySkills");
+        }
+
+        public IActionResult MySkills()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var viewModel = this.usersService.GetStudentById<StudentSkillViewModel>(userId);
+            return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await this.skillsService.DeleteAsync(id, userId);
+            return this.Redirect("/Student/Dashboard/MySkills");
+        }
+
+        public IActionResult CreateCourse()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateCourse(CourseViewModel model)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var imageUrl = this.cloudinary.UploadFormFileAsync(model.Image).GetAwaiter().GetResult();
+            this.coursesService.Create(userId, model.Title, model.Description, model.CategoryId, imageUrl);
+            return this.RedirectToAction("Index");
         }
 
         public IActionResult MyCourses()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var viewModel = this.usersService.GetStudentById<StudentCourseViewModel>(userId);
+            var viewModel = new AllCoursesViewModel
+            {
+
+                Courses = this.coursesService.GetAllByUserId<CourseViewModel>(userId),
+            };
             return this.View(viewModel);
         }
-
     }
 }

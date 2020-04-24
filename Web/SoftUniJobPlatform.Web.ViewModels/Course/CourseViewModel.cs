@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SoftUniJobPlatform.Web.ViewModels.Course
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Text;
 
     using Microsoft.AspNetCore.Http;
@@ -37,6 +38,7 @@ namespace SoftUniJobPlatform.Web.ViewModels.Course
 
         public int Credit { get; set; }
 
-        public virtual ICollection<StudentCourse> StudentCourses { get; set; }
+        [NotMapped]
+        public string ApplicationUserId { get; set; }
     }
 }

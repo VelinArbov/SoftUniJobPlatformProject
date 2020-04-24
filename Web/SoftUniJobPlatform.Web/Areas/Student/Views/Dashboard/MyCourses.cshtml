@@ -1,34 +1,38 @@
 ﻿@using SoftUniJobPlatform.Services.Data
-@model SoftUniJobPlatform.Web.ViewModels.Course.StudentCourseViewModel
-@inject ICoursesService CoursesService
-@inject IApplicationUsersService UsersService
+@model SoftUniJobPlatform.Web.ViewModels.Course.AllCoursesViewModel
+
 @{
     ViewData["Title"] = "MyCourses";
 }
 
 <h1>MyCourses</h1>
-
+<a button type="button" class="btn btn-primary"asp-area="Student" asp-controller="Dashboard" asp-action="CreateCourse">Add Course</a>
 <h1 align="center">My courses @Model.Courses.Count()</h1>
-<ul class="list-unstyled">
-    @foreach (var course in @Model.Courses)
-    {
+@if (Model.Courses.Any())
+{
+    <ul class="list-unstyled">
+        @foreach (var course in @Model.Courses)
+        {
 
-        var studentCourse = this.CoursesService.GetById(course.CourseId);
-        var student = UsersService.GetStudentById(course.ApplicationUserId);
 
 
-        <li class="media">
-            <img class="img-fluid" height="200" width="200" src="@studentCourse.ImageUrl" alt="@studentCourse.Title">
-            <div class="media-body">
-                <h5 class="mt-0 mb-1">
-                Progress: <button type="button" class="btn btn-primary">@studentCourse.CourseProgress.ToString()</button>
-                </h5>
-                    @studentCourse.Description
-            </div>
+            <li class="media">
+                <img class="img-fluid" height="200" width="200" src="@course.ImageUrl" alt="@course.Title">
+                <div class="media-body">
+                    <h5 class="mt-0 mb-1">
+                        Progress: <button type="button" class="btn btn-primary">@course.CourseProgress.ToString()</button>
+                    </h5>
+                    @course.ShortDescription
+                </div>
 
-        </li>
-        <hr />
-    }
-</ul>
+            </li>
+            <hr />
+        }
+    </ul>
+}
+else
+{
+    <span>No courses</span>
+}
 
 
