@@ -44,14 +44,18 @@
 
             var isExist = this.userSkillRepository.All().Any(x => x.SkillId == id);
 
+
             if (isExist)
             {
+
                 var usersSkill = this.userSkillRepository.All().FirstOrDefault(x => x.SkillId == id && x.ApplicationUserId == userId);
 
                 this.userSkillRepository.Delete(usersSkill);
 
                 await this.userSkillRepository.SaveChangesAsync();
             }
+
+
         }
 
     }

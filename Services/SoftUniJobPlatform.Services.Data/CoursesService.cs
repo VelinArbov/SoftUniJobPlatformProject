@@ -1,6 +1,4 @@
-﻿using SoftUniJobPlatform.Data.Models.Enum;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
@@ -9,6 +7,7 @@ namespace SoftUniJobPlatform.Services.Data
 
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
+    using SoftUniJobPlatform.Data.Models.Enum;
     using SoftUniJobPlatform.Services.Mapping;
 
     public class CoursesService : ICoursesService
@@ -40,19 +39,10 @@ namespace SoftUniJobPlatform.Services.Data
             IQueryable<Course> query =
                 this.courseRepository.All().Where(x => x.ApplicationUserId == id);
 
-
             return query.To<T>().ToList();
         }
 
-        public IQueryable<Course> GetCategories()
-        {
-            throw new NotImplementedException();
-        }
-
-        public T GetByName<T>(string name)
-        {
-            throw new NotImplementedException();
-        }
+    
 
         public T GetById<T>(int id)
         {
@@ -97,11 +87,6 @@ namespace SoftUniJobPlatform.Services.Data
             this.courseRepository.Delete(category);
 
             await this.courseRepository.SaveChangesAsync();
-        }
-
-        public Task EditAsync(int id, string title, string description, string imageUrl)
-        {
-            throw new NotImplementedException();
         }
 
         public void AddCourseAsync(int courseId, string userId, double rate, int credit)

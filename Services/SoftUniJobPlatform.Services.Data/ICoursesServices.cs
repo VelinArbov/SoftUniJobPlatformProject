@@ -12,10 +12,6 @@
 
         IEnumerable<T> GetAllByUserId<T>(string id);
 
-        IQueryable<Course> GetCategories();
-
-        T GetByName<T>(string name);
-
         T GetById<T>(int id);
 
         Course GetById(int id);
@@ -24,7 +20,6 @@
 
         Task DeleteAsync(int id);
 
-        Task EditAsync(int id, string title, string description, string imageUrl);
 
         void AddCourseAsync(int courseId, string userId, double rate, int credit);
     }

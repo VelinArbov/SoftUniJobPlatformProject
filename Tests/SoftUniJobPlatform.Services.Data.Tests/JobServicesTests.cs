@@ -371,6 +371,37 @@
         }
 
         [Fact]
+        public async Task TestDeleteJObAsyncTest()
+        {
+            ApplicationUser user = new ApplicationUser();
+            Category category = new Category();
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+            var repository = new EfDeletableEntityRepository<Job>(new ApplicationDbContext(options.Options));
+            var studentRepo = new EfRepository<StudentJob>(new ApplicationDbContext(options.Options));
+            var job = new Job
+            {
+                ApplicationUser = user,
+                Salary = 900,
+                Description = "test",
+            };
+            await repository.AddAsync(job);
+            await repository.SaveChangesAsync();
+
+            var studentJob = new StudentJob
+            {
+                Job = job,
+                ApplicationUser = user,
+            };
+
+            await studentRepo.AddAsync(studentJob);
+
+            var jobService = new JobsService(repository, studentRepo);
+            AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
+            Assert.Throws<Exception>(() =>  jobService.DeleteAsync(3516516).GetAwaiter().GetResult());
+        }
+
+        [Fact]
         public async Task DeleteIncorrectId()
         {
             ApplicationUser user = new ApplicationUser();

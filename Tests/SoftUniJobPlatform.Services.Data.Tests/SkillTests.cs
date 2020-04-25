@@ -38,7 +38,7 @@ namespace SoftUniJobPlatform.Services.Data.Tests
 
 
         [Fact]
-        public void DeleteSkillById()
+        public void DeleteSkillByFakeId()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -77,8 +77,8 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             skillRepository.SaveChangesAsync().GetAwaiter().GetResult();
             userSkillRepository.AddAsync(userSkill).GetAwaiter().GetResult();
             userSkillRepository.SaveChangesAsync();
-            skillService.DeleteAsync(skill.Id, user.Id).GetAwaiter().GetResult();
-            Assert.Equal(1,skillRepository.All().Count());
+            Assert.Throws<Exception>(()=> skillService.DeleteAsync(12312312, user.Id).GetAwaiter().GetResult());
+
 
 
         }
