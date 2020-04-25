@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Web.Controllers
+﻿using System;
+
+namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -13,6 +15,7 @@
 
     public class JobsController : Controller
     {
+        private const int ItemsPerPage = 10;
         private readonly IJobsService jobsService;
         private readonly IApplicationUsersService userService;
 
@@ -22,7 +25,7 @@
             this.userService = userService;
         }
 
-        public IActionResult Index(int? pageNumber, string searchString = null)
+        public IActionResult Index(int page = 1, string searchString = null)
         {
 
             this.ViewData["CurrentFilter"] = searchString;
@@ -33,14 +36,22 @@
                     Jobs = this.jobsService.GetAll<JobsViewModel>().Where(x
                         => x.Description.ToLower().Contains(searchString.ToLower()) || x.Title.ToLower().Contains(searchString.ToLower())),
                 };
-
                 return this.View(viewModel);
             }
 
             var viewModel1 = new AllJobsViewModel
             {
-                Jobs = this.jobsService.GetAll<JobsViewModel>(),
+                Jobs = this.jobsService.GetAll<JobsViewModel>(10, (page - 1) * 10),
             };
+
+            var count = this.jobsService.GetAll<JobsViewModel>().Count();
+            viewModel1.PagesCount = (int)Math.Ceiling((double)count / ItemsPerPage);
+            if (viewModel1.PagesCount == 0)
+            {
+                viewModel1.PagesCount = 1;
+            }
+
+            viewModel1.CurrentPage = page;
 
             return this.View(viewModel1);
         }

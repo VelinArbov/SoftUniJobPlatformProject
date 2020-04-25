@@ -143,10 +143,10 @@
             app.UseEndpoints(
                 endpoints =>
                     {
-                        endpoints.MapControllerRoute("studentsjob", "/{name:minlength(3)}", new { controller = "jobs", action = "index" });
+                        endpoints.MapControllerRoute("studentsjob", "/{name:minlength(3)}", new { controller = "Jobs", action = "Index" });
                         endpoints.MapControllerRoute("arearoute", "{area:exists}/{controller=home}/{action=index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=home}/{action=index}/{id?}");
-                        endpoints.MapControllerRoute("students", "{controller=dashboard}/{action=applyjobasync}/{id?}", new { control = "dashboard", action = "applyjobasync" });
+                        //endpoints.MapControllerRoute("students", "{controller=dashboard}/{action=applyjobasync}/{id?}", new { control = "dashboard", action = "applyjobasync" });
                         endpoints.MapRazorPages();
                     });
         }

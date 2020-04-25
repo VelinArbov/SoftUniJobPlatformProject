@@ -24,14 +24,14 @@
             this.studentJobsRepository = studentJobsRepository;
         }
 
-        public IEnumerable<T> GetAll<T>(int? count = null)
+        public IEnumerable<T> GetAll<T>(int? take = null, int skip = 0)
         {
             IQueryable<Job> query =
-                this.jobRepository.All().OrderByDescending(x => x.CreatedOn);
+                this.jobRepository.All().OrderByDescending(x => x.CreatedOn).Skip(skip);
 
-            if (count.HasValue)
+            if (take.HasValue)
             {
-                query = query.Take(count.Value);
+                query = query.Take(take.Value);
             }
 
             return query.To<T>().ToList();

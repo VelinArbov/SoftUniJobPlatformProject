@@ -8,7 +8,7 @@
 
     public interface IJobsService
     {
-        IEnumerable<T> GetAll<T>(int? count = null);
+        IEnumerable<T> GetAll<T>(int? take = null, int skip = 0);
 
         public Task<int> CreateJob(string companyId, string title, string description, string position, int categoryId, string level, string location, int salary, string engagement);
 
