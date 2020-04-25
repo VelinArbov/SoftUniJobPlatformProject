@@ -138,6 +138,43 @@ namespace SoftUniJobPlatform.Services.Data.Tests
         }
 
         [Fact]
+        public async Task CreateCourseTest()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+            var repository = new EfDeletableEntityRepository<Course>(new ApplicationDbContext(options.Options));
+            var userRepository =
+                new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
+            var categoryRepository = new EfDeletableEntityRepository<Category>(new ApplicationDbContext(options.Options));
+            var category = new Category
+            {
+                Name = "test",
+            };
+
+            var user = new ApplicationUser
+            {
+                FullName = "Test",
+            };
+
+            var course = new Course
+            {
+                Id = 6,
+                Title = "test",
+            };
+            await categoryRepository.AddAsync(category);
+            await categoryRepository.SaveChangesAsync();
+            await userRepository.AddAsync(user);
+            await userRepository.SaveChangesAsync();
+            await repository.AddAsync(course);
+            await repository.SaveChangesAsync();
+            var coursesService = new CoursesService(repository, userRepository);
+
+            Assert.Throws<ArgumentException>(() =>
+                coursesService.Create(user.Id, "title", "des", category.Id, "image", "Finished").GetAwaiter()
+                    .GetResult());
+        }
+
+        [Fact]
         public async Task AddExistCourseTest()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
