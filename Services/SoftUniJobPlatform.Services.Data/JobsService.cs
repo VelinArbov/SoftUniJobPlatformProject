@@ -13,6 +13,8 @@
     {
         private const string NoCategorywithId = "Категория с ID:{0} несъществува.";
         private const string NoJobwithId = "Няма обява с ID {0}.";
+        private const string NoJobWithId = "Обява с ID:{0} несъществува.";
+
         private readonly IDeletableEntityRepository<Job> jobRepository;
         private readonly IRepository<StudentJob> studentJobsRepository;
 
@@ -69,7 +71,6 @@
             IQueryable<StudentJob> query =
                 this.studentJobsRepository.All().Where(x => x.JobId == id);
 
-
             return query.To<T>().ToList();
         }
 
@@ -97,6 +98,7 @@
             {
                 throw new ArgumentNullException(string.Format(NoCategorywithId, categoryId));
             }
+
             if (take.HasValue)
             {
                 query = query.Take(take.Value);
@@ -109,6 +111,11 @@
         {
             var job = this.jobRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
+            if (job == null)
+            {
+                throw new Exception(string.Format(NoJobWithId, id));
+            }
+
             return job;
         }
 

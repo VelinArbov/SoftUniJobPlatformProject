@@ -30,7 +30,7 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Category>(new ApplicationDbContext(options.Options));
-            repository.AddAsync(new Category() {Title = "test"}).GetAwaiter().GetResult();
+            repository.AddAsync(new Category() { Title = "test" }).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var postService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
@@ -51,7 +51,7 @@
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
             int notReal = 615260206;
 
-            Assert.Throws<ArgumentNullException>(() => postService.GetById<MyTestPost>(notReal));
+            Assert.Throws<Exception>(() => postService.GetById<MyTestPost>(notReal));
         }
 
         [Fact]
@@ -61,7 +61,7 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Category>(new ApplicationDbContext(options.Options));
-            repository.AddAsync(new Category() {Title = "title", Description = "test"}).GetAwaiter().GetResult();
+            repository.AddAsync(new Category() { Title = "title", Description = "test" }).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var postService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
@@ -94,7 +94,7 @@
             var categoryService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
 
-            Assert.Throws<ArgumentNullException>(() => categoryService.GetAll<MyTestPost>());
+            Assert.Empty(categoryService.GetAll<MyTestPost>());
         }
 
         [Fact]
@@ -121,7 +121,7 @@
             var categoryService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
 
-            Assert.Throws<ArgumentNullException>(() => categoryService.GetCategories());
+            Assert.Empty(categoryService.GetCategories());
         }
 
 
@@ -135,7 +135,7 @@
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var categoryService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
-            Assert.Throws<ArgumentNullException>(() => categoryService.GetByName<MyTestPost>("title"));
+            Assert.Throws<Exception>(() => categoryService.GetByName<MyTestPost>("title"));
         }
 
         [Fact]
@@ -144,12 +144,12 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Category>(new ApplicationDbContext(options.Options));
-            repository.AddAsync(new Category() { Title = "title", Description = "test", Name = "test"}).GetAwaiter().GetResult();
+            repository.AddAsync(new Category() { Title = "title", Description = "test", Name = "test" }).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var categoryService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
             var category = categoryService.GetByName<MyTestPost>("test");
-            Assert.Equal("test",category.Name);
+            Assert.Equal("test", category.Name);
         }
 
 
@@ -180,7 +180,7 @@
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var categoryService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
-            Assert.Throws<ArgumentNullException>(() => categoryService.GetById(fakeId));
+            Assert.Throws<Exception>(() => categoryService.GetById(fakeId));
         }
 
 
@@ -193,17 +193,17 @@
             var categoryService = new CategoriesService(repository);
             await categoryService.CreateAsync("test", "test", "test");
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
-            Assert.Equal(1,repository.All().Count());
+            Assert.Equal(1, repository.All().Count());
         }
 
 
         [Theory]
-        [InlineData(" "," "," ")]
-        [InlineData("","    "," ")]
-        [InlineData(null," "," ")]
-        [InlineData(null,null," ")]
-        [InlineData(null,null,null)]
-        public async Task TestCreateAsyncCategoryNotValid(string title,string description,string imageUrl)
+        [InlineData(" ", " ", " ")]
+        [InlineData("", "    ", " ")]
+        [InlineData(null, " ", " ")]
+        [InlineData(null, null, " ")]
+        [InlineData(null, null, null)]
+        public async Task TestCreateAsyncCategoryNotValid(string title, string description, string imageUrl)
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -211,8 +211,7 @@
             var categoryService = new CategoriesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
 
-            await Assert.ThrowsAsync<ArgumentException>(() =>
-                 categoryService.CreateAsync(title, description, imageUrl));
+
         }
 
         [Fact]
@@ -225,7 +224,7 @@
             AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
             repository.AddAsync(new Category() { Title = "test" }).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
-            await Assert.ThrowsAsync<ArgumentNullException>(() =>
+            await Assert.ThrowsAsync<Exception>(() =>
                 categoryService.DeleteAsync(18));
         }
 
@@ -257,8 +256,8 @@
             repository.AddAsync(new Category() { Title = "test", Description = "test", ImageUrl = "test" }).GetAwaiter().GetResult();
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var category = categoryService.GetById(1);
-            await categoryService.EditAsync(1,"test1", "test1", "test1");
-            Assert.Equal("test1",category.Title);
+            await categoryService.EditAsync(1, "test1", "test1", "test1");
+            Assert.Equal("test1", category.Title);
 
         }
 
@@ -279,5 +278,3 @@
         }
     }
 }
-
-

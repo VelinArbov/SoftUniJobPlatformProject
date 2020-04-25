@@ -1,19 +1,18 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
-using SoftUniJobPlatform.Services.Mapping;
-
-namespace SoftUniJobPlatform.Services.Data.Tests
+﻿namespace SoftUniJobPlatform.Services.Data.Tests
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
     using Moq;
     using SoftUniJobPlatform.Data;
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Data.Repositories;
+    using SoftUniJobPlatform.Services.Mapping;
     using SoftUniJobPlatform.Web.ViewModels.Jobs;
     using Xunit;
 
@@ -70,7 +69,7 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             var jobService = new JobsService(repository, studentRepo);
             AutoMapperConfig.RegisterMappings(typeof(JobServicesTests.MyTestJob).Assembly);
 
-            Assert.Throws<ArgumentNullException>(() => jobService.GetAll<JobServicesTests.MyTestJob>());
+            Assert.Empty( jobService.GetAll<JobServicesTests.MyTestJob>());
         }
 
 
@@ -128,10 +127,8 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var jobService = new JobsService(repository, studentRepo);
             AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
-
-            Assert.Throws<ArgumentNullException>(() => jobService.GetById<MyTestJob>(notReal));
+            Assert.Empty( jobService.GetById<MyTestJob>(notReal));
         }
-
 
         [Fact]
         public void TestGetAuthorJobExistId()
@@ -155,7 +152,6 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             var company = jobService.GetById<MyTestJob>(user.Id);
             Assert.Single(company);
         }
-
 
         [Fact]
         public void TestSearchJobs()
@@ -224,7 +220,7 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var jobService = new JobsService(repository, studentRepo);
             AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
-            Assert.Throws<ArgumentNullException>(() => jobService.SearchJob(""));
+            Assert.Empty(jobService.SearchJob(" "));
         }
 
         [Fact]
@@ -250,7 +246,6 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             Assert.Throws<ArgumentNullException>(() => jobService.GetByCategoryId<MyTestJob>(182152));
         }
 
-
         [Fact]
         public void TestGetBYCategoryId()
         {
@@ -273,7 +268,6 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             jobService.GetByCategoryId<MyTestJob>(category.Id);
             Assert.Equal(1, repository.All().Count());
         }
-
 
         [Fact]
         public void TestGetJobById()
@@ -298,7 +292,6 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             Assert.Equal("test", exaclyJob.Description);
         }
 
-
         [Fact]
         public void TestGetJobByIncorrectId()
         {
@@ -318,32 +311,8 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var jobService = new JobsService(repository, studentRepo);
             AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
-            Assert.Throws<ArgumentNullException>(() => jobService.GetJobById<MyTestJob>(18));
+            Assert.Throws<Exception>(() => jobService.GetJobById<MyTestJob>(18683));
         }
-
-
-        [Fact]
-        public void TestGetJobIncorectId()
-        {
-            ApplicationUser user = new ApplicationUser();
-            Category category = new Category();
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString());
-            var repository = new EfDeletableEntityRepository<Job>(new ApplicationDbContext(options.Options));
-            var studentRepo = new EfRepository<StudentJob>(new ApplicationDbContext(options.Options));
-            var job = new Job
-            {
-                ApplicationUser = user,
-                Salary = 900,
-                Description = "test",
-            };
-            repository.AddAsync(job);
-            repository.SaveChangesAsync().GetAwaiter().GetResult();
-            var jobService = new JobsService(repository, studentRepo);
-            AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
-            Assert.Throws<ArgumentNullException>(() => jobService.JobById(18));
-        }
-
 
         [Fact]
         public void TestGetJobCorectId()
@@ -399,8 +368,6 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             await jobService.DeleteAsync(job.Id);
 
             Assert.Equal(0, repository.All().Count());
-
-
         }
 
         [Fact]
@@ -423,7 +390,7 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             var jobService = new JobsService(repository, studentRepo);
             AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
             var newJob = jobService.JobById(job.Id);
-            await Assert.ThrowsAsync<ArgumentNullException>(() => jobService.DeleteAsync(18));
+            await Assert.ThrowsAsync<Exception>(() => jobService.DeleteAsync(18));
         }
 
         [Fact]
@@ -446,7 +413,7 @@ namespace SoftUniJobPlatform.Services.Data.Tests
             var jobService = new JobsService(repository, studentRepo);
             AutoMapperConfig.RegisterMappings(typeof(MyTestJob).Assembly);
             var newJob = jobService.JobById(job.Id);
-            Assert.Throws<ArgumentNullException>(() => jobService.GetCountByCategoryId(18));
+            Assert.Throws<Exception>(() => jobService.GetCountByCategoryId(18));
         }
 
         [Fact]
@@ -502,9 +469,3 @@ namespace SoftUniJobPlatform.Services.Data.Tests
 
     }
 }
-//var job = this.jobRepository.All().FirstOrDefault(x => x.Id == id);
-//job.Level = Enum.Parse<SeniorityType>(jobRequirements, true);
-//job.Location = location;
-//job.Engagement = Enum.Parse<EngagementType>(engagement, true);
-//job.Description = jobRequirements == null ? job.Description : jobRequirements;
-//job.Salary = salary == null ? job.Salary : salary;

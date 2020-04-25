@@ -18,7 +18,7 @@
 
         Category GetById(int id);
 
-        Task CreateAsync(string title, string description, string imageUrl);
+        Task<int> CreateAsync(string title, string description, string imageUrl);
 
         Task DeleteAsync(int id);
 

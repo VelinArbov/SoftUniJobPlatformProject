@@ -26,6 +26,7 @@
                 Companies =
                     this.companiesService.GetAll<CompanyViewModel>(),
             };
+
             return this.View(viewModel);
         }
 

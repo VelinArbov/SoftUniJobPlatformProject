@@ -64,10 +64,8 @@
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var company = new CompaniesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
-            Assert.Throws<ArgumentNullException>(() => company.GetAll<CompaniesServiceTests.MyTest>());
+            Assert.Empty( company.GetAll<CompaniesServiceTests.MyTest>());
         }
-
-
 
         [Fact]
         public void GetCompanyWithId()
@@ -89,13 +87,13 @@
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
             var company = companyService.GetCompanyAsync<MyTest>(user.Id);
             Assert.Equal("test", company.Email);
-            
+            repository.Delete(user);
+            repository.SaveChangesAsync().GetAwaiter().GetResult();
         }
 
         [Fact]
         public void GetCompanyWithFakeId()
         {
-            
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository =
@@ -110,7 +108,7 @@
             repository.SaveChangesAsync().GetAwaiter().GetResult();
             var company = new CompaniesService(repository);
             AutoMapperConfig.RegisterMappings(typeof(CompaniesServiceTests.MyTest).Assembly);
-            Assert.Throws<ArgumentNullException>(() => company.GetCompanyAsync<MyTest>("dasdasads"));
+            Assert.Null(company.GetCompanyAsync<MyTest>("dasdasads"));
         }
     }
 }

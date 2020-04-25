@@ -14,6 +14,7 @@
     {
         private const string UserAlreadyApplyOffer = "Вече сте кандидатсвали по тази обява!";
         private const string NoUserWithId = "Няма юзър с това ИД {0}";
+        private const string NoStudentWithId = "Няма студент с такова ID.";
         private const string UserAlreadyApplySkill = "Имате вече добавен този скил.";
         private const string NotCorrectInput = "Грешни данни";
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
@@ -117,24 +118,24 @@
             }
         }
 
-        public async Task AddSkillAsync(int jobId, string userId)
+        public async Task AddSkillAsync(int skillId, string userId)
         {
             var user = this.usersRepository.All()
                 .FirstOrDefault(x => x.Id == userId);
-            var skill = this.skillsService.GetById(jobId);
+            var skill = this.skillsService.GetById(skillId);
             if (user == null || skill == null)
             {
                 throw new Exception(NotCorrectInput);
             }
 
-            var exist = this.usersSkillRepository.All().FirstOrDefault(x => x.SkillId == jobId && x.ApplicationUserId == userId);
+            var exist = this.usersSkillRepository.All().FirstOrDefault(x => x.SkillId == skill.Id && x.ApplicationUserId == userId);
             if (exist == null)
             {
                 var usersSkill = new UsersSkill
                 {
                     ApplicationUserId = userId,
                     ApplicationUser = user,
-                    SkillId = jobId,
+                    SkillId = skillId,
                     Skill = skill,
                 };
                 skill.Check = true;
@@ -154,12 +155,23 @@
         {
             var student = this.usersRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
+            if (student == null)
+            {
+                throw new Exception(NoStudentWithId);
+            }
+
             return student;
         }
 
         public ApplicationUser GetStudentById(string id)
         {
-            return this.usersRepository.All().FirstOrDefault(x => x.Id == id);
+            var student= this.usersRepository.All().FirstOrDefault(x => x.Id == id);
+            if (student == null)
+            {
+                throw new Exception(NoStudentWithId);
+            }
+
+            return student;
         }
 
         public int GetStudentsCount()

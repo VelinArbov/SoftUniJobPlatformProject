@@ -15,7 +15,7 @@
 
         Task AddJobAsync(int jobId, string userId);
 
-        Task AddSkillAsync(int jobId, string userId);
+        Task AddSkillAsync(int skill, string userId);
 
         T GetStudentById<T>(string id);
 

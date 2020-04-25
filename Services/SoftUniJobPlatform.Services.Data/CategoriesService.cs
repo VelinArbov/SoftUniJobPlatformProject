@@ -1,12 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-
-namespace SoftUniJobPlatform.Services.Data
+﻿namespace SoftUniJobPlatform.Services.Data
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using SoftUniJobPlatform.Data.Common.Repositories;
     using SoftUniJobPlatform.Data.Models;
     using SoftUniJobPlatform.Services.Mapping;
@@ -15,7 +14,6 @@ namespace SoftUniJobPlatform.Services.Data
     {
         private const string InvalidCategoryIdErrorMessage = "Категория с  ID: {0} не същесвува.";
         private const string InvalidCategoryTitleErrorMessage = "Категория с име {0} не същесвува.";
-     
         private readonly IDeletableEntityRepository<Category> categoriesRepository;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -33,7 +31,6 @@ namespace SoftUniJobPlatform.Services.Data
             {
                 query = query.Take(take.Value);
             }
-
 
             return query.To<T>().ToList();
         }
@@ -81,15 +78,13 @@ namespace SoftUniJobPlatform.Services.Data
             {
                 throw new Exception(
                     string.Format(InvalidCategoryIdErrorMessage, id));
-
             }
 
             return category;
         }
 
-        public async Task CreateAsync(string title, string description, string imageUrl)
+        public async Task<int> CreateAsync(string title, string description, string imageUrl)
         {
-
             var category = this.categoriesRepository.AddAsync(new Category
             {
                 Title = title,
@@ -97,7 +92,8 @@ namespace SoftUniJobPlatform.Services.Data
                 ImageUrl = imageUrl ?? "https://arbikas.com/pub/media/brands/asi.jpg",
             });
 
-            await this.categoriesRepository.SaveChangesAsync();
+            var result = await this.categoriesRepository.SaveChangesAsync();
+            return result;
         }
 
         public async Task DeleteAsync(int id)
@@ -108,7 +104,6 @@ namespace SoftUniJobPlatform.Services.Data
             {
                 throw new Exception(
                     string.Format(InvalidCategoryIdErrorMessage, id));
-
             }
 
             this.categoriesRepository.Delete(category);
