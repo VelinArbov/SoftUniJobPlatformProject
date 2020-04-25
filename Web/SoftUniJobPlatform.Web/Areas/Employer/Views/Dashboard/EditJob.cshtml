@@ -1,6 +1,6 @@
 ﻿@using SoftUniJobPlatform.Data.Models
 @using SoftUniJobPlatform.Services.Data
-@model SoftUniJobPlatform.Web.ViewModels.Jobs.JobsViewModel
+@model SoftUniJobPlatform.Web.ViewModels.Jobs.EditJobViewModel
 @inject ICategoriesService Categories
 
 @{
@@ -9,9 +9,7 @@
 
 <h1 class ="text-center">EditJob</h1>
 
-    <img src=@Model.CompanyLogo width="250" alt="@Model.CompanyName">
-
-<h4>@Model.CompanyName</h4>
+ 
 <hr />
 
 <div class="text-center">

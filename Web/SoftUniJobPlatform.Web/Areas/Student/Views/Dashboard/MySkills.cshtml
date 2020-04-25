@@ -5,7 +5,18 @@
 @{
     ViewData["Title"] = "MySkills";
 }
-
+@if (this.TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-success">
+        @this.TempData["InfoMessage"]
+    </div>
+}
+@if (this.TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @this.TempData["ErrorMessage"]
+    </div>
+}
 
 <a button type="button" class="btn btn-warning" asp-area="Student" asp-controller="Dashboard" asp-action="AllSKills">Add Skills</a>
 

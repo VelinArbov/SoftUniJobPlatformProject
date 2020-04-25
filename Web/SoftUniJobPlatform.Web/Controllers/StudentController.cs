@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
+using SoftUniJobPlatform.Common;
+
 namespace SoftUniJobPlatform.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
@@ -14,6 +17,7 @@ namespace SoftUniJobPlatform.Web.Controllers
             this.usersService = usersService;
         }
 
+        [Authorize(Roles = GlobalConstants.EmployerRoleName + "," + GlobalConstants.ModeratorRoleName + "," + GlobalConstants.AdministratorRoleName)]
         public IActionResult Details(string id)
         {
             var viewModel = this.usersService.GetStudentById<CompanyViewModel>(id);

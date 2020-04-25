@@ -87,6 +87,7 @@ namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 await this.usersService.AddSkillAsync(id, userId);
+                this.TempData["InfoMessage"] = "Добавихте ново умение";
 
             }
             catch (Exception e)
@@ -108,7 +109,7 @@ namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             await this.skillsService.DeleteAsync(id, userId);
-            return this.Redirect("/Student/Dashboard/MyCourses");
+            return this.Redirect("/Student/Dashboard/MySkills");
         }
 
         public IActionResult CreateCourse()

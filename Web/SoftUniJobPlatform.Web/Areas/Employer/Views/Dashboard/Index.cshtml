@@ -22,8 +22,8 @@
                 <th scope="col">Category</th>
                 <th scope="col">Level</th>
                 <th scope="col">Engagement</th>
-                <th scope="col">Location</th>
                 <th scope="col">Salary</th>
+                <th scope="col">Location</th>
             </tr>
         </thead>
         @foreach (var job in Model.Jobs)
@@ -35,7 +35,7 @@
                     <td><img src="@Categories.GetById(@job.CategoryId).ImageUrl" width="80" class="mr-3" /></td>
                     <td>@job.Level</td>
                     <td>@job.Engagement</td>
-                    <td>@job.ViewSalary</td>
+                    <td>@job.ViewSalary BGN</td>
                     <td>@job.Location</td>
                     <td>
                         <a class="btn btn-primary" asp-area="Employer" asp-controller="Dashboard" asp-action="EditJob" asp-route-id="@job.Id">Edit</a>

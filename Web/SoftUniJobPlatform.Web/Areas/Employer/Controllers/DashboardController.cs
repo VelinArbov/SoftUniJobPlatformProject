@@ -24,10 +24,11 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
 
     public class DashboardController : EmployerController
     {
-        private const string adminEmail = "arbov.v@gmail.com";
-        private const string adminName = "Velin Arbov";
-        private const string subject = "Има нова обява в softunijobs.bg";
-        private const string htmlContent = "Има нова обява от{0} в softunijobs.bg за позиция : {1}";
+        private const string AdminEmail = "arbov.v@gmail.com";
+        private const string AdminName = "Velin Arbov";
+        private const string Subject = "Има нова обява в softunijobs.bg";
+        private const string HtmlContent = "Има нова обява от{0} в softunijobs.bg за позиция : {1}";
+        private const string ThanksForJobOffer = "Благодарим Ви, че добавихте нова обява. Тя е с валидност 14 дни!";
 
         private readonly IJobsService jobsService;
         private readonly UserManager<ApplicationUser> userManager;
@@ -80,29 +81,28 @@ namespace SoftUniJobPlatform.Web.Areas.Employer.Controllers
             var students = this.usersService.GetAll<StudentDetailsViewModel>();
             foreach (var student in students)
             {
-                await this.emailSender.SendEmailAsync(adminEmail, adminName, @student.Email, subject,string.Format(htmlContent,user.FullName,input.Title));
+                await this.emailSender.SendEmailAsync(AdminEmail, AdminName, @student.Email, Subject, string.Format(HtmlContent, user.FullName, input.Title));
             }
 
             BackgroundJob.Schedule(
                 () => this.jobsService.DeleteAsync(jobsId),
                 TimeSpan.FromDays(14));
 
-            this.TempData["InfoMessage"] = "Благодарим Ви, че добавихте нова обява. Тя е с валидност 14 дни!";
+            this.TempData["InfoMessage"] = ThanksForJobOffer;
             return this.Redirect("/");
         }
 
         public IActionResult EditJob(int id)
         {
-            var viewModel = this.jobsService.GetJobById<JobsViewModel>(id);
+            var viewModel = this.jobsService.GetJobById<EditJobViewModel>(id);
 
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditJob(JobsViewModel model)
+        public async Task<IActionResult> EditJob(EditJobViewModel model)
         {
-            await this.jobsService.EditAsync(model.Id, model.Level, model.Location, model.Level, model.Engagement,
-                model.Salary);
+            await this.jobsService.EditAsync(model.Id, model.Level, model.Location, model.Level, model.Engagement, model.Salary);
 
             return this.Redirect("/Employer/Dashboard/");
         }
