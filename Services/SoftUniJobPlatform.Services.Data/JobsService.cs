@@ -11,9 +11,9 @@
 
     public class JobsService : IJobsService
     {
-        private const string NoCategorywithId = "Категория с ID:{0} несъществува.";
+        private const string NoCategorywithId = "Категория с ID:{0} не съществува.";
         private const string NoJobwithId = "Няма обява с ID {0}.";
-        private const string NoJobWithId = "Обява с ID:{0} несъществува.";
+        private const string NoJobWithId = "Обява с ID:{0} не съществува.";
 
         private readonly IDeletableEntityRepository<Job> jobRepository;
         private readonly IRepository<StudentJob> studentJobsRepository;
@@ -123,6 +123,11 @@
         {
             var job = this.jobRepository.All()
                 .FirstOrDefault(x => x.Id == id);
+
+            if (job == null)
+            {
+                throw new Exception(string.Format(NoJobWithId, id));
+            }
 
             return job;
         }

@@ -10,8 +10,8 @@ using SoftUniJobPlatform.Data;
 namespace SoftUniJobPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200423162613_InsretDelete")]
-    partial class InsretDelete
+    [Migration("20200426054619_NoRate1")]
+    partial class NoRate1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -355,6 +355,9 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -366,7 +369,7 @@ namespace SoftUniJobPlatform.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Job", b =>
@@ -461,46 +464,6 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("SoftUniJobPlatform.Data.Models.SoftUniCourses", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("SoftUniCourses");
-                });
-
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.StudentJob", b =>
                 {
                     b.Property<string>("ApplicationUserId")
@@ -591,7 +554,7 @@ namespace SoftUniJobPlatform.Data.Migrations
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Course", b =>
                 {
-                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", null)
+                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Courses")
                         .HasForeignKey("ApplicationUserId");
 
@@ -610,15 +573,6 @@ namespace SoftUniJobPlatform.Data.Migrations
 
                     b.HasOne("SoftUniJobPlatform.Data.Models.Category", "Category")
                         .WithMany("Jobs")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SoftUniJobPlatform.Data.Models.SoftUniCourses", b =>
-                {
-                    b.HasOne("SoftUniJobPlatform.Data.Models.Category", "Category")
-                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

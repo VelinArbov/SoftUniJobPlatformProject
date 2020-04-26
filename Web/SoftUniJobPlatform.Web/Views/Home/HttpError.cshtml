@@ -1,9 +1,19 @@
-﻿
+﻿@model SoftUniJobPlatform.Web.ViewModels.HttpError.HttpErrorViewModel
 @{
     ViewData["Title"] = "HttpError";
 }
-    <div class="text-center">
+<div>
+    <h1 class="text-danger">Error.</h1>
+    <h2 class="text-danger">@Model.Content</h2>
+    @if (this.Model.ShowRequestId)
+    {
+        <p>
+            <strong>Request ID:</strong> <code>@this.Model.RequestId</code>
+        </p>
+    }
+    <a class="button btn-danger" asp-controller="Home" asp-action="Index" ></a>
+</div>
 
-        <img src="https://internetdevels.com/sites/default/files/public/blog_preview/404_page_cover.jpg" class="img-fluid mx-auto" />
-        <a  class="btn btn-primary btn-lg btn-block" href="/Home">Return</a>
-    </div>
+<div class="text-center">
+    <img src="https://internetdevels.com/sites/default/files/public/blog_preview/404_page_cover.jpg" class="img-fluid mx-auto" />
+</div>

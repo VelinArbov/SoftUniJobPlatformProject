@@ -15,7 +15,7 @@
         {
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetService<RoleManager<ApplicationRole>>();
-            var user = await userManager.FindByNameAsync("arbov.v@gmail.com");
+            var user = await userManager.FindByNameAsync(GlobalConstants.AdminUserName);
             var role = await roleManager.FindByNameAsync(GlobalConstants.AdministratorRoleName);
 
             var exists = dbContext.UserRoles.Any(x => x.UserId == user.Id && x.RoleId == role.Id);

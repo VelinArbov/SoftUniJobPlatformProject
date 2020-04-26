@@ -1,4 +1,6 @@
-﻿@using SoftUniJobPlatform.Common
+﻿@using Microsoft.Extensions.Hosting
+@using SoftUniJobPlatform.Common
+@inject IHostEnvironment env
 @model SoftUniJobPlatform.Web.ViewModels.Home.IndexCounterViewModel
 @inject SoftUniJobPlatform.Services.Data.ICategoriesService CategoriesService
 @{
@@ -28,10 +30,11 @@
             @this.TempData["InfoMessage"]
         </div>
     }
+    
+<div>@env.EnvironmentName</div>
 
 
-
-    <div class="counting-sec">
+<div class="counting-sec">
         <div class="inner-width">
 
             <div class="col">
@@ -53,7 +56,7 @@
                 <i class="fas fa-building"></i>
 
                 <div class="num">@Model.Companies</div>
-                <a href="/Comapnies" style="color: white;text-decoration: none" >Companies</a>
+                <a href="/Companies" style="color: white;text-decoration: none" >Companies</a>
             </div>
 
             <div class="col">

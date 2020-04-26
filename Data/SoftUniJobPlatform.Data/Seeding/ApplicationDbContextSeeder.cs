@@ -27,10 +27,9 @@
                           {
                               new RolesSeeder(),
                               new CategorySeeder(),
-                              new UserRolesSeeder(),
+                             // new UserRolesSeeder(),
                               new SkillsSeeder(),
-                              new CoursesSeeder(),
-                              
+                             //new CoursesSeeder(),
                           };
 
             foreach (var seeder in seeders)

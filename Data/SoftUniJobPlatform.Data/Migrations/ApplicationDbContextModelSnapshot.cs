@@ -353,6 +353,9 @@ namespace SoftUniJobPlatform.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 

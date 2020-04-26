@@ -10,8 +10,8 @@ using SoftUniJobPlatform.Data;
 namespace SoftUniJobPlatform.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200423201214_Custom1")]
-    partial class Custom1
+    [Migration("20200426054037_NoRate")]
+    partial class NoRate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -366,7 +366,7 @@ namespace SoftUniJobPlatform.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Course");
                 });
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Job", b =>
@@ -551,7 +551,7 @@ namespace SoftUniJobPlatform.Data.Migrations
 
             modelBuilder.Entity("SoftUniJobPlatform.Data.Models.Course", b =>
                 {
-                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", null)
+                    b.HasOne("SoftUniJobPlatform.Data.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Courses")
                         .HasForeignKey("ApplicationUserId");
 

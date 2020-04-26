@@ -39,6 +39,11 @@
             var job = this.companiesRepository.All().Where(x => x.Id == id)
                 .To<T>().FirstOrDefault();
 
+            if (job == null)
+            {
+                throw new Exception($"Няма компания с ID:{id}");
+            }
+
             return job;
         }
     }

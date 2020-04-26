@@ -21,7 +21,6 @@
             {
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CategoryId = 35,
                     CreatedOn = DateTime.UtcNow,
                     Title = "Programming Basics",
@@ -31,7 +30,6 @@
 
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CategoryId = 35,
                     CreatedOn = DateTime.UtcNow,
                     Title = "Programming Fundamentals",
@@ -40,7 +38,6 @@
                 },
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CreatedOn = DateTime.UtcNow,
                     Title = "C# Advanced",
                     CategoryId = 35,
@@ -50,7 +47,6 @@
 
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CategoryId = 35,
                     CreatedOn = DateTime.UtcNow,
                     Title = "C# OOP",
@@ -60,7 +56,6 @@
 
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CreatedOn = DateTime.UtcNow,
                     CategoryId = 35,
                     Title = "MS SQL Server",
@@ -70,7 +65,6 @@
 
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CreatedOn = DateTime.UtcNow,
                     CategoryId = 35,
                     Title = "Entity FrameWork Core",
@@ -80,8 +74,6 @@
 
                 new Course
                 {
-                    
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CreatedOn = DateTime.UtcNow,
                     CategoryId = 35,
                     Title = "C# Web Basic",
@@ -91,7 +83,6 @@
 
                 new Course
                 {
-                    ApplicationUserId = "3308a3df-08ea-4c38-a305-b477fb051f4c",
                     CreatedOn = DateTime.UtcNow,
                     CategoryId = 35,
                     Title = "ASP.NET Core",

@@ -28,5 +28,7 @@ namespace SoftUniJobPlatform.Data.Models
 
         public CourseProgressType CourseProgress { get; set; }
 
+        public double Rate { get; set; }
+
     }
 }

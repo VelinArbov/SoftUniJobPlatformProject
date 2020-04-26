@@ -8,9 +8,6 @@
         public const string ModeratorRoleName = "Moderator";
         public const string EmployerRoleName = "Employer";
         public const string StudentRoleName = "Student";
-        
-
-
-
+        public const string AdminUserName = "arbov.v@gmail.com";
     }
 }

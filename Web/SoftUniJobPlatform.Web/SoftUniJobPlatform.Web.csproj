@@ -13,6 +13,7 @@
 
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\..\Rules.ruleset</CodeAnalysisRuleSet>
+    <ApplicationInsightsResourceId>/subscriptions/71697ea4-e143-4602-a25a-33fb663eb6fc/resourcegroups/softuni/providers/microsoft.insights/components/softunijobs</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" />
@@ -38,6 +39,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hangfire.Dashboard.Authorization" Version="3.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -73,6 +75,10 @@
     <PackageReference Include="Hangfire.Core" Version="1.7.*" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.*" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 </Project>
 

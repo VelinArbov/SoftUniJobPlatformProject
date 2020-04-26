@@ -92,6 +92,7 @@
             services.AddTransient<IApplicationUsersService, ApplicationUsersService>();
             services.AddTransient<ICoursesService, CoursesService>();
             services.AddTransient<ISkillsService, SkillsService>();
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,11 +120,11 @@
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+               // app.UseStatusCodePagesWithReExecute("/Home/HttpError?statusCode={0}");
+                app.UseExceptionHandler("/Home/HttpError");
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithReExecute("/Home/HttpError?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

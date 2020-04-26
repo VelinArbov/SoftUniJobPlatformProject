@@ -1,4 +1,5 @@
-﻿@using SoftUniJobPlatform.Common
+﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@using SoftUniJobPlatform.Common
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,12 +14,13 @@
         <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
     </environment>
     <environment names="Staging,Production">
-        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" asp-append-version="true" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" asp-append-version="true" />
         <link href="~/css/site.min.css" rel="stylesheet" asp-append-version="true" />
     </environment>
 
 
 
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body id="top">
 

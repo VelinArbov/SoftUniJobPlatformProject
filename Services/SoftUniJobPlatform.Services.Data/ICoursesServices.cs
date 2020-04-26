@@ -20,7 +20,6 @@
 
         Task DeleteAsync(int id);
 
-
         void AddCourseAsync(int courseId, string userId, double rate, int credit);
     }
 }

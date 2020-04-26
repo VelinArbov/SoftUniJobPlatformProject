@@ -1,4 +1,8 @@
-﻿namespace SoftUniJobPlatform.Web.Controllers
+﻿using System;
+using Microsoft.AspNetCore.Diagnostics;
+using SoftUniJobPlatform.Web.ViewModels.HttpError;
+
+namespace SoftUniJobPlatform.Web.Controllers
 {
     using System.Diagnostics;
 
@@ -41,9 +45,11 @@
             return this.View();
         }
 
-        public IActionResult HttpError(int statusCode)
+        public IActionResult HttpError()
         {
-            return this.View(statusCode);
+            var exceptionHandlerPathFeature =
+                HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+            return this.View(new HttpErrorViewModel { Content = $"{exceptionHandlerPathFeature.Error.Message}"});
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
