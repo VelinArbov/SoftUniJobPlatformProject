@@ -18,22 +18,29 @@
             var user = await userManager.FindByNameAsync(GlobalConstants.AdminUserName);
             var role = await roleManager.FindByNameAsync(GlobalConstants.AdministratorRoleName);
 
-            var exists = dbContext.UserRoles.Any(x => x.UserId == user.Id && x.RoleId == role.Id);
-
-            if (exists)
+            if (user != null && role != null)
             {
-                return;
+                var exists = dbContext.UserRoles.Any(x => x.UserId == user.Id && x.RoleId == role.Id);
+
+                if (exists)
+                {
+                    return;
+                }
+                else
+                {
+                    user.IsAdmin = true;
+
+                    dbContext.UserRoles.Add(new IdentityUserRole<string>
+                    {
+                        RoleId = role.Id,
+                        UserId = user.Id,
+                    });
+
+                    await dbContext.SaveChangesAsync();
+                }
             }
 
-            user.IsAdmin = true;
-
-            dbContext.UserRoles.Add(new IdentityUserRole<string>
-            {
-                RoleId = role.Id,
-                UserId = user.Id
-            });
-
-            await dbContext.SaveChangesAsync();
+            return;
         }
     }
 }

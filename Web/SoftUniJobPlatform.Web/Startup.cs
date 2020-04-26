@@ -1,4 +1,6 @@
-﻿namespace SoftUniJobPlatform.Web
+﻿using System.Threading.Tasks;
+
+namespace SoftUniJobPlatform.Web
 {
     using System;
     using System.Reflection;
@@ -110,6 +112,7 @@
                     dbContext.Database.Migrate();
                 }
 
+               
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
