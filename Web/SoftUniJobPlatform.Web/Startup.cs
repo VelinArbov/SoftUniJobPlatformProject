@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace SoftUniJobPlatform.Web
+﻿namespace SoftUniJobPlatform.Web
 {
     using System;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     using CloudinaryDotNet;
     using Hangfire;
@@ -112,7 +111,6 @@ namespace SoftUniJobPlatform.Web
                     dbContext.Database.Migrate();
                 }
 
-               
                 new ApplicationDbContextSeeder().SeedAsync(dbContext, serviceScope.ServiceProvider).GetAwaiter().GetResult();
             }
 
@@ -150,7 +148,6 @@ namespace SoftUniJobPlatform.Web
                         endpoints.MapControllerRoute("studentsjob", "/{name:minlength(3)}", new { controller = "Jobs", action = "Index" });
                         endpoints.MapControllerRoute("arearoute", "{area:exists}/{controller=home}/{action=index}/{id?}");
                         endpoints.MapControllerRoute("default", "{controller=home}/{action=index}/{id?}");
-                        //endpoints.MapControllerRoute("students", "{controller=dashboard}/{action=applyjobasync}/{id?}", new { control = "dashboard", action = "applyjobasync" });
                         endpoints.MapRazorPages();
                     });
         }

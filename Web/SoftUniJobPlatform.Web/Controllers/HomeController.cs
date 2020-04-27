@@ -1,15 +1,18 @@
-﻿using System;
-using Microsoft.AspNetCore.Diagnostics;
-using SoftUniJobPlatform.Web.ViewModels.HttpError;
+﻿using System.Linq;
+using SoftUniJobPlatform.Web.ViewModels.Categories;
+using SoftUniJobPlatform.Web.ViewModels.Jobs;
 
 namespace SoftUniJobPlatform.Web.Controllers
 {
+    using System;
     using System.Diagnostics;
 
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Mvc;
     using SoftUniJobPlatform.Services.Data;
     using SoftUniJobPlatform.Web.ViewModels;
     using SoftUniJobPlatform.Web.ViewModels.Home;
+    using SoftUniJobPlatform.Web.ViewModels.HttpError;
 
     public class HomeController : BaseController
     {
@@ -18,7 +21,8 @@ namespace SoftUniJobPlatform.Web.Controllers
         private readonly IJobsService jobsService;
         private readonly ICloudinaryService clodinaryService;
 
-        public HomeController(ICategoriesService categoriesService,
+        public HomeController(
+            ICategoriesService categoriesService,
             IApplicationUsersService usersService,
             IJobsService jobsService,
             ICloudinaryService clodinaryService)
@@ -35,7 +39,9 @@ namespace SoftUniJobPlatform.Web.Controllers
             {
                 Students = this.usersService.GetStudentsCount(),
                 Companies = this.usersService.GetCompaniesCount(),
-                Jobs = this.jobsService.GetCountJobs(),
+                JobsCount = this.jobsService.GetCountJobs(),
+                JobsImages = this.jobsService.GetAll<JobsViewModel>(5).OrderByDescending(x => x.CreatedOn),
+                Categories = this.categoriesService.GetAll<CategoryViewModel>(),
             };
             return this.View(viewModel);
         }

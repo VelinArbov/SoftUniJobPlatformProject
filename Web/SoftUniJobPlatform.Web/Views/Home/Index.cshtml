@@ -5,19 +5,21 @@
 @inject SoftUniJobPlatform.Services.Data.ICategoriesService CategoriesService
 @{
     this.ViewData["Title"] = $"Welcome to {GlobalConstants.SystemName}!";
+    int count = 0;
 }
 <head>
     <meta charset="utf-8">
     <title></title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <script data-ad-client="ca-pub-8302286319698726" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
 </head>
 
 <div>
-    <h1 align="center" style="font-family: 'Anonymous Pro', monospace; ">
+    <h1 align="center" style="font-family: 'Anonymous Pro', monospace;">
         Welcome to SoftUni Job Platform
     </h1>
 </div>
@@ -26,29 +28,26 @@
 <body>
     @if (this.TempData["InfoMessage"] != null)
     {
-        <div class="alert alert-success">
-            @this.TempData["InfoMessage"]
-        </div>
+    <div class="alert alert-success">
+        @this.TempData["InfoMessage"]
+    </div>
     }
-    
-<div>@env.EnvironmentName</div>
 
-
-<div class="counting-sec">
+    <div class="counting-sec">
         <div class="inner-width">
 
             <div class="col">
                 <i class="fas fa-graduation-cap"></i>
                 <div class="num">@Model.Students</div>
                 @if (User.IsInRole(GlobalConstants.AdministratorRoleName) || User.IsInRole(GlobalConstants.ModeratorRoleName) || User.IsInRole(GlobalConstants.EmployerRoleName))
-                {
+            {
 
-                    <a href="Employer/Dashboard/AllStudents" style="color: white;text-decoration: none">Students</a>
-                }
-                else
-                {
-                    <div>Students</div>
-                }
+                <a href="Employer/Dashboard/AllStudents" style="color: white;text-decoration: none">Students</a>
+            }
+            else
+            {
+                <div>Students</div>
+            }
 
 
             </div>
@@ -56,31 +55,56 @@
                 <i class="fas fa-building"></i>
 
                 <div class="num">@Model.Companies</div>
-                <a href="/Companies" style="color: white;text-decoration: none" >Companies</a>
+                <a href="/Companies" style="color: white;text-decoration: none">Companies</a>
             </div>
 
             <div class="col">
                 <i class="fas fa-briefcase"></i>
-                <div class="num">@Model.Jobs</div>
+                <div class="num">@Model.JobsCount</div>
                 <a href="/Jobs" style="color: white;text-decoration: none">Jobs</a>
             </div>
 
 
 
         </div>
+
     </div>
+    <h2 align="center" style="font-family: 'Anonymous Pro', monospace;">
+
+        Jobs by Category
+
+    </h2>
+    <div class="container">
+        <div class="row align-items-center">
+            @foreach (var category in Model.Categories)
+        {
+
+            <div class="col">
+
+                @if (category.Jobs.Count() > 0)
+                {
+                <img src="@category.ImageUrl" style="width: 80px;" border="0">
+                <a asp-controller="Jobs" asp-action="JobsByCategory" asp-route-id="@category.Id">@category.Title (@category.Jobs.Count())</a>
+                }
+                else
+                {
+                    <img src="@category.ImageUrl" title="NO JOBS" style="width: 80px;" border="0">
+
+                <span style="color: #1e90ff">@category.Title</span>
+                }
+
+            </div>
+        }
 
 
-
+        </div>
+    </div>
 
     <script type="text/javascript">
         $(".num").counterUp({ delay: 10, time: 1000 });
+
     </script>
 
 
+
 </body>
-
-
-
-
-

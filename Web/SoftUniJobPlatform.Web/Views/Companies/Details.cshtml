@@ -26,13 +26,15 @@
         </div>
 
         <div class="col-md-4">
-            <h3 class="my-3">Company Description</h3>
-            <p>@Model.FullName</p>
+            <h3 class="my-3"> Description</h3>
+            <p>@Model.Description</p>
             <h3 class="my-3">Details</h3>
             <ul>
 
                 <li>Location: @Model.Location</li>
                 <li>Offers: @Model.Jobs.Count()</li>
+                <li>Email: @Model.ViewEmail</li>
+                <li>Phone: @Model.ViewPhoneNumber</li>
 
             </ul>
         </div>

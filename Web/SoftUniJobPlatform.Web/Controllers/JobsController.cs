@@ -56,6 +56,15 @@ namespace SoftUniJobPlatform.Web.Controllers
             return this.View(viewModel1);
         }
 
+        public IActionResult JobsByCategory(int id)
+        {
+            var viewModel= new AllJobsViewModel
+            {
+                Jobs = this.jobsService.GetByCategoryId<JobsViewModel>(id),
+            };
+            return this.View("Index",viewModel);
+        }
+
         public IActionResult Details(int id)
         {
 

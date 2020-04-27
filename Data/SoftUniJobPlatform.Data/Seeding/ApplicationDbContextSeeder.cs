@@ -29,7 +29,7 @@
                               new RolesSeeder(),
                               new CategorySeeder(),
                               new SkillsSeeder(),
-                             //new CoursesSeeder(),
+                              new CompaniesSeeder(),
                           };
 
             foreach (var seeder in seeders)

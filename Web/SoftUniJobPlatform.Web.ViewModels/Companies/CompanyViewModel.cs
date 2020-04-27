@@ -17,7 +17,7 @@
         public string PhoneNumber { get; set; }
 
         public string ViewPhoneNumber => this.PhoneNumber == null ? "No phone number" : this.PhoneNumber;
-        
+
         [Required]
         public string FullName { get; set; }
 
@@ -29,6 +29,8 @@
         public string ImageUrl { get; set; }
 
         public string Location { get; set; }
+
+        public string Description { get; set; }
 
         public ICollection<UsersSkill> UsersSkills { get; set; }
 
