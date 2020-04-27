@@ -2,7 +2,7 @@
 
 
 
-* [.NET Core 3.1](https://github.com/dotnet/core)
+
 * [ASP.NET Core 3.1](https://github.com/dotnet/aspnetcore)
 * [ASP.NET-MVC-Template by NikolayIT](https://github.com/NikolayIT/ASP.NET-MVC-Template/tree/master/ASP.NET%20Core)
 * [Entity Framework Core 3.1](https://github.com/dotnet/efcore)
