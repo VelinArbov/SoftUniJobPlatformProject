@@ -165,7 +165,7 @@
 
         public ApplicationUser GetStudentById(string id)
         {
-            var student= this.usersRepository.All().FirstOrDefault(x => x.Id == id);
+            var student = this.usersRepository.All().FirstOrDefault(x => x.Id == id);
             if (student == null)
             {
                 throw new Exception(NoStudentWithId);

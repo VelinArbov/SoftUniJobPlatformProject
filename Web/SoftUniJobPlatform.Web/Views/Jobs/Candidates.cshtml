@@ -1,6 +1,9 @@
-﻿@using SoftUniJobPlatform.Services.Data
+﻿@using SoftUniJobPlatform.Data.Models
+@using SoftUniJobPlatform.Services.Data
 @model SoftUniJobPlatform.Web.ViewModels.StudentJob.CandidateJobViewModel
 @inject IApplicationUsersService UsersService
+@inject ICoursesService CoursesService
+@inject ISkillsService SkillsService
 @{
     ViewData["Title"] = "Candidates";
 }
@@ -21,13 +24,14 @@
         @foreach (var candidate in Model.Candidates)
         {
             var student = UsersService.GetStudentById(candidate.ApplicationUserId);
+            var courses = CoursesService.GetAllByUserId<int>(candidate.ApplicationUserId);
             <tr>
                 <th scope="row">1</th>
                 <td>@student.UserName</td>
                 <td>@student.Location</td>
                 <td>@student.UserName</td>
-                <td>@student.UsersSkills.Count</td>
-                <td>@student.Courses.Count</td>
+                <td>@student.UsersSkills.Count()</td>
+                <td>@courses.Count()</td>
                 <td>
                     <a button type="button" class="btn btn-warning" asp-controller="Student" asp-action="Details" asp-route-id="@student.Id">Details</a>
                 </td>

@@ -25,6 +25,7 @@
 
         public string ShortDescription => this.Description == null ? "No Description" :
             this.Description.Length > 200 ? this.Description.Substring(0, 150) + "..." : this.Description;
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Моля въведете категорията ")]
         public int CategoryId { get; set; }
 

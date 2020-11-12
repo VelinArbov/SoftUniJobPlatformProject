@@ -71,7 +71,6 @@ namespace SoftUniJobPlatform.Web.Areas.Student.Controllers
             return this.Redirect("/");
         }
 
-
         public IActionResult AllSKills()
         {
             var viewModel = new AllSkillsViewModel
