@@ -1,4 +1,4 @@
-# SoftUniJobPlatform https://softunijobs.azurewebsites.net/
+# SoftUniJobPlatform 
 
 
 
